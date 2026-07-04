@@ -41,10 +41,12 @@ Uzorci komponenti (reuse, ne reinvent): `.kartica`, `.red` (label↔vrijednost),
 - **Offline queue (F7):** red u memoriji `[{path,body}]`, `window.addEventListener('online', flush)`, retry s malim backoffom; UI označi "spremam…".
 - **SSE čitanje (F15):** `const rd=(await fetch(...)).body.getReader(); … split('\n\n') … JSON.parse(line.slice(6))` → append u DOM (bez innerHTML+= po tokenu ⚠ — append u textContent noda radi performansi).
 - **Auto-refresh v012** (02 §5) + **F7 guard:** `window.OI_BLOK_RELOAD` — postaviti na start testa/usmenog, skinuti na kraj; `pingaj()` prvo provjeri flag.
+- **Update-traka (v014):** ako health-ping 3× uzastopno vidi noviju verziju bez uspješnog reloada → fiksna traka "Nova verzija je spremna — Osvježi" (safety net protiv tihe zaglave).
 - **Verzija ×3 sidro:** `#ja-verzija` tekst "vNNN · Faza N" — health-ping ga parsira `split(' ')[0]` 🔒 ne mijenjati format.
 
 ## 7. UX principi (kratko ali obavezno)
 Mobile-first (Ivan testira ISKLJUČIVO Samsung Android ⚠ — svaka isporuka mora biti palac-upotrebljiva); jedan primarni CTA po ekranu; brojke uvijek s kontekstom (ne "73" nego "73 od 162 pročitano"); nikad lažni podaci u skeletonima; greške ljudskim jezikom + što učiniti; sve destruktivno traži potvrdu; dijakritika svugdje ispravna (latin-ext fontovi ✔).
 
 ## CHANGELOG
+- 2.1 (2026-07-04): +update-traka (v014).
 - 2.0 (2026-07-04): inicijalno.
