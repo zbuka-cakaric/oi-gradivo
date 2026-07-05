@@ -93,6 +93,10 @@ FREE: gradivo+pretraga+bookmarki+10 testova/mj (bez obrazloženja)+osnovni push.
 ## 6. Sjeverna zvijezda kvalitete
 Dva referentna pitanja koja MORAJU raditi savršeno prije nego F15 proglasimo gotovim (i ostaju trajni regresijski test): **"Što mi sve treba za početak gradnje?"** i **"Kako reagirati ako je ugrađen nekvalitetan materijal, a uporabna dozvola je dobivena?"** — odgovor točan, strukturiran (odgovor→temelj→u praksi→pazi), svi citati klikabilni i ispravni.
 
+## TRI MODA (2026-07-05 — krovna odluka, detalji u 12)
+Platforma **ŽBUKA AI** (krovni brend; plavi logo → oi.zbuka.hr, crveni → ai.zbuka.hr/Gradilište). Selling point: **tehnologija kritičkog razmišljanja** — **Mentor** (OI Ispit, plava) · **Vještak** (teren za profesionalce, narančasta) · **Investitor** ("informacija vrijedi više nego zemljište", tamnozelena). Jedan račun, jedna baza propisa, jedan AI mozak (GATE 93 %); tri footera, tri ulazne situacije.
+
 ## CHANGELOG
+- +2026-07-05: tri moda + ŽBUKA AI rebrand (vidi 12-BRAND-MODOVI).
 - 2.1 (2026-07-05): §2 treći stup INVESTITOR (→10) + strategija GRA-first.
 - 2.0 (2026-07-04): inicijalno.

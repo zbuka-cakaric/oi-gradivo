@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ŽBUKA AI — dizajn koncept (3 moda)</title>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F5F5F1; --ink:#16181B; --ink2:#5A5E66; --ink3:#9A9EA6; --line:#E3E1DA;
+  --ispit:#2B4A75;      /* Norma plava — učenje */
+  --vjestak:#A3271D;    /* bordo iz loga — autoritet pečata */
+  --investitor:#8A6F47; /* zemljani oker — parcela, temelji */
+  --serif:'Newsreader',serif; --sans:'Inter',sans-serif; --mono:'JetBrains Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#22242A;font-family:var(--sans);color:var(--ink);padding:28px 16px 60px}
+h1.glava{font-family:var(--serif);color:#F5F5F1;text-align:center;font-size:26px;font-weight:700;letter-spacing:.5px}
+p.pod{color:#9A9EA6;text-align:center;font-size:13px;margin:6px 0 26px}
+.logotraka{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:30px}
+.logokart{border-radius:12px;padding:18px 26px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.logokart small{font-size:10.5px;letter-spacing:.8px;text-transform:uppercase;opacity:.6}
+.zlogo{font-family:var(--sans);font-weight:800;font-size:26px;letter-spacing:1px;position:relative;display:inline-block}
+.zlogo .ai{color:var(--vjestak);font-size:15px;letter-spacing:3px;margin-left:6px;vertical-align:2px}
+.zlogo .kv{position:absolute;top:-11px;left:1px;width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;border-bottom:9px solid var(--vjestak)}
+.zlogo.plavakv .kv{border-bottom-color:#6FA8DC}
+.telefoni{display:flex;gap:22px;justify-content:center;flex-wrap:wrap;align-items:flex-start}
+.fon{width:340px;background:var(--paper);border-radius:26px;border:6px solid #0c0d10;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+.fon .naz{background:#0c0d10;color:#7d828c;font-size:10.5px;text-align:center;padding:6px;letter-spacing:1.2px;text-transform:uppercase}
+.hdr{display:flex;align-items:center;gap:8px;padding:14px 16px 10px}
+.hdr .mini{font-weight:800;font-size:17px;position:relative}
+.hdr .mini .kv{position:absolute;top:-8px;left:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:6px solid var(--vjestak);width:0;height:0}
+.hdr .mini .ai{font-size:10px;letter-spacing:2px;color:var(--vjestak);margin-left:4px}
+.modpil{margin-left:auto;font-size:11px;font-weight:600;padding:5px 11px;border-radius:99px;color:#fff;display:flex;align-items:center;gap:5px}
+.modpil::after{content:'▾';font-size:9px;opacity:.8}
+.sadrzaj{padding:6px 16px 14px;min-height:472px}
+.naslov{font-family:var(--serif);font-size:23px;font-weight:700;margin:6px 0 12px}
+.kart{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:11px}
+.mlab{font-size:10px;letter-spacing:1.4px;text-transform:uppercase;color:var(--ink3);font-family:var(--mono)}
+.nav{display:flex;border-top:1px solid var(--line);background:#fff}
+.nav b{flex:1;text-align:center;font-size:10px;font-weight:600;color:var(--ink3);padding:9px 0 11px;position:relative}
+.nav b.on{color:var(--modb)}
+.nav b.on::before{content:'';position:absolute;top:-1px;left:50%;transform:translateX(-50%);border-left:7px solid transparent;border-right:7px solid transparent;border-bottom:7px solid var(--modb)}
+.nav b i{display:block;font-style:normal;font-size:17px;margin-bottom:2px}
+/* — MODE PICKER — */
+.pick{display:block;width:100%;text-align:left;background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px;position:relative;cursor:pointer}
+.pick::before{content:'';position:absolute;top:-1px;left:22px;border-left:9px solid transparent;border-right:9px solid transparent;border-bottom:9px solid var(--mb)}
+.pick h3{font-family:var(--serif);font-size:19px;color:var(--mb);margin-bottom:3px}
+.pick p{font-size:12.5px;color:var(--ink2);line-height:1.45}
+.pick .tko{font-size:10px;font-family:var(--mono);letter-spacing:1px;color:var(--ink3);text-transform:uppercase;margin-top:7px}
+/* — chat — */
+.bal-u{background:var(--vjestak);color:#fff;border-radius:12px 12px 2px 12px;padding:9px 12px;margin:7px 0 7px 44px;font-size:12.5px}
+.bal-a{background:#fff;border:1px solid var(--line);border-radius:12px 12px 12px 2px;padding:10px 12px;margin:7px 44px 7px 0;font-size:12.5px;line-height:1.5}
+.cit{display:inline-block;background:#F6EDEA;color:var(--vjestak);border:1px solid #E5C9C4;border-radius:99px;font-size:10.5px;padding:3px 9px;margin:5px 4px 0 0;font-weight:600}
+.disc{font-size:9.5px;color:var(--ink3);margin-top:8px;border-top:1px dashed var(--line);padding-top:6px}
+.inp{display:flex;gap:8px;margin-top:10px}
+.inp span{flex:1;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px;font-size:12px;color:var(--ink3)}
+.inp b{background:var(--vjestak);color:#fff;border-radius:10px;padding:10px 15px;font-size:13px}
+/* — investitor — */
+.kcbr{display:flex;gap:8px}.kcbr span{flex:1;background:#fff;border:1.5px solid var(--investitor);border-radius:10px;padding:11px;font-family:var(--mono);font-size:13px}
+.kcbr b{background:var(--investitor);color:#fff;border-radius:10px;padding:11px 16px;font-size:13px}
+.parcela{height:104px;border-radius:10px;background:linear-gradient(140deg,#EDE8DC,#E2DCCB);position:relative;overflow:hidden;margin:10px 0}
+.parcela svg{position:absolute;inset:0}
+.redak{display:flex;justify-content:space-between;font-size:12.5px;padding:7px 0;border-bottom:1px solid var(--line)}
+.redak:last-child{border:none}.redak b{font-family:var(--mono);font-size:12px}
+.cta{display:block;text-align:center;background:var(--investitor);color:#fff;border-radius:11px;padding:12px;font-size:13.5px;font-weight:600;margin-top:4px}
+/* ispit */
+.prsten{width:66px;height:66px;border-radius:50%;background:conic-gradient(var(--ispit) 0 62%,#E7E5DE 62% 100%);display:grid;place-items:center}
+.prsten b{width:50px;height:50px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:14px;color:var(--ispit)}
+.vkart{border-left:4px solid var(--vjestak)}
+.legenda{max-width:760px;margin:34px auto 0;color:#c9ccd4;font-size:13px;line-height:1.7}
+.legenda h2{font-family:var(--serif);color:#F5F5F1;font-size:19px;margin:18px 0 6px}
+.legenda .kvic{display:inline-block;width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:6px solid var(--vjestak);vertical-align:1px}
+</style></head>
+<body>
+<h1 class="glava">ŽBUKA <span style="color:#A3271D;font-size:.62em;letter-spacing:4px">AI</span> — koncept: jedna platforma, tri alata</h1>
+<p class="pod">draft za Ivanovo odobrenje · Norma dizajn sustav zadržan · potpis: kvačica-krović kao jezik sučelja</p>
+
+<div class="logotraka">
+  <div class="logokart" style="background:#F5F5F1"><span class="zlogo" style="color:#3A3D42"><span class="kv"></span>ŽBUKA<span class="ai">AI</span></span><small>light · bordo kvačica (poslani logo)</small></div>
+  <div class="logokart" style="background:#16181B"><span class="zlogo" style="color:#F0EEE7"><span class="kv"></span>ŽBUKA<span class="ai">AI</span></span><small>dark</small></div>
+  <div class="logokart" style="background:#F5F5F1"><span class="zlogo plavakv" style="color:#3A3D42"><span class="kv"></span>ŽBUKA<span class="ai" style="color:#6FA8DC">AI</span></span><small>alternativa: svjetloplava (spomenuo si — odluči)</small></div>
+</div>
+
+<div class="telefoni">
+
+<!-- 1. MODE PICKER -->
+<div class="fon"><div class="naz">1 · ulaz — izbor alata</div>
+  <div class="hdr"><span class="mini"><span class="kv"></span>ŽBUKA<span class="ai">AI</span></span></div>
+  <div class="sadrzaj">
+    <div class="naslov" style="font-size:21px">Što ti danas treba?</div>
+    <button class="pick" style="--mb:var(--ispit)">
+      <h3>OI Ispit</h3><p>Priprema za stručni ispit — gradivo, testovi, plan učenja i AI instruktor.</p>
+      <div class="tko">Za kandidate · GRA sektor</div>
+    </button>
+    <button class="pick" style="--mb:var(--vjestak)">
+      <h3>Vještak</h3><p>Imaš situaciju na terenu? Postavi pitanje — odgovor s citatima članaka propisa.</p>
+      <div class="tko">Za inženjere · izvođače · nadzor</div>
+    </button>
+    <button class="pick" style="--mb:var(--investitor)">
+      <h3>Investitor</h3><p>Upiši kčbr — namjena iz plana, što smiješ graditi i gruba računica isplati­vosti.</p>
+      <div class="tko">Za investitore · uskoro</div>
+    </button>
+    <div style="text-align:center;font-size:11px;color:var(--ink3);margin-top:10px">Izbor se pamti · mijenjaš ga tapom na pilulu gore desno</div>
+  </div>
+</div>
+
+<!-- 2. OI ISPIT -->
+<div class="fon" style="--modb:var(--ispit)"><div class="naz">2 · mod OI Ispit (postojeće, novi okvir)</div>
+  <div class="hdr"><span class="mini"><span class="kv" style="border-bottom-color:var(--ispit)"></span>ŽBUKA<span class="ai" style="color:var(--ispit)">AI</span></span><span class="modpil" style="background:var(--ispit)">OI ISPIT</span></div>
+  <div class="sadrzaj">
+    <div class="naslov">Danas</div>
+    <div class="kart"><div class="mlab">Procjena spremnosti</div>
+      <div style="display:flex;gap:14px;align-items:center;margin-top:8px">
+        <div class="prsten"><b>62%</b></div>
+        <div><div style="font-family:var(--serif);font-size:15px">Stručni ispit</div><div style="font-size:11.5px;color:var(--ink2)">Rok: 14. listopada · 101 dan</div></div>
+      </div></div>
+    <div class="kart vkart"><div class="mlab" style="color:var(--vjestak)">🧠 AI Instruktor</div>
+      <div style="font-size:12.5px;color:var(--ink2);margin-top:4px">Pitaj o gradivu — odgovor s citatima na koje tapneš.</div></div>
+    <div class="kart"><div class="mlab">Ponovi danas</div>
+      <div style="font-size:12.5px;margin-top:5px">7 članaka čeka ponavljanje · <b style="color:var(--ispit)">Kreni →</b></div></div>
+  </div>
+  <div class="nav"><b class="on"><i>☀</i>Danas</b><b><i>✓</i>Testovi</b><b><i>↗</i>Napredak</b><b><i>▤</i>Uči</b><b><i>◉</i>Ja</b></div>
+</div>
+
+<!-- 3. VJEŠTAK -->
+<div class="fon" style="--modb:var(--vjestak)"><div class="naz">3 · mod Vještak (chat-first)</div>
+  <div class="hdr"><span class="mini"><span class="kv"></span>ŽBUKA<span class="ai">AI</span></span><span class="modpil" style="background:var(--vjestak)">VJEŠTAK</span></div>
+  <div class="sadrzaj">
+    <div class="bal-u">Izvođač mi je ugradio nekvalitetan materijal, a uporabna dozvola je već izdana — mogu li ga i dalje teretiti?</div>
+    <div class="bal-a"><b>Da — uporabna dozvola ne amnestira izvođača.</b> Za nedostatke koji se tiču solidnosti građevine izvođač odgovara deset godina od predaje radova <b>[2]</b>, a dokazi o svojstvima ugrađenih proizvoda dio su dokumentacije <b>[3]</b>…
+      <div><span class="cit">[1] ZoG — Čl. 102.</span><span class="cit">[2] ZOO — Čl. 633.</span><span class="cit">[3] ZoG — Čl. 93.</span></div>
+      <div class="disc">Informativni prikaz propisa — nije pravni savjet. 👍 👎</div>
+    </div>
+    <div class="inp"><span>Opiši situaciju s terena…</span><b>➤</b></div>
+    <div style="font-size:10.5px;color:var(--ink3);margin-top:12px;text-align:center">brzi predlošci: <u>rok dozvole</u> · <u>prijava početka</u> · <u>otkaz ugovora</u></div>
+  </div>
+  <div class="nav"><b class="on"><i>🗨</i>Razgovor</b><b><i>≡</i>Povijest</b><b><i>▤</i>Propisi</b><b><i>◉</i>Ja</b></div>
+</div>
+
+<!-- 4. INVESTITOR -->
+<div class="fon" style="--modb:var(--investitor)"><div class="naz">4 · mod Investitor (vizija F21–27)</div>
+  <div class="hdr"><span class="mini"><span class="kv" style="border-bottom-color:var(--investitor)"></span>ŽBUKA<span class="ai" style="color:var(--investitor)">AI</span></span><span class="modpil" style="background:var(--investitor)">INVESTITOR</span></div>
+  <div class="sadrzaj">
+    <div class="naslov" style="font-size:20px">Procijeni parcelu</div>
+    <div class="kcbr"><span>kčbr 1234/5 · k.o. Črnomerec</span><b>Analiziraj</b></div>
+    <div class="parcela"><svg viewBox="0 0 300 104"><polygon points="60,18 218,10 236,74 96,92" fill="none" stroke="#8A6F47" stroke-width="2.5" stroke-dasharray="7 4"/><text x="132" y="55" font-size="11" fill="#8A6F47" font-family="monospace">612 m²</text></svg></div>
+    <div class="kart" style="margin-top:0">
+      <div class="redak"><span>Namjena (GUP)</span><b>M1 — mješovita</b></div>
+      <div class="redak"><span>Max. katnost</span><b>Po+P+2+Pk</b></div>
+      <div class="redak"><span>kig / kis</span><b>0,4 / 1,2</b></div>
+      <div class="redak"><span>Gruba BRP</span><b>≈ 734 m²</b></div>
+    </div>
+    <span class="cta">Puna analiza isplativosti →</span>
+  </div>
+  <div class="nav"><b class="on"><i>⌖</i>Parcela</b><b><i>▦</i>Analize</b><b><i>🗺</i>Karta</b><b><i>◉</i>Ja</b></div>
+</div>
+</div>
+
+<div class="legenda">
+  <h2>Dizajnerske odluke (obrazloženje)</h2>
+  <p><b>Potpis: kvačica-krović <span class="kvic"></span>.</b> Dijakritik sa Ž — koji je ujedno krov kuće — postaje jezik sučelja: nosi ga logo, aktivni tab (krović iznad ikone umjesto generičke crte) i kartice izbora moda. Autentično tvoje, nemoguće zamijeniti s tuđim.</p>
+  <p><b>Tri boje = tri alata.</b> Ispit ostaje u Norma plavoj (kontinuitet za postojeće korisnike), Vještak uzima bordo iz loga (autoritet, pečat), Investitor zemljani oker (parcela, temelji). Sve ostalo — papir, tinta, Newsreader/Inter — netaknuto: aplikacija ostaje prepoznatljiva, samo dobiva krovni brend.</p>
+  <p><b>Footer po modu</b>: Ispit zadržava svojih 5 tabova; Vještak je chat-first (Razgovor · Povijest · Propisi · Ja); Investitor je parcela-first (Parcela · Analize · Karta · Ja). "Ja" je svugdje isti — jedan račun, jedna kvota, tri alata.</p>
+</div>
+</body></html>

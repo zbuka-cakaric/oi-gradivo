@@ -51,5 +51,9 @@ Halucinacija citata → post-check + eval + kill-switch · pravna odgovornost �
 2. Paralelno: upload GRA fajlova (GRA-plan-gradiva.md) → parsiranje.
 3. F4 sesija (upsert+verzioniranje, diff test) → F5 (embeddingi, GATE hit@12).
 
+## STATUS (2026-07-05)
+✅ E1 zaključena: F4, F5 (GATE hit@12 **93 %**), F6 (**513 ovjerenih**), F15 (Vještak UI). 🔶 Nova prekretnica: **ŽBUKA AI tri-mod platforma** (12-BRAND) — "Okvir" sesija ulazi u plan prije F7. Held-out eval (~100 rok-pitanja bez odgovora) čeka Ivanov materijal — puštanje BEZ izmjena retrievala 🔒.
+
 ## CHANGELOG
+- +2026-07-05: status E1 + rebrand prekretnica.
 - 1.0 (2026-07-05): inicijalni master plan — teza, tri stupa, moat, GRA-first etape E1–E6 s "gotovo kad", monetizacija, GTM (rokovi=sezonalnost), metrike, principi, rizici.

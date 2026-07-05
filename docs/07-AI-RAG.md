@@ -14,9 +14,9 @@ SELECT članaka bez chunkova ili `dirty=true` → **chunker** 🔓: članak ≤4
 
 ## 3. Retrieval po upitu (svaki AI poziv)
 1. **Planner** (§P2): pitanje → `{"pod_upiti":[1-4 kratka], "kljucni_pojmovi":[…]}` — OVO je razlika između šturog i kritičkog: "što mi treba za početak gradnje" postane 3-4 ciljana pretraživanja.
-2. Po pod-upitu paralelno: (a) embed(query) → `ORDER BY embedding <=> $1::vector LIMIT 8`; (b) FTS → `WHERE fts @@ websearch_to_tsquery('simple', unaccent($1)) ORDER BY ts_rank(fts, websearch_to_tsquery('simple', unaccent($1))) DESC LIMIT 8`.
-3. **RRF fuzija:** `score[chunk] += 1/(60 + rank)` preko svih lista → sort desc.
-4. **Diversitet 🔒 (duh; parametri 🔓):** ≤3 chunka/dokument, ≤2/članak → top **12**. (Pitanje #2 iz §7 fizički DOBIJE ZoG + ZOO + uzance + građ. proizvode — pa ih model MORA pomiriti; bez ovoga dobiješ jednodokumentni šturi odgovor.)
+2. Po pod-upitu paralelno (v030): originalno pitanje UVIJEK prvi upit + plannerovi (max 5); (a) embed(query) → `ORDER BY embedding <=> $1::vector LIMIT 12`; (b) FTS → `websearch_to_tsquery('simple', unaccent(q))` LIMIT 12; (c) **pg_trgm** → `ORDER BY word_similarity(unaccent(lower(q)), unaccent(lower(tekst))) DESC LIMIT 12` — HR morfologija (mjereno: FTS-only 7% vs TRGM-only 83% hit@12 na 30 pitanja!).
+3. **RRF fuzija:** `score[chunk] += 1/(60 + rank)` preko svih lista → sort desc → **RERANK (v028+): Voyage `VOYAGE_RERANK_MODEL` (default rerank-2.5-lite) nad top-60, vraća 32** — cross-encoder presloži po stvarnoj relevantnosti prema ORIGINALNOM pitanju; pad → RRF poredak + `smanjena_preciznost`.
+4. **Diversitet 🔒 (duh; parametri 🔓, v030):** ≤2 chunka/članak; po dokumentu ≤6 NAKON uspješnog reranka (≤4 u RRF fallbacku — pravna pitanja legitimno žive u 5-6 članaka istog zakona) → top **12**. (Pitanje #2 iz §7 fizički DOBIJE ZoG + ZOO + uzance + građ. proizvode — pa ih model MORA pomiriti; bez ovoga dobiješ jednodokumentni šturi odgovor.)
 5. Kontekst ≤ ~6.000 tok: `[n] {dokument} — {oznaka} {naslov}: {tekst}` + interna mapa n→clanak_id.
 
 ## 4. Odgovaranje + post-provjera 🔒
@@ -95,6 +95,7 @@ Oba MORAJU proći prije zatvaranja F15 i ostaju u eval setu zauvijek.
 ## 8. Eval — gate F5 🔒
 `eval/pitanja.jsonl`: `{"id":"E001","pitanje":"…","zlatni":"…","ocekivani_clanci":[59,89,93]}` — **prvih 40 piše IVAN iz stvarnih rok-pitanja PRIJE F5 koda.** `eval/eval.js` gađa lokalni server s PRAVOM bazom (pg-mem nema vektore ⚠): **retrieval hit@12 ≥ 0.90** (svi očekivani u top-12), **citat-preciznost ≥ 0.95**, ljudska ocjena ≥ 4/5. Tuning redoslijed kad ne prolazi: chunking → pod-upiti → RRF težine → tek onda prompt. F15 UI se NE gradi prije prolaska.
 Test strategija dvoslojna 🔒: pg-mem testovi s MOCK `dohvatiIzvore()` (post-check dobar/loš, limiti, 403, envelope) + živi eval.
+**✅ GATE POLOŽEN 2026-07-05 (v030): hit@12 = 37/40 = 93%** (put 63%→88%→93%; ključni potezi: pg_trgm kanal, Voyage rerank, orig. pitanje kao upit, post-rerank dok-cap 6). Otvoreno (pod pragom, čeka held-out ~100 rok-pitanja): E031 ZZOP čl.28, E032 ZZOP čl.4, E040 ZOO čl.633 — sistemske rezerve u ladici: pojmovnik query-expansion, HyDE, težinski RRF.
 
 ## 9. Troškovnik 💰 (red veličine; loguje se od 1. dana u ai_poruke + events)
 Planner ≈ €0,0005 · odgovor (7,5k in od čega ~6k izvori, ~1,5k necached; 700 out) ≈ €0,02–0,03 s cachingom · usmena sesija (5–8 poziva) ≈ €0,10 · 100 Pro × 20 upita/mj ≈ €50–70 na ~€2.000 MRR · ingest GRA jednokratno < €2. Alarm: dnevni zbroj > €10 → mail superadminu (F18).
@@ -112,5 +113,8 @@ Planner ≈ €0,0005 · odgovor (7,5k in od čega ~6k izvori, ~1,5k necached; 7
 ## 11. Guardrails AI-ja 🔒
 AI nikad ne dobiva cijeli korpus, samo retrieval izvore · PII korisnika ne ide u promptove osim nužnog konteksta pitanja · disclaimer doslovan u podnožju svakog AI odgovora: **"Informativni prikaz propisa — nije pravni savjet za pojedinačni slučaj. Provjeri izvor klikom na citat; za sporove se obrati ovlaštenom stručnjaku."** · korisnik može obrisati svoje razgovore (F19) · imena modela SAMO iz ENV-a · fair-use: Pro 50 poruka/dan soft, 3 usmene/dan (usage_mjesec atomarno).
 
+**P2 dopune u kodu (v028/v029):** primjer 2 (preslikavanje životne situacije u pravne institute: "nekvalitetan materijal + uporabna" → odgovornost za nedostatke / jamstvo za solidnost / posljedice uporabne) + napomena o sinonimima terminologije propisa (gradilište/privremeno radilište…). Kod = istina za doslovni tekst.
+
 ## CHANGELOG
+- 2.1 (2026-07-05): **Retrieval v2** — pg_trgm kanal (mjereno 7%→83% vs FTS), Voyage rerank sloj (ENV `VOYAGE_RERANK_MODEL`), orig. pitanje kao prvi upit, post-rerank dok-cap 6/fallback 4, P2 primjer 2 + sinonimi; **GATE 93% upisan** (§8).
 - 2.0 (2026-07-04): inicijalno (apsorbira OI-AI-Spec v1.1 §DIO 3+5, sekvencijske prolaze i failure-modes).

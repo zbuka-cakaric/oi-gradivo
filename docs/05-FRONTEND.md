@@ -47,6 +47,10 @@ Uzorci komponenti (reuse, ne reinvent): `.kartica`, `.red` (label↔vrijednost),
 ## 7. UX principi (kratko ali obavezno)
 Mobile-first (Ivan testira ISKLJUČIVO Samsung Android ⚠ — svaka isporuka mora biti palac-upotrebljiva); jedan primarni CTA po ekranu; brojke uvijek s kontekstom (ne "73" nego "73 od 162 pročitano"); nikad lažni podaci u skeletonima; greške ljudskim jezikom + što učiniti; sve destruktivno traži potvrdu; dijakritika svugdje ispravna (latin-ext fontovi ✔).
 
+## 8. ŽBUKA AI — brend u sučelju (v037+) i tri-mod navigacija (Okvir sesija)
+Header: ŽBUKA AI logotip (kvačica-krović **svjetloplava**, "AI" svjetloplav; v037 CSS placeholder dok Ivan ne ubaci originalne SVG-ove). **Potpis sučelja: kvačica-krović** = aktivni tab indikator (krović iznad ikone) i mode-picker kartice. Tri moda: footeri po modu (Ispit: postojećih 5 tabova NETAKNUTO · Vještak: Razgovor·Povijest·Propisi·Ja · Investitor: Parcela·Analize·Karta·Ja); `MOD` u localStorage('zb_mod'); boje: plava #2B4A75 / narančasta #D06A1F / tamnozelena #1E5741; login logo gradient prelijevanje plava→narančasta→zelena (reduced-motion safe). Detalji + roadmap po modu: **12-BRAND-MODOVI.md**.
+
 ## CHANGELOG
+- 2.2 (2026-07-05): +§8 brend i tri-mod nav; F15 isporučen (v035-v038; lekcija: globalni .btn je width:100% — inline gumbi MORAJU width:auto).
 - 2.1 (2026-07-04): +update-traka (v014).
 - 2.0 (2026-07-04): inicijalno.

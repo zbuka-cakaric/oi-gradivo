@@ -33,7 +33,11 @@
 ## Trenutno stanje u jednoj rečenici
 PWA v012 živa na oi-ispit.zbuka.hr (auth, gradivo 15+ propisa / ~2.900 članaka, Uči čitač s pretragom i bookmarkima, admin uvoz s progressom i hash-skipom, auto-refresh health-ping); slijedi F3b pa F4 (verzioniranje) pa F5 (RAG) — punim redom u 08.
 
+## STATUS PREKRETNICE (2026-07-05, v038)
+E1 KOMPLETNA: F4 ✓ (verzioniranje+novele) · F5 ✓ (**RAG GATE 93 %** — retrieval v2: vector+trgm+FTS→RRF→rerank, 07 v2.1) · F6 ✓ (**513 ovjerenih pitanja**, revizija 164 po NN 155/25) · F15 ✓ (Vještak SSE chat s citatima). **REBRAND: ŽBUKA AI, tri moda** — vidi 12-BRAND-MODOVI.md (novi temeljni dokument!). Sljedeće: Okvir sesija (mode-picker+nav+boje) → F7/F16.
+
 ## CHANGELOG
+- +2026-07-05: status prekretnice (E1 done, GATE 93%, rebrand ŽBUKA AI, +12-BRAND-MODOVI).
 - 2.5 (2026-07-05): 06 → v2.3 (Profil A potvrđen na ZSPC, Profil G EUR-Lex); GRA gradivo dopunjeno (11/788).
 - 2.4 (2026-07-05): dodan 11-MASTER-PLAN.md (krovna strategija: GRA-first etape, launch prije jesenskog roka, GTM); smjer pobjeđuje 11, izvedbu 01–10.
 - 2.3 (2026-07-05): dodan 10-INVESTITOR.md (treći stup: kčbr→studija; F21–F27 poslije launcha); 01 §2 prošireno na tri stupa; strategija: GRA-first (ostali sektori nakon GRA revolucije).
