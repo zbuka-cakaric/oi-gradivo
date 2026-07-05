@@ -10,8 +10,9 @@
 - `esc(s)` HTML escape — OBAVEZAN na svakom umetanju korisničkog/podatkovnog teksta u innerHTML 🔒 (XSS).
 - `val(id)` čitanje inputa; localStorage ključevi: `oi_token`, `oi_onb_skip`, `oi_inst_skip`.
 
-## 3. Router i navigacija
-Hash-router: `#danas #testovi #napredak #uci #ja` — `TABOVI` lista s **bounds guardom** (nepoznat hash → danas) 🔒 uzorak za sve nove ekrane. Donja navigacija = **5 tabova MAX** ⚠ (mobilna ergonomija) — zato AI asistent (F15) NE dobiva 6. tab nego: istaknuta kartica na Danas + gumb "Pitaj o ovom članku" u čitaču. Pod-ekrani unutar taba (Uči: lista→dokument→članak) = interni prikazi (`uciPrikaz('lista'|'dok'|'clanak')`, display toggle + scrollTo(0,0)), s "← Natrag" gumbom.
+## 3. Router i navigacija (v2 — v042)
+Hash-router: superset tabova `#danas #testovi #napredak #uci #ja #razgovor #povijest #invest`; **granice PO MODU** u `renderTab` (tab izvan moda pada na prvi tab moda) 🔒. Footer `#nav` se **GRADI** iz `MOD_TABOVI` (`navRender(m)`) — bez relabel/hide hakova; ikone u `IKONE` mapi. **Krović** (potpis brenda, 12 §1) = `::before` trokut u `--accent` iznad aktivnog gumba. Točno JEDNA `.tab` sekcija aktivna — **pod-prikazi su ukinuti** (⚠ lekcija v039-v041: `danas-ai` display-toggle je zaglavljivao mod i slagao ekrane preko Ja). Donja navigacija = 5 tabova MAX po modu ⚠. Pod-ekrani unutar Uči ostaju (`uciPrikaz`).
+Modovi: `postaviMod(m)` = localStorage `zb_mod` → `primijeniMod()` (body[data-mod], pilula, navRender) → `idiNaTab(prvi tab moda)` — instantno. Ulaz u chat isključivo `otvoriVjestak(pre?)` (Danas kartica, čitač gumb, citat).
 
 ## 4. Ekrani — postojeći (v012) i budući
 | Tab/ekran | Sadržaj sada | Dolazi (faza) |
@@ -20,6 +21,9 @@ Hash-router: `#danas #testovi #napredak #uci #ja` — `TABOVI` lista s **bounds 
 | **Testovi** | placeholder | izbor tipa → tijek 1-pitanje/ekran s progresom → rezultat s obrazloženjima i "otvori članak" (F7) |
 | **Napredak** | placeholder | razrez po sekcijama, najslabije 3 s CTA, povijest sesija (F8) |
 | **Uči** | search bar (debounce 300 ms) → sekcije → propis (obuhvat, NN, br. članaka; disabled ako 0) → lista članaka (oznaka + naslov ILI preview kurziv v010 + ★) → čitač (meta, naslov, `<p>` po `\n`, ★ toggle, prev/next) | "✓ Pročitano" (F8), bilješke (F12), "na dan" date-picker Pro (F17), sažetak toggle (F6+), traka "brisan novelom" (F4) |
+| **Razgovor** (Vještak) | v042: chat kao pravi tab — naslov aktivnog razgovora (`#rz-akt`), ➕ Novi, MD render (`mdRender`, XSS-safe esc-prvo), SSE `{status}` linija | glas, predlošci upita po ulozi |
+| **Povijest** (Vještak) | v042: lista razgovora (naslov, datum, br. pitanja, 🗑), tap → Razgovor | tag po gradilištu, pretraga |
+| **Parcela** (Investitor) | v042: najava kartica (kčbr → namjena/kig/kis) | F21+ |
 | **Ja** | profil (plan pill, područje, uže, datum ispita), ADMIN kartica (2 uvoza + status poruke + **progress bar & popis v011**), Aplikacija (verzija `#ja-verzija` 🔒 sidro health-pinga, donator), pravno (Uvjeti/Privatnost/Impressum modali), odjava | preklopnik Priprema/Praksa (F17), push postavke (F10), plan&kvote + Stripe portal (F13/14), izvoz/brisanje računa (F19) |
 | **Onboarding** | modal 2 koraka: područje (sprema ODMAH ⚠ v008 lekcija — preskok datuma ne smije izgubiti izbor), datum (opcionalan); `oi_onb_skip` | +cilj/plan korak (F11) |
 | **Instalacijski banner** | Android beforeinstallprompt / iOS upute; skriva se u standalone | — |
@@ -51,6 +55,7 @@ Mobile-first (Ivan testira ISKLJUČIVO Samsung Android ⚠ — svaka isporuka mo
 Header: ŽBUKA AI logotip (kvačica-krović **svjetloplava**, "AI" svjetloplav; v037 CSS placeholder dok Ivan ne ubaci originalne SVG-ove). **Potpis sučelja: kvačica-krović** = aktivni tab indikator (krović iznad ikone) i mode-picker kartice. Tri moda: footeri po modu (Ispit: postojećih 5 tabova NETAKNUTO · Vještak: Razgovor·Povijest·Propisi·Ja · Investitor: Parcela·Analize·Karta·Ja); `MOD` u localStorage('zb_mod'); boje: plava #2B4A75 / narančasta #D06A1F / tamnozelena #1E5741; login logo gradient prelijevanje plava→narančasta→zelena (reduced-motion safe). Detalji + roadmap po modu: **12-BRAND-MODOVI.md**.
 
 ## CHANGELOG
+- 2.3 (2026-07-05): **v042 UX okvir v2** — §3 prepisan (tabovi po modu, navRender, krović indikator, pod-prikazi ukinuti); +Razgovor/Povijest/Parcela ekrani; čitač: ⚡Skraćeno/💡Primjer gumbi (`pomocDaj`, `#uc-pomoc`); Ja: potrošnja API-ja u $ (`#ja-ai-usd`); `mdRender` za AI tekst (model smije **bold** i crtice, bez ##).
 - 2.2 (2026-07-05): +§8 brend i tri-mod nav; F15 isporučen (v035-v038; lekcija: globalni .btn je width:100% — inline gumbi MORAJU width:auto).
 - 2.1 (2026-07-04): +update-traka (v014).
 - 2.0 (2026-07-04): inicijalno.
