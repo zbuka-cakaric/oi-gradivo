@@ -1,5 +1,5 @@
 # OI ISPIT — BIBLIJA PROJEKTA (docs/ index)
-**Verzija dokumentacije:** 2.0 · **Datum:** 2026-07-04 · **Stanje koda:** v012 · Faza 3
+**Verzija dokumentacije:** 2.1 · **Datum:** 2026-07-05 · **Stanje koda:** v016 · Faza 3
 **Vlasnik:** Ivan Čakarić (ŽBUKA Čakarić d.o.o.) · **Sastavio:** Claude (Fable 5) u suradnji s Ivanom
 
 > **Što je ovo:** jedina istina o aplikaciji OI Ispit (oi-ispit.zbuka.hr) — vizija, arhitektura, svaka tablica, svaka ruta, svaki algoritam, svaka faza do v1.0 i dalje. Piše se za DVA čitatelja: (1) Ivana, koji nije programer ali donosi sve odluke, i (2) AI asistenta (Opus/Sonnet/budući) koji izvodi faze. Ako kod i biblija proturječe — **kod pobjeđuje**, ali se proturječje odmah upisuje u §CHANGELOG dotičnog dokumenta.
@@ -13,7 +13,7 @@
 | 03 | `03-BAZA-PODATAKA.md` | sve tablice (postojeće+buduće), identiteti 🔒, obrasci, migracije | faze sa shemom |
 | 04 | `04-API-KATALOG.md` | sve rute (postojeće+buduće) s payload/response | svaka faza s rutama |
 | 05 | `05-FRONTEND.md` | router, ekrani, uzorci koda, Norma design system, UX tokovi | faze s UI-jem |
-| 06 | `06-SADRZAJNI-PIPELINE.md` | parseri (2 profila), QC, fenomeni izvornika, uvoz, novele | uvoz gradiva, F4 |
+| 06 | `06-SADRZAJNI-PIPELINE.md` | parseri (6 profila: A, B, D, D2, D-t, E + predobrada), QC, fenomeni izvornika, uvoz, novele | uvoz gradiva, F4 |
 | 07 | `07-AI-RAG.md` | retrieval, promptovi doslovno, usmeni state-machine, eval, troškovi, failure-modes | F5, F6, F15, F16, F17 |
 | 08 | `08-FAZE-ROADMAP.md` | F3b→F20 razrada + predlošci prve poruke po fazi | otvaranje svake sesije |
 | 09 | `09-OPERATIVA-RUNBOOK.md` | deploy ritual, backup, dijagnostika, incidenti, rječnik za Ivana | problemi, održavanje |
@@ -32,4 +32,5 @@
 PWA v012 živa na oi-ispit.zbuka.hr (auth, gradivo 15+ propisa / ~2.900 članaka, Uči čitač s pretragom i bookmarkima, admin uvoz s progressom i hash-skipom, auto-refresh health-ping); slijedi F3b pa F4 (verzioniranje) pa F5 (RAG) — punim redom u 08.
 
 ## CHANGELOG
+- 2.1 (2026-07-05): 06 → v2.1 (novi parser-profili D/D2/D-t/E, isporučen batch 9–10: 21 propis / 929 jedinica); stanje koda v016.
 - 2.0 (2026-07-04): biblija uspostavljena (10 dokumenata), apsorbira OI-AI-Spec v1.1.
