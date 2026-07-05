@@ -138,6 +138,7 @@ AI nikad ne dobiva cijeli korpus, samo retrieval izvore · PII korisnika ne ide 
 **P2 dopune u kodu (v028/v029):** primjer 2 (preslikavanje životne situacije u pravne institute: "nekvalitetan materijal + uporabna" → odgovornost za nedostatke / jamstvo za solidnost / posljedice uporabne) + napomena o sinonimima terminologije propisa (gradilište/privremeno radilište…). Kod = istina za doslovni tekst.
 
 ## CHANGELOG
+- 2.3 (2026-07-05): **F16 v047** — P5_ISPITIVAC / P6_PROCJENA / P7_RUBRIKA doslovno u server.js (uz P9); state-machine u /api/usmeni/odgovori; P6 na MODEL_PLANNER, P5/P7 na MODEL_ODGOVOR; pokusajJson() disciplina za stroge JSON izlaze.
 - 2.2 (2026-07-05): **P1 v2 doslovno** (F15.5: agentska petlja §alati, IRAC struktura, pravna hijerarhija, formatiranje bez ##) + **P9a/P9b Skraćeno/Primjer** (v042, ruta /api/ai/clanak-pomoc, keš clanak_pomoc, budžet samo na generaciji). Agentska petlja živi u SSE grani /api/ai/pitaj (JSON grana jednoprolazna — mock/eval kompatibilnost).
 - 2.1 (2026-07-05): **Retrieval v2** — pg_trgm kanal (mjereno 7%→83% vs FTS), Voyage rerank sloj (ENV `VOYAGE_RERANK_MODEL`), orig. pitanje kao prvi upit, post-rerank dok-cap 6/fallback 4, P2 primjer 2 + sinonimi; **GATE 93% upisan** (§8).
 - 2.0 (2026-07-04): inicijalno (apsorbira OI-AI-Spec v1.1 §DIO 3+5, sekvencijske prolaze i failure-modes).

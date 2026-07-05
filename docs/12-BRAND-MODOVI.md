@@ -17,7 +17,7 @@
   | Mod | Tabovi | Ekran 1 |
   |---|---|---|
   | OI Ispit | Danas · Testovi · Napredak · Uči · Ja | postojeće, netaknuto |
-  | Vještak | Razgovor · Povijest · Propisi · Ja | **✅ implementirano v042** (Povijest = zaseban tab s listom razgovora) |
+  | Vještak | Razgovor · Povijest · Propisi · Dopisi · Novosti · **Ja** | **✅ v046** — Ja u svim modovima (Ivanova odluka 2026-07-05); pravilo footera od sada: **5, iznimno 6 uz Ivanov potpis** 🔒 |
   | Investitor | Parcela · Ja *(do F21: najava)* | **✅ najava tab v042**; puni footer Parcela·Analize·Karta·Ja stiže s F21 |
 - **Dijeljeno:** Ja (račun, kvota, admin) identičan svugdje; "Propisi" u Vještaku = Uči bez ispitnog konteksta (isti kod, drugi naslov); AI kvota jedna po računu, mjeri sve modove.
 - **Tehnika (minimalna invazija):** postojeći hash-router ostaje; `MOD` varijabla filtrira koje tabove nav renderira i koji je sadržaj "prvog" taba; nula promjena API-ja. Procjena: 1 sesija za okvir (picker+nav+boje), 1 za Vještak-mod poliranje.
@@ -36,6 +36,8 @@
 5. Biblija: 00/01/05/08/11 changelog + ovaj dokument = izvor istine za brend.
 
 ## CHANGELOG
+- 1.5 (2026-07-05): v046 — Ja vraćen u footer svih modova (6 tabova u Vještaku, zbijeni raspored); 🔒 pravilo ažurirano na "5, iznimno 6 uz Ivanov potpis". Dizajn proglašen ZAKLJUČENIM za fazu 15.x — daljnje izmjene samo uz novu brend-odluku.
+- 1.4 (2026-07-05): **v043** — Vještak footer finaliziran s Dopisi+Novosti; Ja u Vještaku dostupan kroz gornju pilulu (plan-pilula) i uvijek dozvoljen u routeru. Mode-atmosfera: accsoft/accent2 definirani po modu (dosad samo accent). Dizajn v2 sloj dokumentiran u 05 v2.4.
 - 1.3 (2026-07-05): **v042 okvir implementiran** — footer po modu iz MOD_TABOVI (bez pod-prikaza; fix zaglavljenog moda v039-v041), krović kao indikator aktivnog taba ✓, Investitor odabirljiv (najava ekran), picker vodi na prvi tab moda instantno. Otvoreno za Ivana: dodatni Vještak tabovi kad zatrebaju (kandidati: Dopisi/F17, Na dan, Novosti-novele) — 5 MAX 🔒.
 - 1.2 (2026-07-05): finalne boje modova (plava/narančasta/tamnozelena) + login gradient prelijevanje.
 - 1.1 (2026-07-05): **ODOBRENO** — odluke upisane (svjetloplava iz originala; oi.zbuka.hr/ai.zbuka.hr split; selling point). v037 = prvi brend dodir u headeru.
