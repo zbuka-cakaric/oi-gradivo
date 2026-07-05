@@ -1,5 +1,5 @@
 # OI ISPIT — BIBLIJA PROJEKTA (docs/ index)
-**Verzija dokumentacije:** 2.4 · **Datum:** 2026-07-05 · **Stanje koda:** v016 · Faza 3
+**Verzija dokumentacije:** 2.5 · **Datum:** 2026-07-05 · **Stanje koda:** v016 · Faza 3
 **Vlasnik:** Ivan Čakarić (ŽBUKA Čakarić d.o.o.) · **Sastavio:** Claude (Fable 5) u suradnji s Ivanom
 
 > **Što je ovo:** jedina istina o aplikaciji OI Ispit (oi-ispit.zbuka.hr) — vizija, arhitektura, svaka tablica, svaka ruta, svaki algoritam, svaka faza do v1.0 i dalje. Piše se za DVA čitatelja: (1) Ivana, koji nije programer ali donosi sve odluke, i (2) AI asistenta (Opus/Sonnet/budući) koji izvodi faze. Ako kod i biblija proturječe — **kod pobjeđuje**, ali se proturječje odmah upisuje u §CHANGELOG dotičnog dokumenta.
@@ -13,7 +13,7 @@
 | 03 | `03-BAZA-PODATAKA.md` | sve tablice (postojeće+buduće), identiteti 🔒, obrasci, migracije | faze sa shemom |
 | 04 | `04-API-KATALOG.md` | sve rute (postojeće+buduće) s payload/response | svaka faza s rutama |
 | 05 | `05-FRONTEND.md` | router, ekrani, uzorci koda, Norma design system, UX tokovi | faze s UI-jem |
-| 06 | `06-SADRZAJNI-PIPELINE.md` | parseri (7 profila: A, B, D, D2, D-t, E, F + predobrada), QC, fenomeni izvornika, uvoz, novele | uvoz gradiva, F4 |
+| 06 | `06-SADRZAJNI-PIPELINE.md` | parseri (8 profila: A, B, D, D2, D-t, E, F, G + predobrada), QC, fenomeni izvornika, uvoz, novele | uvoz gradiva, F4 |
 | 07 | `07-AI-RAG.md` | retrieval, promptovi doslovno, usmeni state-machine, eval, troškovi, failure-modes | F5, F6, F15, F16, F17 |
 | 08 | `08-FAZE-ROADMAP.md` | F3b→F20 razrada + predlošci prve poruke po fazi | otvaranje svake sesije |
 | 11 | `11-MASTER-PLAN.md` | STRATEGIJA iznad svega: teza, 3 stupa, moat, GRA-first etape E1–E6 s "gotovo kad", monetizacija, GTM, metrike | svaka sesija — prvih 5 min |
@@ -34,6 +34,7 @@
 PWA v012 živa na oi-ispit.zbuka.hr (auth, gradivo 15+ propisa / ~2.900 članaka, Uči čitač s pretragom i bookmarkima, admin uvoz s progressom i hash-skipom, auto-refresh health-ping); slijedi F3b pa F4 (verzioniranje) pa F5 (RAG) — punim redom u 08.
 
 ## CHANGELOG
+- 2.5 (2026-07-05): 06 → v2.3 (Profil A potvrđen na ZSPC, Profil G EUR-Lex); GRA gradivo dopunjeno (11/788).
 - 2.4 (2026-07-05): dodan 11-MASTER-PLAN.md (krovna strategija: GRA-first etape, launch prije jesenskog roka, GTM); smjer pobjeđuje 11, izvedbu 01–10.
 - 2.3 (2026-07-05): dodan 10-INVESTITOR.md (treći stup: kčbr→studija; F21–F27 poslije launcha); 01 §2 prošireno na tri stupa; strategija: GRA-first (ostali sektori nakon GRA revolucije).
 - 2.2 (2026-07-05): 06 → v2.2 (Profil F: konsolidirani PDF s izmjenama; TP RUETZZ isporučen — 82 čl.).

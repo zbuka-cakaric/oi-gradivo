@@ -12,6 +12,10 @@
 | KPI | spremnost %, položen ispit | vrijeme-do-odgovora, točnost citata |
 Temelj im je identičan: ista baza članaka, isti retrieval, isti račun — mod je UX preklopnik (Ja tab, F17), ne odvojen sustav 🔒.
 
+**TREĆI STUP (zadnja faza, poslije v1.0): INVESTITOR** — kčbr+k.o. → službena geometrija (WFS, ne slika!) → GUP pravila (kurirani JSON, kod računa) → volumetrijska studija + pravni checklist s citatima iz ISTE baze → investicijska studija (PDF). Kompletna istina: **10-INVESTITOR.md** 🔒. Tri proizvoda, jedan temelj — propisi.
+
+**STRATEGIJA REDOSLIJEDA 🔒 (Ivan, 2026-07-05): GRA-first.** Sve faze (F4–F20 + F21–F27) dovršavaju se i dokazuju na GRADITELJSTVU (Ivanov sektor: gradivo GRA ~89 % uvezeno, Ivan je živi evaluator za mentora, vještaka i investitora). Ostali sektori (ELE/STR/ARH) dobivaju gradivo i fino podešavanje TEK kad GRA radi end-to-end — šifrarnik i arhitektura su već multi-program pa je širenje samo sadržajni posao, ne kodni.
+
 ## 3. Personas (dizajniraj ZA njih)
 - **Kandidat (28–45, VSS, zaposlen):** uči navečer, mobitel, treba dozirano + osjećaj kontrole. Neprijatelj: preplavljenost (125 propisa!). Naše oružje: plan, spremnost-prsten, push disciplina.
 - **Praktičar:** ne želi učiti, želi RIJEŠITI. Neprijatelj: nesigurnost i gubitak vremena. Oružje: odgovor+citat+koraci ("U praksi" sekcija svakog AI odgovora), kalkulatori, dopisi.
@@ -90,4 +94,5 @@ FREE: gradivo+pretraga+bookmarki+10 testova/mj (bez obrazloženja)+osnovni push.
 Dva referentna pitanja koja MORAJU raditi savršeno prije nego F15 proglasimo gotovim (i ostaju trajni regresijski test): **"Što mi sve treba za početak gradnje?"** i **"Kako reagirati ako je ugrađen nekvalitetan materijal, a uporabna dozvola je dobivena?"** — odgovor točan, strukturiran (odgovor→temelj→u praksi→pazi), svi citati klikabilni i ispravni.
 
 ## CHANGELOG
+- 2.1 (2026-07-05): §2 treći stup INVESTITOR (→10) + strategija GRA-first.
 - 2.0 (2026-07-04): inicijalno.

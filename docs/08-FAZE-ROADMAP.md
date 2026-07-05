@@ -27,6 +27,7 @@
 **F17 — Praksa mod** · preklopnik u Ja; dopisi (few-shot = Ivanova arhiva), rokovi.json (KOD računa 🔒), "na dan" UI, checkliste set · Gotovo: Ivan u stvarnom slučaju s gradilišta dobije upotrebljiv dopis < 2 min · 2–3 sesije · Prilozi: anonimizirani dopisi + rokovi.json nacrt.
 **F18 — Admin analitika** · events agregati + trošak-alarm >€10/dan · 1 sesija.
 **F19 — Pravo/GDPR/sigurnost** · pravnik ovjeri Uvjete/Privatnost; izvoz+brisanje računa; rate-limit AI ruta ~10/min; CORS/headeri ŽBUKA set; audit admin akcija u events · 1 sesija + pravnik.
+**F21–F27 — INVESTITOR (poslije launcha)** · kompletan plan, sheme i 🔒 odluke u **10-INVESTITOR.md** — ovdje se NE duplicira · redoslijed: F21 geometrija (WFS) → F22 pravila+namjena → F23 engine (zlatni test: Hercegovačka 56!) → F24 parcelacija → F25 studija+PDF → F26 AI+checklist → F27 paket+brand odluka.
 **F20 — Launch v1.0** · backup automatika (dnevni pg_dump → B2/QNAP, **restore vježba obavezna 1×**), Lighthouse, meta/OG, uptime ping, HANDOFF v-final, tagovi · 1 sesija.
 
 ---
@@ -40,4 +41,5 @@ Nastavljamo OI Ispit — faza {F#}. ISTINA: biblija u repou zbuka-cakaric/oi-gra
 **Fazni dodaci:** F4: "+ prilažem izmijenjeni JSON za diff test." · F5: "+ eval/pitanja.jsonl ({n}); NE gradiš UI; isporuka uključuje eval brojke." · F6: "+ rok-pitanja JSON; generator na sekciji {•}." · F7: "ne zaboravi OI_BLOK_RELOAD guard." · F10: "sw.js se mijenja → verzija ×3." · F14: "webhook RAW body prije json middlewarea." · F16: "PRVO 3 primjer-transkripta na odobrenje, pa kod." · Batch zakona (bilo kada, Sonet): "Parsiraj batch iz oi-gradivo repoa po 06-SADRZAJNI-PIPELINE.md — profil {A/B}, QC + regresija ZoG, isporuka JSON-ova u ZIP-u + zbirna tablica."
 
 ## CHANGELOG
+- 2.1 (2026-07-05): dodan pokazivač F21–F27 INVESTITOR (→10-INVESTITOR.md).
 - 2.0 (2026-07-04): inicijalno (apsorbira spec §DIO 4+8, dodane Gotovo-definicije i prilozi po fazi).
