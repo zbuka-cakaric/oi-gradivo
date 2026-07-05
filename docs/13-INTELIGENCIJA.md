@@ -28,7 +28,7 @@ Drugi, jeftini prolaz (planner model): "Za svaku tvrdnju s [n]: potvrđuje li ci
 | Mod | Način | Specifično |
 |---|---|---|
 | **Vještak** | IRAC savjet | alati §1 + "na dan" + generator dopisa (F17) nad istim citatima |
-| **Mentor (F16 usmeni)** | Sokratovska petlja | model NE odgovara — ispituje: pitanje→procjena kandidatova odgovora (rubrika: točnost/potpunost/citat)→potpitanje; ista banka (513 ✓) + isti alati za provjeru kandidatovih tvrdnji |
+| **Mentor (F16 usmeni)** | Sokratovska petlja + **ispit od N pitanja (v053)** | model NE odgovara — ispituje: pitanje→procjena (P6)→≤3 potpitanja→**P7A ispravak + ocjena /100**; plan od N pitanja (def 10) fiksiran na startu; **finale DETERMINISTIČKI** = round(prosjek ocjena), prag prolaza 90 🔒 (LLM ne računa ukupnu — kao Investitorove brojke); ista banka (513 ✓) + isti alati; kandidatov odgovor NIKAD u retrieval |
 | **Investitor** | Checklist engine | deterministički: pravila.json (GUP) + parcela-parametri → izračun; AI SAMO obrazlaže i citira odredbe plana — brojke nikad iz LLM-a 🔒 (financijska matematika je sveta) |
 
 ## 6. MJERENJE 🔒 (bez ovoga je sve dojam)
@@ -38,4 +38,5 @@ Held-out ~100 rok-pitanja (Ivan šalje) = **prije/poslije** mjerilo za §1–2; 
 **F15.5** (§1+§2, 1 sesija) → held-out eval → **F16 Mentor** (nasljeđuje petlju) → §3 verifier → §4 postupno → Investitor engine (F21+).
 
 ## CHANGELOG
+- 1.1 (2026-07-05): **F16 v053 — usmeni prerastao u ISPIT od N pitanja.** Po zaključenju svakog pitanja (P6 "kraj" ili ≥3 potpitanja) ide **P7A_ISPRAVAK** (STROGI JSON `{"ocjena":0-100,"ispravak":"…"}`; smije otkriti zlatni jer je TO pitanje zaključeno; fallback ocjena = P6 tocnost). Rez transkripta po pitanju (`rezultati[].do_id` = id poruke ispravka → P6/P7A vide samo poruke aktivnog pitanja). **Finale DETERMINISTIČKI** (§5 doktrina "brojke nikad iz LLM-a" 🔒 sada vrijedi i za Mentora): ukupna = round(prosjek), prolaz = ukupna ≥ prag (ENV `USMENI_PROLAZ` def 90); rubrika `{ocjena,prolaz,prag,po_pitanjima,sazetak,savjet}`. ENV `USMENI_BR_PITANJA` (def 10). P7_RUBRIKA (1-5) ostaje u kodu kao povijest, ne poziva se. 🔒 nepromijenjeni: zlatni ne curi prije zaključenja tog pitanja, P6 procjena ne curi, kandidatov odgovor nikad u retrieval.
 - 1.0 (2026-07-05): doktrina inteligencije — usvojena kao temelj za F15.5/F16/Investitor.

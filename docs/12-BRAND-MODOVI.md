@@ -9,10 +9,10 @@
 - **✅ ODLUKA (Ivan, 2026-07-05) — imena i domene:** isti naziv namjerno; **plavi logo = oi.zbuka.hr** (OI platforma; do kraja razvoja ostaje oi-ispit.zbuka.hr, preseljenje na kraju) · **crveni logo = ai.zbuka.hr** (Gradilište SaaS). ŽBUKA AI = krovni brend.
 - **Selling point (Ivanova formulacija, u sve marketinške tekstove):** *tehnologija kritičkog razmišljanja* — Mentor (OI Ispit) · Vještak (teren za profesionalce) · Investitor ("informacija vrijedi više nego zemljište").
 - **✅ Boje modova — FINALNO (Ivan, 2026-07-05):** Mentor/OI Ispit **PLAVA** `#2B4A75` · Vještak **NARANČASTA** `--vjestak:#D06A1F` · Investitor **TAMNOZELENA** `--investitor:#1E5741`. Norma papir/tinta/serif-sans netaknuti 🔒.
-- **Login efekt 🔒:** ŽBUKA logo na loginu se **prelijeva plava → narančasta → zelena** (CSS gradient animacija na kvačici i "AI" — najava tri alata; poštovati prefers-reduced-motion).
+- **Login (v053):** pravi **ŽBUKA AI PNG logo** (dark varijanta = tamnosivi tekst, za svijetli paper login; light varijanta u rezervi za tamnu podlogu) ugrađen inline base64. **Paleta logina = bordeaux brand, neovisno o zadnjem modu**: `main{--accent:var(--brand-bord)}` (`#960C10`) → gumb, linkovi, fokus inputa bordeaux; tekst tamnosivi kao logo. (Gradient-prelijevanje kvačice iz ranije vizije NIJE implementirano — Ivan je odabrao čisti brand-logo; ostaje kao moguća buduća varijanta.)
 
 ## 2. Informacijska arhitektura
-- **Ulaz:** mode-picker (3 kartice s krovićem) na prvom ulasku; izbor u `localStorage('zb_mod')`. **Header:** mini logo + mod-pilula desno (tap = picker). Deep-link `#mod/ispit|vjestak|investitor`.
+- **Ulaz:** mode-picker (3 kartice s krovićem) na prvom ulasku; izbor u `localStorage('zb_mod')`. **Header (v053):** inline SVG logo `.zmark` prema Ivanovu originalu — crveni krov s dimnjakom + tamnosivi Z; u appu **krov (`.zkrov`) prati mod preko `var(--accent)`** (plava/narančasta/zelena), Z (`.zslovo`) ostaje tamnosivi `#3A3D42`. Mod-pilula desno (tap = picker). Deep-link `#mod/ispit|vjestak|investitor`.
 - **Footeri po modu** (5 tabova MAX pravilo 🔒 vrijedi po modu):
   | Mod | Tabovi | Ekran 1 |
   |---|---|---|
@@ -36,6 +36,9 @@
 5. Biblija: 00/01/05/08/11 changelog + ovaj dokument = izvor istine za brend.
 
 ## CHANGELOG
+- 1.6 (2026-07-05): **v059 — KONCEPT sučelja pročišćen (Ivan)**: HEADER identičan uvijek = logo (tap=picker) · mod-pilula (aktivni alat) · **avatar (=profil/Ja + Osvježi + Odjava)**. **Ja MAKNUT iz footera** (živio u svakom modu, duplicirao avatar, gurao na 6 tabova/gusto) → footer sada 5 MAX bez gužve: Ispit=Danas·Testovi·Usmeni·Napredak·Uči · Vještak=Razgovor·Povijest·Propisi·Dopisi·Novosti · Investitor=Parcela. Ja dostupan preko avatar→Moj profil. **Tier pilula uklonjena iz headera** (redundantna; tier u profilu). Footer 🔒 = SAMO tabovi moda, nikad profil.
+- 1.5 (2026-07-05): **v053 login** — OI badge placeholder zamijenjen pravim ŽBUKA AI PNG logom (dark, inline base64); login paleta → bordeaux brand (`#960C10`) preko `main{}` token-overridea (neovisno o `data-mod`). Boje uzorkovane iz loga: bordeaux `#960C10`, tamnosivi `#373637`.
+- 1.4 (2026-07-05): **v053 logo** — CSS-trokut monogram (v052) zamijenjen inline SVG-om vjernim Ivanovu originalu (krov+dimnjak+Z); krov u boji moda (`var(--accent)`), Z tamnosivi. PNG i dalje samo na loginu.
 - 1.5 (2026-07-05): v046 — Ja vraćen u footer svih modova (6 tabova u Vještaku, zbijeni raspored); 🔒 pravilo ažurirano na "5, iznimno 6 uz Ivanov potpis". Dizajn proglašen ZAKLJUČENIM za fazu 15.x — daljnje izmjene samo uz novu brend-odluku.
 - 1.4 (2026-07-05): **v043** — Vještak footer finaliziran s Dopisi+Novosti; Ja u Vještaku dostupan kroz gornju pilulu (plan-pilula) i uvijek dozvoljen u routeru. Mode-atmosfera: accsoft/accent2 definirani po modu (dosad samo accent). Dizajn v2 sloj dokumentiran u 05 v2.4.
 - 1.3 (2026-07-05): **v042 okvir implementiran** — footer po modu iz MOD_TABOVI (bez pod-prikaza; fix zaglavljenog moda v039-v041), krović kao indikator aktivnog taba ✓, Investitor odabirljiv (najava ekran), picker vodi na prvi tab moda instantno. Otvoreno za Ivana: dodatni Vještak tabovi kad zatrebaju (kandidati: Dopisi/F17, Na dan, Novosti-novele) — 5 MAX 🔒.
