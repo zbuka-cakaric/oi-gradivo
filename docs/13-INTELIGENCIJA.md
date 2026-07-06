@@ -2,6 +2,9 @@
 
 > **Teza:** ista jezgra razmišljanja pokreće Vještaka (savjet), Mentora (usmeni F16) i Investitora (što smijem graditi). Jezgra = **agentska petlja nad propisima + strukturirano pravno rezoniranje + samoprovjera**. Razlikuje se samo "način ispitivanja" po modu.
 
+- v074: Vještak ADAPTIVNI REGISTAR. 3 načina (model procjenjuje iz formulacije): kratko (default), dubina (raspiši/detaljnije/temeljito), dokument (dopis/prigovor/žalba/zahtjev → formalni podnesak s [n]). max_tokens: 1600/3000/4000. Regex okidači bez \b (dijakritici). Filozofija: profesionalac koji čita registar zahtjeva — sažet u chatu, raspiše kad tražiš, sastavi dokument kad treba.
+- v073: Vještak struktura odgovora SAŽETA (~30% kraće). Bila puna IRAC forma (5 odlomaka), sada: Ukratko/Analiza(crtice+[n] po hijerarhiji)/Zaključak(+Pazi)/Članci. Kratka činjenična pitanja = samo odgovor. Filozofija: mozganje u thinkingu (vidljiv status), odgovor destilat za gradilište. Cilj: gušće informacijom, brže skeniranje.
+
 ## 0. Gdje smo (v040) — temelj položen ✓
 Retrieval v2 (voyage-law-2 + pg_trgm + FTS → RRF → rerank; **GATE 93 %**) · povijest razgovora (6 poruka) · rječnik kratica · post-check citata regexom + retry · Sonnet 5 odgovor / Sonnet 4.6 planner. **Strop: jednoprolazni tok** (retrieval→odgovor) — model ne može sam potražiti ono što otkrije da mu fali.
 
