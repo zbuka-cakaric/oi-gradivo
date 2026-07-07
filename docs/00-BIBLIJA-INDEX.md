@@ -1,5 +1,5 @@
 # OI ISPIT — BIBLIJA PROJEKTA (docs/ index)
-**Verzija dokumentacije:** 3.0 · **Datum:** 2026-07-07 · **Stanje koda:** v130 · Faza 17
+**Verzija dokumentacije:** 3.0 · **Datum:** 2026-07-07 · **Stanje koda:** v135 · Faza 17
 **Vlasnik:** Ivan Čakarić (ŽBUKA Čakarić d.o.o.) · **Sastavio:** Claude (Fable 5) u suradnji s Ivanom
 
 > **Što je ovo:** jedina istina o aplikaciji OI Ispit (oi-ispit.zbuka.hr) — vizija, arhitektura, svaka tablica, svaka ruta, svaki algoritam, svaka faza do v1.0 i dalje. Piše se za DVA čitatelja: (1) Ivana, koji nije programer ali donosi sve odluke, i (2) AI asistenta (Opus/Sonnet/budući) koji izvodi faze. Ako kod i biblija proturječe — **kod pobjeđuje**, ali se proturječje odmah upisuje u §CHANGELOG dotičnog dokumenta.
