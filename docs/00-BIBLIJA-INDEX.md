@@ -1,5 +1,5 @@
 # OI ISPIT — BIBLIJA PROJEKTA (docs/ index)
-**Verzija dokumentacije:** 2.5 · **Datum:** 2026-07-05 · **Stanje koda:** v016 · Faza 3
+**Verzija dokumentacije:** 3.0 · **Datum:** 2026-07-07 · **Stanje koda:** v128 · Faza 17
 **Vlasnik:** Ivan Čakarić (ŽBUKA Čakarić d.o.o.) · **Sastavio:** Claude (Fable 5) u suradnji s Ivanom
 
 > **Što je ovo:** jedina istina o aplikaciji OI Ispit (oi-ispit.zbuka.hr) — vizija, arhitektura, svaka tablica, svaka ruta, svaki algoritam, svaka faza do v1.0 i dalje. Piše se za DVA čitatelja: (1) Ivana, koji nije programer ali donosi sve odluke, i (2) AI asistenta (Opus/Sonnet/budući) koji izvodi faze. Ako kod i biblija proturječe — **kod pobjeđuje**, ali se proturječje odmah upisuje u §CHANGELOG dotičnog dokumenta.
@@ -31,12 +31,22 @@
 6. **Legenda kroz sve dokumente:** 🔒 nepromjenjivo bez CHANGELOG odluke · 🔓 slobodno evoluira · ⚠ poznata zamka · 💰 trošak.
 
 ## Trenutno stanje u jednoj rečenici
-PWA v012 živa na oi-ispit.zbuka.hr (auth, gradivo 15+ propisa / ~2.900 članaka, Uči čitač s pretragom i bookmarkima, admin uvoz s progressom i hash-skipom, auto-refresh health-ping); slijedi F3b pa F4 (verzioniranje) pa F5 (RAG) — punim redom u 08.
+PWA v128 živa na oi-ispit.zbuka.hr — tri moda (Mentor/Vještak/Investitor-najava), RAG GATE 93%, banka 1072 pitanja, usmeni AI ispitivač s komisijom i ljudskim osjećajem (v126/v127), kompletna OBRAČUNSKA sekcija (TU+VOB+PN norme). Sljedeći veliki modul: INVESTITOR (konceptualni razvoj — vidi 10-INVESTITOR.md v2.0).
+
+## STATUS PREKRETNICE (2026-07-07, v128)
+**Mentor+Vještak zreli, obračunska sekcija kompletirana, Investitor koncept razbijen.**
+- Usmeni AI ispitivač: komisija-persone (v100) + LJUDSKI OSJEĆAJ (v126) + ŽIVA INTERAKCIJA s primjerima iz prakse + bonus brzine (v127) — glavni selling point.
+- Pismeni: pravi random raspored točnog odgovora (v127 splitmix32 fix).
+- Jedinstvena pretraga po 4 polja (v125): Mentor+Vještak+Gradivo.
+- **OBRAČUNSKA SEKCIJA GOTOVA:** TU (19 vrsta radova) + VOB (60 DIN normi) + Prosječne norme I-VII+niskogradnja (41 stavka). Sve `obracun`, ekavica→hrvatski, samo pravila obračuna (ne tablice utroška).
+- Bug hunt (v128): admin sučelje nakon prijave, incognito, modal uređivanja pitanja.
+- **INVESTITOR:** 7 Ivanovih odluka razbijeno (vidi 10-INVESTITOR.md v2.0); DGU WFS potvrđen javan; prvi kod = WFS prikaz čestice. **SLJEDEĆA SESIJA = konceptualni razvoj Investitora** (PRVI-PROMPT-INVESTITOR.md).
 
 ## STATUS PREKRETNICE (2026-07-05, v038)
-E1 KOMPLETNA: F4 ✓ (verzioniranje+novele) · F5 ✓ (**RAG GATE 93 %** — retrieval v2: vector+trgm+FTS→RRF→rerank, 07 v2.1) · F6 ✓ (**513 ovjerenih pitanja**, revizija 164 po NN 155/25) · F15 ✓ (Vještak SSE chat s citatima). **REBRAND: ŽBUKA AI, tri moda** — vidi 12-BRAND-MODOVI.md (novi temeljni dokument!). Sljedeće: Okvir sesija (mode-picker+nav+boje) → F7/F16.
+E1 KOMPLETNA: F4 ✓ (verzioniranje+novele) · F5 ✓ (**RAG GATE 93 %** — retrieval v2: vector+trgm+FTS→RRF→rerank, 07 v2.1) · F6 ✓ (**513 ovjerenih pitanja**, revizija 164 po NN 155/25) · F15 ✓ (Vještak SSE chat s citatima). **REBRAND: ŽBUKA AI, tri moda** — vidi 12-BRAND-MODOVI.md. Sljedeće: Okvir sesija (mode-picker+nav+boje) → F7/F16.
 
 ## CHANGELOG
+- +2026-07-07 (3.0): status prekretnice v128 — Mentor usmeni zreo (ljudski osjećaj+interakcija+brzina), obračunska sekcija kompletirana (TU+VOB+PN), bug hunt, Investitor koncept razbijen (10-INVESTITOR v2.0 + PRVI-PROMPT-INVESTITOR). Novi HANDOFF-2026-07-07.md.
 - +2026-07-05: status prekretnice (E1 done, GATE 93%, rebrand ŽBUKA AI, +12-BRAND-MODOVI).
 - 2.5 (2026-07-05): 06 → v2.3 (Profil A potvrđen na ZSPC, Profil G EUR-Lex); GRA gradivo dopunjeno (11/788).
 - 2.4 (2026-07-05): dodan 11-MASTER-PLAN.md (krovna strategija: GRA-first etape, launch prije jesenskog roka, GTM); smjer pobjeđuje 11, izvedbu 01–10.

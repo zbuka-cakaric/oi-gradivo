@@ -1,5 +1,7 @@
 # 08 — FAZE I ROADMAP (F3b → F20) + predlošci sesija
 
+> **STATUS 2026-07-07 (v128):** GOTOVO — F3b–F17 (verzioniranje, RAG GATE 93%, banka čisti restart 1072, Vještak agentska petlja, usmeni s komisijom-personama + LJUDSKI OSJEĆAJ v126 + ŽIVA INTERAKCIJA v127, AI provjera točnosti). **OBRAČUNSKA SEKCIJA KOMPLETIRANA** (TU 19 + VOB 60 + Prosječne norme I-VII+niskogradnja 41 stavka — čeka ingest). Bug hunt v128 (admin sučelje, incognito, modal uređivanja). PREOSTALO do launcha: F13 planEnforce, F14 Stripe, F18 analitika, F19 pravo/GDPR, F20 launch. **SLJEDEĆA SESIJA — PROMJENA REDOSLIJEDA: INVESTITOR konceptualni razvoj kreće SADA** (ne čeka launch — Ivanova odluka 2026-07-07). Prvi kod = WFS prikaz čestice. Vidi 10-INVESTITOR.md v2.0 + PRVI-PROMPT-INVESTITOR.md + HANDOFF-2026-07-07.md.
+
 > Format po fazi: **Cilj · Shema (→03) · Rute (→04) · UI (→05) · Testovi · Gotovo-kad · Sesija(e) · Prilozi za sesiju**. Detaljni SQL je u 03, ugovori ruta u 04, AI u 07 — ovdje je orkestracija. Graf ovisnosti: F4→F5→(F6, F15) · F6→F7→(F8, F9)→F10 · F13→F14 · F5(+F6)→F16 · F15→F17 · F11, F12 slobodne nakon F7 · F18/F19/F20 završnica.
 
 **F3b — Vodič kroz prijavu + checklist** · Shema: korisnik_checklist · Rute: checklist GET/POST · UI: ekran iz Danas; sadržaj vodiča (upravni koraci MPGI prijave) **daje Ivan** ⚠ AI ne izmišlja postupke · Testovi: +2 (toggle, lista) · Gotovo: checklist pamti stanje kroz sesije · 1 sesija · Prilozi: Ivanov tekst koraka.
