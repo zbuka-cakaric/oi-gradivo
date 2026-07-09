@@ -17,7 +17,7 @@ const ODG = (url) => {
     { uloga: 'assistant', tekst: '**Zaključak**\nRok je 8 dana [1].', citati: [] }] };
   if (u.includes('ai/razgovori')) return { ok: true, razgovori: [
     { id: 1, naslov: 'Rok za prijavu gradilišta', created_at: '2026-07-01T10:00:00.000Z', poruka: 4 }] };
-  if (u.includes('ai/potrosnja')) return { ok: true, postotak: 12, potroseno_usd: 0.1234, budzet_usd: 1, tier: 'free', neogranicen: false };
+  if (u.includes('ai/potrosnja')) return { ok: true, postotak: 12, potroseno_usd: 0.1234, budzet_usd: 1, tier: 'free', neogranicen: false, tokeni_total: 1000000, tokeni_iskoristeno: 120000 };
   if (u.includes('novosti')) return { ok: true, novosti: [
     { dokument: 'Zakon o gradnji', dokument_id: 1, vrijedi_od: '2026-01-01T00:00:00.000Z', nn_izvor: 'NN 155/25', clanaka: 47 }] };
   if (u.includes('uci/struktura')) return { ok: true, sekcije: [] };
@@ -136,7 +136,7 @@ const ODG = (url) => {
   w.idiNaTab('ja'); await tick();
   const jaInv = aktivni().join()==='t-ja';
   tocka('UI Ja: sam na ekranu u Vještaku (pilula) i Investitoru', jaVj && jaInv);
-  tocka('UI Ja: potrošnja API-ja u $ (HR zapis)', d.getElementById('ja-ai-usd').textContent==='0,12 $ / 1,00 $');
+  tocka('UI Ja: potrošnja u marketinškim tokenima (v161)', d.getElementById('ja-ai-usd').textContent==='120K / 1M tokena');
 
   // 4) Investitor: najava tab, 2 gumba
   w.idiNaTab('invest'); await tick();
@@ -388,12 +388,12 @@ const ODG = (url) => {
     pvDanas && pvPropisi && d.getElementById('pv-naslov').textContent==='Razgovor');
   w.idiNaTab('ja'); await tick();
   tocka('UI v054: Ja-tab zaglavlje = ime korisnika (ne "Ja")', d.getElementById('pv-naslov').textContent==='Ivan'); // ⭐ v054
-  tocka('UI v059 koncept: Ja NIJE u footeru nijednog moda (živi u avataru); tier pilula uklonjena', // ⭐ v059
+  tocka('UI v059/v168: Ja NIJE u footeru (živi u avataru); tier badge JE u headeru (v168)', // ⭐ v059/v168
     (()=>{ let ok=true;
       for(const m of ['ispit','vjestak','investitor']){ w.postaviMod(m);
         if([...d.querySelectorAll('#nav > button[data-tab]')].some(b=>b.dataset.tab==='ja')) ok=false; }
       const mp=[...d.querySelectorAll('#av-menu button')].find(b=>b.textContent.includes('Moj profil'));
-      return ok && !!mp && !d.getElementById('vrh-tier'); })());
+      return ok && !!mp && !!d.getElementById('vrh-tier'); })());
   w.postaviMod('vjestak'); await tick();
   w.idiNaTab('razgovor'); await tick(); // natrag za akcija-test (razgovor je Vještak tab)
   w.aiDodajUser('nešto');
@@ -578,8 +578,8 @@ const ODG = (url) => {
   tocka('UI v139: simulacija roka (simStart/simNaUsmeni/simZavrsi + Danas kartica + hookovi u finalima)',
     typeof w.simStart==='function' && typeof w.simNaUsmeni==='function' && typeof w.simZavrsi==='function'
     && !!d.getElementById('d-sim-kartica') && idxSrc.includes("SIM.faza==='pismeni'") && idxSrc.includes("SIM.faza==='usmeni'"));
-  tocka('UI v139: simulacija je Pro (usmeni je Pro) — provjera tiera prije pismenog',
-    idxSrc.includes("!k.je_superadmin && k.tier!=='pro'") && idxSrc.includes('Simulacija roka uključuje usmeni'));
+  tocka('UI v139/v167: simulacija dostupna plaćenim tierovima (blokiran samo free)',
+    idxSrc.includes("!k.tier || k.tier==='free')){ alert('Simulacija roka") && idxSrc.includes('Simulacija roka uključuje usmeni'));
   tocka('UI v139: Predmeti overlay (modal + funkcije + ulaz iz Vještaka + 📁 na odgovoru)',
     !!d.getElementById('predmeti-modal') && typeof w.predOtvori==='function' && typeof w.predDetalj==='function'
     && typeof w.aiUPredmet==='function' && idxSrc.includes("onclick=\"predOtvori()\"") && idxSrc.includes("b('aiUPredmet',"));
@@ -601,6 +601,118 @@ const ODG = (url) => {
     && (srvSrc.match(/await obogatiTablicom\(/g)||[]).length===2);
   tocka('UI v147: "📊 Vidi tablicu" chip u odgovoru (tabl-chip + filter c.tablica)',
     idxSrc.includes('.tabl-chip{') && idxSrc.includes('_cit.filter(c=>c.tablica)') && idxSrc.includes('Vidi tablicu uživo'));
+
+  tocka('SRV v148/v151: popis propisa (/api/admin/popis, superadmin, samo UVEZENI — HAVING ≥1 aktivan članak)',
+    srvSrc.includes("'/api/admin/popis'") && srvSrc.includes("zahtijevajSuperadmin") && srvSrc.includes("WHERE d.status='aktivno'")
+    && srvSrc.includes("HAVING COUNT(c.id) FILTER (WHERE c.status='aktivan') > 0"));
+  tocka('UI v148: dashboard gumb "Popis propisa" + kopiranje (dashPopis/dashPopisKopiraj)',
+    typeof w.dashPopis === 'function' && typeof w.dashPopisKopiraj === 'function'
+    && idxSrc.includes('Popis propisa u aplikaciji') && idxSrc.includes("apiGet('admin/popis')"));
+
+  tocka('SRV v149: uvoz — normalizirana oznaka (Članak 3. == Članak 3) + preview/dry-run (rollback marker)',
+    srvSrc.includes('const normOzn') && srvSrc.includes("replace(/[.\\u00A0]+$/, '')")
+    && srvSrc.includes("const preview = !!(req.body && req.body.preview)") && srvSrc.includes("__PREVIEW__"));
+  tocka('UI v149: uvoz traži potvrdu prije overwrite-a (preview:true + confirm koji imenuje članke)',
+    idxSrc.includes('preview:true') && idxSrc.includes('OVERWRITE u') && idxSrc.includes('Nastaviti s uvozom'));
+
+  tocka('SRV v150: MERGE uvoz (spajanje) — parcijalni uvoz NE briše članke izvan uvoza',
+    srvSrc.includes("const spajanje = !!(req.body && req.body.spajanje)") && srvSrc.includes('if (spajanje) continue;'));
+  tocka('UI v150: tražilica prioritet (naziv→oznaka, bez tekst-šuma) + Gradivo toggle',
+    idxSrc.includes('cl=cl.filter(c=>c.rang===1)') && idxSrc.includes('async function gradivoDash(refresh)')
+    && idxSrc.includes("if(!refresh && box.innerHTML.trim()){ box.innerHTML=''; return; }"));
+
+  tocka('UI v152/v158: sistemski back Propisi/Uči (history-trap u uciPrikaz + popstate kroz stog)',
+    idxSrc.includes("history.pushState({uciTrap:1}") && idxSrc.includes("addEventListener('popstate'")
+    && idxSrc.includes("uciPrikaz(UCI_STACK[UCI_STACK.length-1], true)"));
+
+  tocka('SRV v154: Novosti vraćaju clanci_izmijenjeni + admin/novosti/procisti (marker čišćenja)',
+    srvSrc.includes("array_agg(DISTINCT v.clanak_id) AS clanci_izmijenjeni") && srvSrc.includes("'/api/admin/novosti/procisti'")
+    && srvSrc.includes("novosti_procisceno_od"));
+  tocka('UI v154: otvoriDok istakni-bounce + dashOcistiNovosti',
+    idxSrc.includes('async function otvoriDok(id, istakni)') && idxSrc.includes('clanak-nov') && idxSrc.includes('@keyframes novPulse')
+    && idxSrc.includes('async function dashOcistiNovosti(') && idxSrc.includes("api('admin/novosti/procisti'"));
+  tocka('UI v155: Novosti skok na dokument (_skokDok, novOtvori) + osvježeno-oznaka + veći ai-input',
+    idxSrc.includes('window._skokDok') && idxSrc.includes('function novOtvori(') && idxSrc.includes("onclick=\"novOtvori(")
+    && idxSrc.includes('nov-tag') && idxSrc.includes('id="ai-input" rows="2"'));
+
+  tocka('SRV v156: pametna tražilica — f_unaccent (bez dijakritike) + NN izvor + rang naziv/izvor/oznaka/tekst',
+    srvSrc.includes('CREATE OR REPLACE FUNCTION f_unaccent') && srvSrc.includes('f_unaccent(d.naziv) ILIKE f_unaccent($1)')
+    && srvSrc.includes('d.izvor ILIKE $1') && srvSrc.includes('f_unaccent(c.tekst) ILIKE f_unaccent($1)'));
+  tocka('UI v156: stacked redak (flex-direction column) + NN izvor u rezultatima',
+    idxSrc.includes('.clanak-red{position:relative;display:flex;flex-direction:column') && idxSrc.includes('.clanak-red .zv{position:absolute')
+    && idxSrc.includes('c.izvor?') );
+
+  tocka('UI v157: sistemski back home-sidro (anchor + vraćanje na home umjesto izlaza)',
+    idxSrc.includes("history.replaceState({anchor:1}") && idxSrc.includes('history.state.anchor && tab && tab!==home') && idxSrc.includes('idiNaTab(home); return;'));
+
+  tocka('UI v158: eksplicitni stog prikaza Propisi (UCI_STACK) + back kroz stog + uciNatrag preko history',
+    idxSrc.includes("let UCI_STACK=['lista']") && idxSrc.includes("tab==='uci' && UCI_STACK.length>1")
+    && idxSrc.includes('UCI_STACK.pop()') && idxSrc.includes('history.go(-steps)'));
+
+  tocka('SRV v159: pretraga tolerancija na tipfelere (word_similarity <%) + qraw',
+    srvSrc.includes('const qraw = qs.replace') && srvSrc.includes('f_unaccent($2) <% f_unaccent(d.naziv)') && srvSrc.includes("f_unaccent($2) <% f_unaccent(COALESCE(c.naslov"));
+  tocka('UI v159: bold pogođenih (hl+mark) + Brzi pristup (Nedavno/Označeno) + Novosti po datumu + Mentor guardovi',
+    idxSrc.includes('function hl(s, q)') && idxSrc.includes('mark{background:var(--accsoft)')
+    && idxSrc.includes('async function renderBrziPristup()') && idxSrc.includes('oi_nedavno')
+    && idxSrc.includes("let novHtml='', zadnjiDat=''") && idxSrc.includes('function tsRezultat(r){ r=r||{}'));
+
+  tocka('SRV v160→161: enterprise u TIEROVI + admin dodjela tiera',
+    srvSrc.includes("'free', 'basic', 'pro', 'enterprise'") && srvSrc.includes("/api/admin/korisnik/:id/tier"));
+  tocka('UI v160→161: prikaz svih tierova + istek + enterprise editor + rich prompt',
+    idxSrc.includes("TIER_LABEL={free:'BESPLATNO',basic:'BASIC',pro:'PRO',enterprise:'ENTERPRISE'}") && idxSrc.includes('function pretplataProvjeriPrompt')
+    && idxSrc.includes('function tierCestitka') && idxSrc.includes("tg('enterprise','ENTERPRISE')") && idxSrc.includes('.tier-enterprise'));
+
+  tocka('SRV v161: token-budžet po tieru + marketinški tokeni + usmeni na budžetu',
+    srvSrc.includes('const TIER_BUDZET = { free: 1, basic: 5, pro: 10, enterprise: 40 }') && srvSrc.includes('const TOKENI_PO_USD')
+    && srvSrc.includes('tokeni_total: tokeniTotal') && srvSrc.includes("razlog: 'tokeni'")
+    && !srvSrc.includes('const FREE_UPITI') && !srvSrc.includes('aiBrojUpita'));
+  tocka('UI v161: profil u tokenima (fmtTok) + bogati modali (tierCestitka/nadogradi/TIER_TEMA)',
+    idxSrc.includes('function fmtTok(n)') && idxSrc.includes('const TIER_TEMA') && idxSrc.includes('function tierCestitka')
+    && idxSrc.includes('function pretplataNadogradiPrompt') && idxSrc.includes("fmtTok(d.tokeni_iskoristeno)+' / '+fmtTok(d.tokeni_total)")
+    && idxSrc.includes('@keyframes tmPop'));
+
+  tocka('SRV v162: čestitka(napomena+pročitano) + moja/korisnik aktivnost + trošak po korisniku',
+    srvSrc.includes('cestitka_procitana') && srvSrc.includes("/api/cestitka/procitano") && srvSrc.includes("/api/moja-aktivnost")
+    && srvSrc.includes("/api/admin/korisnik/:id/aktivnost") && srvSrc.includes('async function svibUkupniTrosak') && srvSrc.includes('u.trosak_usd = t ?'));
+  tocka('UI v162: cijena→uskoro + horiz. legenda + korisnikDetalj + trošak badge + moja aktivnost + čestitka napomena',
+    idxSrc.includes('OI Ispit <b>Pro</b> — <span style="color:var(--accent)">uskoro</span>') && idxSrc.includes('flex-wrap:wrap;gap:7px;justify-content:center')
+    && idxSrc.includes('async function korisnikDetalj') && idxSrc.includes('const trosakBadge') && idxSrc.includes('async function ucitajMojuAktivnost')
+    && idxSrc.includes('function cestitkaProcitano') && idxSrc.includes('tierCestitka(k.cestitka.tier, k.cestitka.istek, k.cestitka.napomena)'));
+
+  tocka('UI v163: detalji korisnika u punom panelu + 2-stupčana mreža + širi dashboard',
+    idxSrc.includes('id="kor-detalj-panel"') && idxSrc.includes("getElementById('kor-detalj-panel')")
+    && idxSrc.includes('.kd-mreza{display:grid') && idxSrc.includes('dash-otvoren .sadrzaj>.tab#t-ja')
+    && !idxSrc.includes("'<div id=\"kor-detalj-'+u.id+'\"></div>'"));
+
+  tocka('UI v164: SIGURNOST — resetAdminUI ruši dashboard za ne-superadmina + otvoriDash guard',
+    idxSrc.includes('function resetAdminUI') && idxSrc.includes('else resetAdminUI();')
+    && idxSrc.includes("if(!KORISNIK || !KORISNIK.je_superadmin){ resetAdminUI(); return; }")
+    && idxSrc.includes("try{ resetAdminUI(); }catch(_){ }"));
+
+  tocka('SRV v167: bug hunt — svi plaćeni tierovi (ne samo pro); free-only gateovi',
+    srvSrc.includes("k.tier === 'free') return res.status(402).json({ error: 'pro' })")
+    && srvSrc.includes("k.tier === 'free') { // ⭐ v167 — mjesečna kvota testova SAMO za free")
+    && !srvSrc.includes("k.tier !== 'pro') return res.status(402).json({ error: 'pro' })"));
+  tocka('UI v167: tour "ne prikazuj više" (robustan) + simulacija roka svi plaćeni',
+    idxSrc.includes('function tourNeprikazuj') && idxSrc.includes('onclick="tourNeprikazuj()">Ne prikazuj više')
+    && idxSrc.includes("try{ localStorage.setItem('oi_tour_done','1'); }catch(_){ }")
+    && idxSrc.includes("!k.tier || k.tier==='free')){ alert('Simulacija roka"));
+
+  tocka('SRV v168: sesije (jti+aktivne_sesije+auth async+ipLimit) + GDPR izvoz',
+    srvSrc.includes('CREATE TABLE IF NOT EXISTS aktivne_sesije') && srvSrc.includes('function jwtPotpis(k, jti)')
+    && srvSrc.includes('const ipLimit') && srvSrc.includes('async function auth') && srvSrc.includes("razlog: 'sesija'")
+    && srvSrc.includes("app.get('/api/moji-podaci'") && srvSrc.includes("app.post('/api/sesije/odjavi-druge'")
+    && srvSrc.includes("error: 'previse_uredjaja'"));
+  tocka('UI v168: header badge + 409 handler + sesijaProvjera + GDPR/odjavi-druge',
+    idxSrc.includes('id="vrh-tier" class="tier-b') && idxSrc.includes("vt.className='tier-b tier-'+(k.tier")
+    && idxSrc.includes("e.data.error==='previse_uredjaja'") && idxSrc.includes('function sesijaProvjera')
+    && idxSrc.includes('function preuzmiPodatke') && idxSrc.includes('function odjaviDrugeUredjaje'));
+
+  tocka('SRV v169: GDPR izvoz popravljen (naplatni s korisnici, usmeni rezultati)',
+    srvSrc.includes('FROM korisnici WHERE id=$1`, [uid]).catch') && srvSrc.includes('SELECT created_at, rezultati FROM usmeni_sesije')
+    && !srvSrc.includes('FROM naplatni_podaci WHERE korisnik_id'));
+  tocka('UI v169: renderUci defenziva (sek.put guard)',
+    idxSrc.includes("esc((sek.put||sek.uze_podrucje||'').split(' / ').pop())"));
 
   console.log(`\n${T - PAD}/${T} UI testova prošlo`);
   process.exit(PAD ? 1 : 0);

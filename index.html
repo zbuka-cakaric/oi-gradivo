@@ -435,11 +435,13 @@
     body.u-appu .sadrzaj-desktop-naslov #pv-naslov-d{font-family:var(--serif);font-size:23px;font-weight:700;color:var(--ink)}
     body.u-appu .sadrzaj-desktop-naslov #pv-akcija-d{margin-left:auto;display:flex;gap:8px}
     body.u-appu .sadrzaj>.tab{max-width:760px;margin:0 auto;padding:26px 40px 60px}
+    body.u-appu.dash-otvoren .sadrzaj>.tab#t-ja{max-width:1080px} /* ⭐ v163 — superadmin dashboard koristi širinu na desktopu */
     /* podvrh (mobilni sticky naslov) skriven na desktopu — zamijenjen desktop naslovom */
     body.u-appu .podvrh{display:none}
   }
   @media(min-width:1300px){
     body.u-appu .sadrzaj>.tab{max-width:840px}
+    body.u-appu.dash-otvoren .sadrzaj>.tab#t-ja{max-width:1140px} /* ⭐ v163 */
   }
   /* ⭐ v084 — desktop: onboarding modali centrirani (mod-picker centriran od 600px iznad) */
   @media(min-width:900px){
@@ -481,9 +483,14 @@
   .tag.siva{background:var(--mist);color:var(--ink2)}
   .obuh{font-size:11.5px;color:var(--ink2);font-style:italic;margin-top:4px;line-height:1.4}
   .nazad{display:inline-flex;align-items:center;gap:6px;background:none;border:none;color:var(--accent);font-family:var(--sans);font-weight:500;font-size:13.5px;cursor:pointer;padding:4px 0;margin-bottom:8px}
-  .clanak-red{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:none;border:none;border-top:1px solid var(--line);padding:11px 14px;cursor:pointer;font-family:var(--sans)}
-  .clanak-red .co{font-family:var(--mono);font-size:10.5px;color:var(--accent);flex:none;min-width:64px}
-  .clanak-red .cn{font-size:13.5px;color:var(--ink);line-height:1.35;flex:1}
+  .clanak-red{position:relative;display:flex;flex-direction:column;align-items:flex-start;gap:3px;width:100%;text-align:left;background:none;border:none;border-top:1px solid var(--line);padding:11px 36px 11px 14px;cursor:pointer;font-family:var(--sans)}
+  /* ⭐ v155 — osvježeni članci iz Novosti: suptilan accent obrub + nježni pulse + oznaka */
+  .clanak-nov{border-left:3px solid var(--accent);animation:novPulse 1.5s ease 2}
+  .clanak-nov .co{color:var(--accent);font-weight:700}
+  .clanak-nov .cn .nov-tag{font-size:10px;color:var(--accent);background:var(--accsoft);border-radius:6px;padding:1px 6px;margin-left:6px;font-weight:600;letter-spacing:.02em}
+  @keyframes novPulse{0%{background:var(--accsoft)}50%{background:transparent}100%{background:var(--accsoft)}}
+  .clanak-red .co{font-family:var(--mono);font-size:10.5px;color:var(--accent);font-weight:600}
+  .clanak-red .cn{font-size:13.5px;color:var(--ink);line-height:1.4;width:100%}
   .clanak-red .pv{color:var(--ink3);font-style:italic;font-size:12.5px} /* ⭐ v010 — preview clanka bez naslova */
   /* ⭐ v011 — admin progress uvezenog gradiva */
   .adm-bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden}
@@ -497,7 +504,8 @@
   .dash-k{background:var(--paper2);border:1px solid var(--line);border-radius:14px;padding:12px;text-align:center}
   .dash-k b{display:block;font-family:var(--serif);font-size:24px;color:var(--ink)}
   .dash-k span{font-size:11.5px;color:var(--ink3)}
-  .clanak-red .zv{color:var(--ink3);flex:none}
+  .clanak-red .zv{position:absolute;top:11px;right:12px;color:var(--ink3)}
+  mark{background:var(--accsoft);color:var(--accent);border-radius:3px;padding:0 1px;font-weight:600} /* ⭐ v159 — highlight pogođenih riječi u pretrazi */
   .clanak-red .zv.aktivna{color:var(--accent)}
   .citac h3{font-family:var(--serif);font-weight:500;font-size:21px;line-height:1.25;margin:4px 0 4px}
   .citac .cmeta{font-family:var(--mono);font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink3);margin-bottom:12px}
@@ -517,6 +525,20 @@
   .tier-free{background:var(--line);color:var(--ink2)}
   .tier-basic{background:#DCEAF5;color:#1F5C8B}
   .tier-pro{background:var(--accent);color:#fff}
+  .tier-enterprise{background:#1E5741;color:#fff} /* ⭐ v160 */
+  @keyframes tmIn{from{opacity:0}to{opacity:1}} /* ⭐ v161 — modali pretplate */
+  @keyframes tmPop{from{opacity:0;transform:translateY(14px) scale(.96)}to{opacity:1;transform:none}}
+  .kor-trosak{font-family:var(--mono);font-size:10.5px;background:var(--accsoft);color:var(--accent);border-radius:20px;padding:2px 7px;white-space:nowrap} /* ⭐ v162 */
+  .kor-detalj{background:var(--paper2,#f4f2ec);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin:4px 0 14px} /* ⭐ v162/v163 */
+  .kd-head{display:flex;align-items:center;gap:8px;margin-bottom:15px;padding-bottom:12px;border-bottom:1px solid var(--line)}
+  .kd-head b{font-size:15.5px;font-family:var(--serif)}
+  .kd-x{margin-left:auto;background:none;border:none;cursor:pointer;color:var(--ink3);font-size:16px;padding:2px 8px;border-radius:7px;line-height:1}
+  .kd-x:hover{background:var(--line);color:var(--ink)}
+  .kd-mreza{display:grid;grid-template-columns:1fr;gap:16px}
+  .kd-blok{min-width:0}
+  .kd-blok .tier-uredi{max-width:none;margin:0} /* editor puni širinu bloka */
+  @media(min-width:720px){ .kd-mreza{grid-template-columns:1fr 1fr;gap:18px 24px} .kd-full{grid-column:1 / -1} }
+  .kor-red.aktivni{background:var(--accsoft)}
   .kor-red{cursor:pointer;transition:background .12s}
   .kor-red:hover{background:var(--accsoft)}
   /* ⭐ v113 — Dashboard gradiva: kompaktni redak (naziv | meta | pregled | briši) */
@@ -555,8 +577,8 @@
   .gd-cl-btn.gd-cl-del:hover{background:#f7ebeb;border-color:#B57E7E;color:#7a2018}
   @media(max-width:640px){ .gd-red{grid-template-columns:1fr 34px 34px} .gd-meta{display:none} }
   .tier-uredi{background:var(--paper2);border:1px solid var(--line);border-radius:12px;padding:14px;margin:6px 0 10px;max-width:560px}  .tier-uredi .tu-naslov{font-size:12.5px;color:var(--ink2);margin-bottom:10px}
-  .tier-uredi .tgumbi{display:flex;gap:8px;margin-bottom:12px}
-  .tier-uredi .tg{flex:1;min-width:64px;padding:10px 8px;border-radius:9px;border:1.5px solid var(--line);background:var(--paper);cursor:pointer;font-family:var(--sans);font-size:12.5px;font-weight:600;color:var(--ink2);text-align:center;transition:all .12s}
+  .tier-uredi .tgumbi{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+  .tier-uredi .tg{flex:1 1 calc(50% - 5px);min-width:72px;padding:10px 8px;border-radius:9px;border:1.5px solid var(--line);background:var(--paper);cursor:pointer;font-family:var(--sans);font-size:12.5px;font-weight:600;color:var(--ink2);text-align:center;transition:all .12s}
   .tier-uredi .tg:hover{border-color:var(--accent)}
   .tier-uredi .tg.sel{border-color:var(--accent);background:var(--accsoft);color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
   .tier-uredi .tu-polja{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px} /* ⭐ v102 — istek + napomena rame uz rame na desktopu */
@@ -667,6 +689,7 @@
     <header class="vrh">
       <div class="vrh-red"> <!-- ⭐ v048 -->
       <button class="zmark" onclick="otvoriModPicker()" aria-label="Promijeni alat"><span class="oi-mark">OI</span></button> <!-- ⭐ v067 — header: čista OI oznaka umjesto punog logotipa (jasnije u dark modu) --> <!-- ⭐ v053 — logo prema originalu (krov=kvačica u boji MODA, Z tamnosivi) -->
+      <span id="vrh-tier" class="tier-b tier-free" style="margin-left:8px;align-self:center">FREE</span> <!-- ⭐ v168 — oznaka paketa uz logo -->
       <button class="pill gumb" id="mod-pil" onclick="otvoriModPicker()" style="margin-left:auto;margin-right:8px;color:#fff;background:var(--accent);border:none">OI ISPIT</button>
       <div style="position:relative;flex:none" id="av-wrap"> <!-- ⭐ v045 — avatar izbornik (⭐ v058 — tier pilula uklonjena, redundantna; tier živi u profilu) -->
         <button class="av" id="av-btn" onclick="avToggle(event)">?</button>
@@ -754,7 +777,7 @@
         <div id="ai-traka" style="display:none;background:var(--warnsoft);color:var(--warn);border-left:3px solid var(--warn);padding:8px 10px;font-size:12.5px;margin:8px 0"></div>
         <div class="kartica" style="padding:10px;margin-top:10px;margin-bottom:16px"> <!-- ⭐ v049 — 96px hack ukinut (app-ljuska) -->
           <div style="display:flex;gap:8px;align-items:flex-end">
-            <textarea id="ai-input" rows="1" placeholder="Postavi pitanje o propisima…" oninput="rzRast(this)" onfocus="setTimeout(()=>this.scrollIntoView({block:'center'}),260)" style="flex:1;min-width:0;resize:none;border:1px solid var(--line);border-radius:8px;padding:9px;font:inherit;font-size:15px;color:var(--ink);background:var(--paper2)"></textarea>
+            <textarea id="ai-input" rows="2" placeholder="Postavi pitanje o propisima…" oninput="rzRast(this)" onfocus="setTimeout(()=>this.scrollIntoView({block:'center'}),260)" style="flex:1;min-width:0;min-height:52px;resize:none;border:1px solid var(--line);border-radius:8px;padding:9px;font:inherit;font-size:15px;color:var(--ink);background:var(--paper2)"></textarea>
             <button class="mic-btn" id="ai-mic" onclick="aiMic()" aria-label="Diktiraj pitanje" title="Diktiraj pitanje" style="display:none;flex:0 0 auto">🎤</button>
             <button class="btn" id="ai-send" onclick="aiPosalji()" aria-label="Pošalji poruku" style="width:auto;flex:0 0 auto;margin:0;padding:10px 18px">➤</button>
           </div>
@@ -885,6 +908,7 @@
           <div id="u-sadrzaj" style="display:none">
             <div class="field trazi"><input id="u-trazi" placeholder="Pretraži propise i članke…" oninput="uciTrazi()"></div>
             <div id="u-rezultati"></div>
+            <div id="u-brzi"></div>
             <div id="u-sekcije"></div>
           </div>
         </div>
@@ -989,7 +1013,8 @@
           <div class="kartica"><div class="mlab" style="margin-bottom:8px">Aktivnost — 14 dana</div><div id="dash-g-akt"></div><div id="dash-g-akt2" style="margin-top:4px"></div><div style="display:flex;justify-content:space-between;font-size:11px;color:var(--ink3);margin-top:4px"><span>▮ događaji</span><span>▬ aktivnih korisnika</span></div></div>
           <div class="kartica"><div class="mlab" style="margin-bottom:8px">Vrste aktivnosti — 14 dana</div><div id="dash-g-tip"></div></div>
           <div class="kartica"><div class="mlab" style="margin-bottom:8px">Registracije — 30 dana</div><div id="dash-g-reg"></div></div>
-          <div class="kartica"><div class="mlab" style="margin-bottom:6px">Korisnici</div><div id="dash-korisnici" class="adm-popis" style="max-height:320px"></div></div>
+          <div class="kartica"><div class="mlab" style="margin-bottom:6px">Korisnici</div><div id="dash-korisnici" class="adm-popis" style="max-height:360px"></div></div>
+          <div id="kor-detalj-panel"></div> <!-- ⭐ v163 — detalji korisnika PUNE širine, izvan skrol-liste -->
           <div class="kartica"><div class="mlab" style="margin-bottom:6px">Najotvaraniji članci</div><div id="dash-clanci" class="adm-popis"></div></div>
           <div class="kartica"><div class="mlab" style="margin-bottom:6px">Zadnje pretrage</div><div id="dash-pretrage" class="adm-popis"></div></div>
           <!-- ⭐ v094 — TTS potrošnja (Google Cloud glas) -->
@@ -998,18 +1023,36 @@
             <div id="dash-tts-sazetak" style="font-size:13px;color:var(--ink2);line-height:1.7;margin-bottom:8px">Učitavam…</div>
             <div id="dash-tts-korisnici" class="adm-popis" style="max-height:260px"></div>
           </div>
+          <!-- ⭐ v148 — popis svih aktivnih propisa (kopirljivo) -->
+          <div class="kartica">
+            <div class="mlab" style="margin-bottom:6px">📋 Popis propisa u aplikaciji</div>
+            <div style="font-size:12px;color:var(--ink3);margin-bottom:8px">Uvezeni propisi (zakoni, pravilnici, normativi s člancima) — za kopiranje (web, pregled). Bez praznih šifrarnik-unosa.</div>
+            <button class="btn-sek" style="width:100%" onclick="dashPopis()">Prikaži popis</button>
+            <div id="dash-popis" style="margin-top:10px"></div>
+          </div>
+          <!-- ⭐ v154 — čišćenje Novosti -->
+          <div class="kartica">
+            <div class="mlab" style="margin-bottom:6px">🗞 Očisti Novosti</div>
+            <div style="font-size:12px;color:var(--ink3);margin-bottom:8px">Sakrij sve dosadašnje novosti (npr. izmjene nastale uvozom tablica). Nove izmjene nakon čišćenja opet se prikazuju. Ne briše podatke.</div>
+            <button class="btn-sek" style="width:100%" onclick="dashOcistiNovosti(this)">Očisti Novosti tab</button>
+          </div>
         </div>
         <div class="kartica" id="ja-pro-k" style="border-left:4px solid var(--accent)"> <!-- ⭐ v046 — Pretplata -->
           <div class="mlab" style="margin-bottom:6px">Pretplata</div>
-          <div style="font-family:var(--serif);font-size:17px;margin-bottom:6px">OI Ispit <b>Pro</b> — 19,99 €/mj</div>
+          <div style="font-family:var(--serif);font-size:17px;margin-bottom:6px">OI Ispit <b>Pro</b> — <span style="color:var(--accent)">uskoro</span></div>
           <div style="font-size:13.5px;color:var(--ink2);line-height:1.6">AI Vještak s dnevnom kvotom za ozbiljan rad · Skraćeno i Primjer bez ograničenja · usmeni AI ispitivač (uskoro) · prioritetna podrška.</div>
           <button class="btn" style="margin-top:12px" onclick="location.href='mailto:info@zbuka.hr?subject=OI%20Ispit%20Pro'">Nadogradi na Pro</button>
         </div>
         <div class="kartica" id="ja-ai-kartica" style="display:none"> <!-- ⭐ v021 -->
-          <div class="mlab" style="margin-bottom:6px">AI kvota — ovaj mjesec</div>
+          <div class="mlab" style="margin-bottom:6px">Tokeni — ovaj mjesec</div>
           <div style="background:var(--crta,#e5e2da);border-radius:6px;height:10px;overflow:hidden"><div id="ja-ai-bar" style="height:100%;width:0%;background:#4a6b57;border-radius:6px;transition:width .4s"></div></div>
           <div class="red" style="margin-top:6px"><span id="ja-ai-txt">—</span><b id="ja-ai-pct">0%</b></div>
-          <div class="red"><span>Potrošnja API-ja (mjesec)</span><b id="ja-ai-usd">—</b></div> <!-- ⭐ v042 -->
+          <div class="red"><span>Potrošeno</span><b id="ja-ai-usd">—</b></div> <!-- ⭐ v161 — tokeni umjesto $ -->
+        </div>
+        <div class="kartica" id="ja-akt-kartica" style="display:none"> <!-- ⭐ v162 — korisnik vidi svoju aktivnost -->
+          <div class="mlab" style="margin-bottom:8px">Moja aktivnost — 30 dana</div>
+          <div id="ja-akt-donut"></div>
+          <div id="ja-akt-pretrage" style="margin-top:12px"></div>
         </div>
         <!-- ⭐ v080 — F19: naplatni podaci (za račune i Pro pretplatu) -->
         <div class="kartica" id="ja-naplata-k">
@@ -1032,7 +1075,7 @@
         <div class="kartica">
           <div class="mlab" style="margin-bottom:6px">Aplikacija</div>
           <!-- ⭐ v012 — verzija (drzi sinkrono sa server.js VERZIJA i sw.js CACHE_VERSION); id = izvor za health-ping -->
-          <div class="red"><span>Verzija</span><b id="ja-verzija">v147 · Faza 17</b></div>
+          <div class="red"><span>Verzija</span><b id="ja-verzija">v169 · Faza 17</b></div>
           <div class="red"><span>Donira</span><b>Žbuka Čakarić d.o.o.</b></div>
           <div class="red"><span>Pravno</span><span><a class="link small" onclick="otvoriPravno('uvjeti')">Uvjeti</a> · <a class="link small" onclick="otvoriPravno('privatnost')">Privatnost</a> · <a class="link small" onclick="otvoriPravno('impressum')">Impressum</a></span></div>
         </div>
@@ -1042,6 +1085,8 @@
           <button class="ghost" style="margin-top:10px" onclick="osvjeziApp()">🔄 Osvježi aplikaciju</button>
         </div>
         <button class="ghost" style="margin-top:4px" onclick="odjava()">Odjava</button>
+        <button class="ghost" style="margin-top:4px" onclick="odjaviDrugeUredjaje(this)">Odjavi ostale uređaje</button>
+        <button class="ghost" style="margin-top:4px" onclick="preuzmiPodatke(this)">⬇ Preuzmi moje podatke (GDPR)</button>
         <!-- ⭐ v083 — opasna zona: trajno brisanje računa (GDPR) -->
         <div class="opasna-zona">
           <div class="oz-lab">Opasna zona</div>
@@ -1073,6 +1118,7 @@
           <div class="del-ik">🗑️</div>
           <h2 class="del-h">Zadnja potvrda</h2>
           <p class="del-p">Za trajno brisanje upiši svoje <b>ime i prezime</b> (ili e-mail) točno kako stoji na računu.</p>
+          <button class="ghost" style="width:100%;margin:0 0 12px" onclick="preuzmiPodatke(this)">⬇ Preuzmi svoje podatke prije brisanja (GDPR)</button>
           <input id="del-potvrda" class="del-input" placeholder="Ime i prezime" autocomplete="off">
           <div class="msg" id="del-msg"></div>
           <div class="del-akcije">
@@ -1116,7 +1162,7 @@
         <div style="font-family:var(--serif);font-weight:600;font-size:21px;margin:8px 0 6px" id="tour-n"></div>
         <div style="font-size:14px;color:var(--ink2);line-height:1.55" id="tour-p"></div>
         <div style="display:flex;gap:10px;margin-top:16px">
-          <button class="ghost" style="margin:0;flex:1" onclick="tourKraj()">Preskoči</button>
+          <button class="ghost" style="margin:0;flex:1" onclick="tourNeprikazuj()">Ne prikazuj više</button>
           <button class="btn" style="margin:0;flex:1" id="tour-d" onclick="tourDalje()">Dalje</button>
         </div>
       </div>
@@ -1270,14 +1316,23 @@
     function busy(id,v,t){ const b=document.getElementById(id); b.disabled=v; if(t!==undefined) b.dataset._t=b.dataset._t||b.textContent, b.textContent=v?t:b.dataset._t; }
     const val=(id)=>document.getElementById(id).value.trim();
 
+    // ⭐ v168 — ako je sesija revocirana na drugom uređaju (401 razlog='sesija') → tiho odjavi + poruka
+    function sesijaProvjera(d){
+      if(d && d.razlog==='sesija' && KORISNIK){
+        KORISNIK=null; try{ resetAdminUI(); }catch(_){ } try{ delToken(); }catch(_){ }
+        document.body.classList.remove('u-appu'); document.documentElement.classList.remove('u-appu');
+        prikazi('s-prijava');
+        setTimeout(()=>{ const mp=document.getElementById('m-prijava'); if(mp){ mp.className='msg'; mp.textContent='Odjavljeni ste jer je otvorena nova sesija na drugom uređaju.'; } }, 100);
+      }
+    }
     async function api(put, body, withAuth, method){
       const h={'Content-Type':'application/json'};
       if(withAuth && getToken()) h['Authorization']='Bearer '+getToken();
       const r=await fetch('/api/'+put,{method:method||'POST',headers:h,body:JSON.stringify(body||{})}); // ⭐ v139 — method opcionalan (PATCH/DELETE za Predmete)
-      const d=await r.json().catch(()=>({})); if(!r.ok) throw new Error(d.error||'Greška.'); return d;
+      const d=await r.json().catch(()=>({})); if(!r.ok){ sesijaProvjera(d); const e=new Error(d.error||'Greška.'); e.data=d; throw e; } return d;
     }
-    async function apiPatch(put, body){ const h={'Content-Type':'application/json'}; if(getToken()) h['Authorization']='Bearer '+getToken(); const r=await fetch('/api/'+put,{method:'PATCH',headers:h,body:JSON.stringify(body||{})}); const d=await r.json().catch(()=>({})); if(!r.ok) throw new Error(d.error||'Greška.'); return d; } /* ⭐ v025 */
-    async function apiGet(put){ const h={}; if(getToken()) h['Authorization']='Bearer '+getToken(); const r=await fetch('/api/'+put,{headers:h}); const d=await r.json().catch(()=>({})); if(!r.ok) throw new Error(d.error||'Greška.'); return d; }
+    async function apiPatch(put, body){ const h={'Content-Type':'application/json'}; if(getToken()) h['Authorization']='Bearer '+getToken(); const r=await fetch('/api/'+put,{method:'PATCH',headers:h,body:JSON.stringify(body||{})}); const d=await r.json().catch(()=>({})); if(!r.ok){ sesijaProvjera(d); const e=new Error(d.error||'Greška.'); e.data=d; throw e; } return d; } /* ⭐ v025 */
+    async function apiGet(put){ const h={}; if(getToken()) h['Authorization']='Bearer '+getToken(); const r=await fetch('/api/'+put,{headers:h}); const d=await r.json().catch(()=>({})); if(!r.ok){ sesijaProvjera(d); const e=new Error(d.error||'Greška.'); e.data=d; throw e; } return d; }
 
     // ── Auth akcije (nepromijenjeno iz Faze 1) ──
     let REG_TIP='fizicka'; // ⭐ v081 — F19 tip osobe pri registraciji
@@ -1299,7 +1354,15 @@
         const d=await api('login',{identifikator,lozinka});
         setToken(d.token);
         if(d.mora_promijeniti_lozinku) prikazi('s-nova'); else udjiUApp(d.korisnik);
-      }catch(e){ greska('m-prijava', e.message); } finally{ busy('b-prijava',false); }
+      }catch(e){
+        if(e.data && e.data.error==='previse_uredjaja'){ // ⭐ v168 — multi-uređaj limit
+          if(confirm('Već ste prijavljeni na '+(e.data.aktivnih||'drugim')+' uređaja (najviše '+e.data.limit+'). Odjaviti ostale uređaje i nastaviti ovdje?')){
+            busy('b-prijava',true,'Odjavljujem ostale…');
+            try{ const d2=await api('login',{identifikator,lozinka,odjaviDruge:true}); setToken(d2.token); if(d2.mora_promijeniti_lozinku) prikazi('s-nova'); else udjiUApp(d2.korisnik); }
+            catch(e2){ greska('m-prijava', e2.message); }
+          }
+        } else greska('m-prijava', e.message);
+      } finally{ busy('b-prijava',false); }
     }
     async function postaviNovu(){
       poruke(); const nova=val('n-loz'), n2=val('n-loz2');
@@ -1325,13 +1388,34 @@
       }catch(e){ greska('m-reset', e.message); } finally{ busy('b-reset',false); }
     }
     function odjava(){
+      try{ api('odjava',{},true); }catch(_){ } // ⭐ v168 — revokacija sesije na serveru (best-effort)
       delToken(); KORISNIK=null;
+      try{ resetAdminUI(); }catch(_){ } // ⭐ v164 — očisti admin sadržaj pri odjavi
       document.body.classList.remove('u-appu');
       document.documentElement.classList.remove('u-appu'); // ⭐ v050
       history.replaceState({},'','/');
       prikazi('s-prijava');
     }
     // ⭐ v083 — trajno brisanje računa (dvokoračna dramaturgija + potvrda imenom)
+    // ⭐ v168 — odjavi ostale uređaje (zadrži trenutni)
+    async function odjaviDrugeUredjaje(btn){
+      if(!confirm('Odjaviti sve ostale uređaje na kojima ste prijavljeni? Ovaj uređaj ostaje prijavljen.')) return;
+      const prije=btn?btn.textContent:''; if(btn){ btn.disabled=true; btn.textContent='Odjavljujem…'; }
+      try{ await api('sesije/odjavi-druge',{},true); if(btn) btn.textContent='✓ Ostali odjavljeni'; setTimeout(()=>{ if(btn){ btn.textContent=prije; btn.disabled=false; } },1600); }
+      catch(e){ alert(e.message); if(btn){ btn.textContent=prije; btn.disabled=false; } }
+    }
+    // ⭐ v168 — GDPR izvoz: preuzmi sve svoje podatke kao JSON
+    async function preuzmiPodatke(btn){
+      const prije=btn?btn.textContent:''; if(btn){ btn.disabled=true; btn.textContent='Pripremam…'; }
+      try{
+        const r=await fetch('/api/moji-podaci',{headers:{'Authorization':'Bearer '+getToken()}});
+        if(!r.ok) throw new Error('Izvoz trenutno nije moguć.');
+        const blob=await r.blob(); const url=URL.createObjectURL(blob);
+        const a=document.createElement('a'); a.href=url; a.download='oi-moji-podaci.json'; document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(()=>URL.revokeObjectURL(url), 3000);
+      }catch(e){ alert(e.message); }
+      finally{ if(btn){ btn.disabled=false; btn.textContent=prije; } }
+    }
     function brisiRacunKorak(n){
       avZatvori && avZatvori();
       const ov=document.getElementById('del-overlay');
@@ -1380,7 +1464,9 @@
       primijeniMod(); // ⭐ v042 — nav i boja moda PRIJE prvog rendera
       osvjeziPrikaze();
       rutiraj();
-      if(!localStorage.getItem('oi_tour_done')) setTimeout(otvoriTour, 350); // ⭐ v046
+      // ⭐ v157 — "home-sidro": donja stavka povijesti je home; sistemski back hoda unatrag do home, tek onda izlazi
+      try{ const hm=(MOD_TABOVI[trenutniMod()][0]||['danas'])[0]; history.replaceState({anchor:1}, '', '#/'+hm); }catch(_){ }
+      let tourGotov=true; try{ tourGotov=!!localStorage.getItem('oi_tour_done'); }catch(_){ } if(!tourGotov) setTimeout(otvoriTour, 350); // ⭐ v046/v167 — ako storage baci, ne prikazuj (bolje nego svaki put)
       // ⭐ v007 — onboarding: bez podrucja ili datuma, a bez preskoka -> pitaj
       if((!k.program_id || !k.cilj_datum) && !localStorage.getItem('oi_onb_skip'))
         otvoriOnb(!k.program_id ? 'podrucje' : 'datum');
@@ -1422,8 +1508,9 @@
         if(nd) nd.textContent=PV_N[t]||''; if(ad) ad.innerHTML=PV_A[t]||'';
         const desktop = (typeof window.matchMedia==='function') ? window.matchMedia('(min-width:900px)').matches : (window.innerWidth>=900);
         sdn.style.display = desktop ? 'flex' : 'none'; }
-      if(t==='uci'){ if(window._skokClanak){ const cid=window._skokClanak; window._skokClanak=null; otvoriClanak(cid); } else ucitajUci(); } // ⭐ v045 — skok iz citata bez reseta na listu (fix race); ⭐ v007
+      if(t==='uci'){ UCI_STACK=['lista']; if(window._skokDok){ const sd=window._skokDok; window._skokDok=null; otvoriDok(sd.id, sd.istakni); } else if(window._skokClanak){ const cid=window._skokClanak; window._skokClanak=null; otvoriClanak(cid); } else ucitajUci(); } // ⭐ v158 — reset stoga pri ulasku; ⭐ v155 skok na dokument; ⭐ v045 skok iz citata
       if(t==='ja'||t==='danas') ucitajAiKvotu(); // ⭐ v021+v038
+      if(t==='ja') ucitajMojuAktivnost(); // ⭐ v162
       if(t==='ja') ucitajNaplatu(); // ⭐ v080 — F19 naplatni podaci
       if(t==='danas') nastaviRender(); // ⭐ v046
       if(t==='danas') ucitajSpremnost(); // ⭐ v077 — F9+F10 spremnost + plan za danas
@@ -1439,14 +1526,84 @@
     window.addEventListener('hashchange', ()=>{ if(document.body.classList.contains('u-appu')) rutiraj(); });
 
     // ── ⭐ v004 — prikazi korisnika (vrh, Ja, Danas brojac) ──
+    // ⭐ v161 — bogati modali pretplate: čestitka po tieru (Basic/Pro/Enterprise, vizualno različiti) + prompt pri potrošenim tokenima
+    const TIER_TEMA = {
+      basic:      { boja:'#1F5C8B', boja2:'#3B82C4', ikona:'🔷', naziv:'BASIC',      tokeni:'5 milijuna'  },
+      pro:        { boja:'#B45309', boja2:'#F59E0B', ikona:'⭐', naziv:'PRO',        tokeni:'10 milijuna' },
+      enterprise: { boja:'#0F3D2E', boja2:'#1E7A50', ikona:'👑', naziv:'ENTERPRISE', tokeni:'40 milijuna' }
+    };
+    function tierModalZatvori(){ const e=document.getElementById('tier-modal'); if(e) e.remove(); }
+    function tierModal(html){
+      tierModalZatvori();
+      const ov=document.createElement('div'); ov.id='tier-modal';
+      ov.style.cssText='position:fixed;inset:0;background:rgba(15,20,25,.55);display:flex;align-items:center;justify-content:center;z-index:10000;padding:20px;animation:tmIn .22s ease';
+      ov.innerHTML='<div style="background:var(--paper);border-radius:20px;max-width:380px;width:100%;overflow:hidden;box-shadow:0 24px 70px rgba(0,0,0,.4);animation:tmPop .3s cubic-bezier(.2,.8,.3,1.15)">'+html+'</div>';
+      ov.addEventListener('click',function(e){ if(e.target===ov) tierModalZatvori(); });
+      document.body.appendChild(ov);
+    }
+    function tierCestitka(tier, istek, napomena){
+      const T=TIER_TEMA[tier]; if(!T) return;
+      const doTxt = istek ? ('Vrijedi do <b>'+esc(formatDatum(String(istek).slice(0,10)))+'</b>') : 'Aktivno bez isteka';
+      const znacajke=[
+        ['🎓','Usmeni ispit za OI','vježba pred AI-komisijom — ocjena i savjeti po području'],
+        ['⚖️','Vještak za pravna pitanja','preko 15.000 ažuriranih članaka hrvatskih propisa'],
+        ['📚','Puna pretraga propisa','zakoni, pravilnici, tehnički propisi — bez ograničenja'],
+        ['✍️','Pismeni testovi i dopisi','uvježbaj ispit i sastavi službene dopise']
+      ];
+      const lista=znacajke.map(z=>'<div style="display:flex;gap:11px;align-items:flex-start;margin-bottom:13px"><div style="font-size:18px;line-height:1.1">'+z[0]+'</div><div><div style="font-weight:600;font-size:13.5px;color:var(--ink)">'+z[1]+'</div><div style="font-size:12px;color:var(--ink3);line-height:1.4">'+z[2]+'</div></div></div>').join('');
+      const napHtml = napomena ? '<div style="background:var(--accsoft);border-left:3px solid '+T.boja+';border-radius:9px;padding:12px 14px;margin:4px 0 14px;font-size:13.5px;color:var(--ink);line-height:1.5">💬 '+esc(napomena)+'</div>' : '';
+      tierModal(
+        '<div style="background:linear-gradient(135deg,'+T.boja+','+T.boja2+');padding:26px 24px 22px;text-align:center;color:#fff">'
+        +'<div style="font-size:42px;line-height:1;margin-bottom:8px">'+T.ikona+'</div>'
+        +'<div style="font-size:11.5px;letter-spacing:.16em;opacity:.85;font-weight:700">DODIJELJEN VAM JE PAKET</div>'
+        +'<div style="font-size:27px;font-weight:800;letter-spacing:.02em;margin-top:3px">'+T.naziv+'</div>'
+        +'<div style="margin-top:11px;display:inline-block;background:rgba(255,255,255,.2);border-radius:99px;padding:6px 15px;font-size:12.5px;font-weight:700">⚡ '+T.tokeni+' tokena mjesečno</div>'
+        +'</div>'
+        +'<div style="padding:22px 22px 6px">'
+        +'<div style="font-size:14px;color:var(--ink2);text-align:center;margin-bottom:18px;line-height:1.5">Čestitamo! Povećali smo vam potrošnju tokena — sada koristite <b>sve značajke</b> aplikacije:</div>'
+        +napHtml
+        +lista
+        +'<div style="font-size:12.5px;color:var(--ink3);text-align:center;margin:8px 0 2px">'+doTxt+'</div>'
+        +'</div>'
+        +'<div style="padding:8px 22px 22px"><button class="btn" style="width:100%;background:'+T.boja+';border-color:'+T.boja+'" onclick="cestitkaProcitano()">Pročitao sam ✓</button></div>'
+      );
+    }
+    function cestitkaProcitano(){ tierModalZatvori(); try{ if(KORISNIK&&KORISNIK.cestitka) delete KORISNIK.cestitka; api('cestitka/procitano',{},true); }catch(_){ } } // ⭐ v162 — ne prikazuj više
+    function pretplataNadogradiPrompt(tier){
+      if(window._nadogradiPrikazan) return; window._nadogradiPrikazan=true; // jednom po sesiji
+      const sljedeci={free:'basic',basic:'pro',pro:'enterprise',enterprise:null}[tier];
+      const T=TIER_TEMA[sljedeci];
+      const trenutni={free:'Besplatnog',basic:'Basic',pro:'Pro',enterprise:'Enterprise'}[tier]||'';
+      tierModal(
+        '<div style="background:linear-gradient(135deg,#8a1c1c,#c0392b);padding:24px;text-align:center;color:#fff">'
+        +'<div style="font-size:40px;line-height:1">🔋</div>'
+        +'<div style="font-size:20px;font-weight:800;margin-top:6px">Tokeni su potrošeni</div>'
+        +'<div style="font-size:13px;opacity:.92;margin-top:5px;line-height:1.4">Iskoristili ste sve tokene '+trenutni+' paketa ovaj mjesec.</div>'
+        +'</div>'
+        +'<div style="padding:22px">'
+        +'<div style="font-size:13.5px;color:var(--ink2);line-height:1.55;text-align:center;margin-bottom:16px">Nadogradnjom dobivate više tokena za <b>Vještaka</b>, <b>usmeni ispit</b> i sve ostale AI značajke.</div>'
+        +(T?('<div style="background:linear-gradient(135deg,'+T.boja+','+T.boja2+');border-radius:14px;padding:16px;text-align:center;color:#fff"><div style="font-size:11px;letter-spacing:.12em;opacity:.85;font-weight:700">SLJEDEĆI PAKET</div><div style="font-size:20px;font-weight:800;margin-top:2px">'+T.ikona+' '+T.naziv+'</div><div style="font-size:13px;margin-top:2px;opacity:.95">'+T.tokeni+' tokena mjesečno</div></div>'):'<div style="text-align:center;color:var(--ink3);font-size:13px">Već ste na najvišem paketu — tokeni se obnavljaju sljedeći mjesec.</div>')
+        +'<div style="font-size:12px;color:var(--ink3);text-align:center;margin-top:15px">Za nadogradnju javite se na <b>info@zbuka.hr</b></div>'
+        +'</div>'
+        +'<div style="padding:0 22px 22px"><button class="btn-sek" style="width:100%" onclick="tierModalZatvori()">U redu</button></div>'
+      );
+    }
+    function pretplataProvjeriPrompt(k){
+      try{ if(k && k.cestitka && k.cestitka.tier && !window._cestitkaPrikazana){ window._cestitkaPrikazana=true; tierCestitka(k.cestitka.tier, k.cestitka.istek, k.cestitka.napomena); } }catch(_){ } // ⭐ v162 — čestitka sa servera; jednom po sesiji dok korisnik ne označi pročitano
+    }
     function osvjeziPrikaze(){
       const k=KORISNIK; if(!k) return;
-      const pro = k.tier==='pro';
+      // ⭐ v160 — prikaz tiera: svi tierovi (free/basic/pro/enterprise) + istek; upsell samo za free
+      const TIER_LABEL={free:'BESPLATNO',basic:'BASIC',pro:'PRO',enterprise:'ENTERPRISE'};
+      const paid = !!(k.tier && k.tier!=='free');
+      const labela = TIER_LABEL[k.tier] || (k.tier?String(k.tier).toUpperCase():'BESPLATNO');
+      const istekTxt = (paid && k.tier_istek) ? (' · do '+formatDatum(String(k.tier_istek).slice(0,10))) : '';
       const vt=document.getElementById('vrh-tier');
-      if(vt){ vt.textContent = pro?'PRO':'BESPLATNO'; vt.className='pill gumb'+(pro?'':' free'); } // ⭐ v058 — tier pilula uklonjena iz headera; guard
+      if(vt){ vt.textContent = labela; vt.className='tier-b tier-'+(k.tier||'free'); } // ⭐ v168 — badge uz logo, obojen po tieru
       const jt=document.getElementById('ja-tier');
-      jt.textContent = pro?'PRO':'BESPLATNO'; jt.className='pill'+(pro?'':' free');
-      var pk=document.getElementById('ja-pro-k'); if(pk) pk.style.display = pro?'none':''; // ⭐ v046
+      jt.textContent = labela+istekTxt; jt.className='pill'+(paid?'':' free');
+      var pk=document.getElementById('ja-pro-k'); if(pk) pk.style.display = paid?'none':''; // upsell samo za free
+      pretplataProvjeriPrompt(k); // ⭐ v160 — prompt "Sada ste [TIER]…" kad se promijeni na plaćeni
       document.getElementById('ja-ime').textContent = k.ime || '—';
       document.getElementById('ja-email').textContent = k.email || '—';
       document.getElementById('ja-kime').textContent = k.korisnicko_ime || '—';
@@ -1458,7 +1615,21 @@
       document.getElementById('ja-podrucje').textContent = k.program_naziv || 'nije odabrano';
       document.getElementById('ja-admin').style.display = k.je_superadmin ? '' : 'none';
       if(k.je_superadmin) adminStatus(); // ⭐ v011 — progress uvezenog gradiva
+      else resetAdminUI(); // ⭐ v164 — SIGURNOST: ne-superadmin NIKAD ne smije vidjeti dashboard; sruši svaki zaostali admin pod-ekran
       napuniUzeSelect();
+    }
+    // ⭐ v164 — potpuno sruši admin sučelje (dashboard pod-ekran + sadržaj) da ne ostane iz prethodne (superadmin) sesije
+    function resetAdminUI(){
+      try{
+        _korOtvoren=null; _tierOtvoren=null;
+        document.body.classList.remove('dash-otvoren');
+        // zatvori dashboard pod-ekran: vrati normalnu djecu Ja taba, sakrij ja-dash
+        document.querySelectorAll('#t-ja > *').forEach(x=>{ x.style.display = (x.id==='ja-dash') ? 'none' : ''; });
+        const adm=document.getElementById('ja-admin'); if(adm) adm.style.display='none'; // KRITIČNO: admin sekcija ostaje skrivena
+        ['ja-ai-kartica','ja-akt-kartica'].forEach(id=>{ const e=document.getElementById(id); if(e) e.style.display='none'; }); // default-skrivene, populiraju se same
+        ['dash-korisnici','kor-detalj-panel','dash-clanci','dash-pretrage','dash-kpi','dash-g-tip','dash-g-akt','dash-g-reg','adm-gradivo-dash'].forEach(id=>{ const e=document.getElementById(id); if(e) e.innerHTML=''; }); // isprazni osjetljiv sadržaj
+        window._dashKorisnici=null;
+      }catch(_){ }
     }
     async function napuniUzeSelect(){
       const red=document.getElementById('ja-uze-red'), sel=document.getElementById('ja-uze');
@@ -1560,14 +1731,54 @@
 
     // ── ⭐ v007 — Uči: struktura → dokument → članak ──
     let UCI_CACHE=null, UCI_DOK=null, UCI_CLANAK=null, UCI_TRAZI_T=null;
+    let UCI_STACK=['lista']; // ⭐ v158 — eksplicitni stog prikaza (lista→dok→clanak) za pouzdan sistemski back
     const esc=(s)=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-    function uciPrikaz(p){
+    // ⭐ v159 — highlight pogođenih riječi (dijakritik-neosjetljivo): query bez dijakritike → regex koji hvata i ć/č/š/ž/đ varijante
+    function hl(s, q){
+      s=String(s??''); const DIA={c:'cčć',s:'sš',z:'zž',d:'dđ'};
+      const norm=t=>t.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+      const words=norm(q||'').trim().split(/\s+/).filter(w=>w.length>=2);
+      if(!words.length) return esc(s);
+      const exp=w=>w.replace(/[.*+?^${}()|[\]\\]/g,'\\$&').split('').map(ch=>DIA[ch]?('['+DIA[ch]+']'):ch).join('');
+      let re; try{ re=new RegExp('('+words.map(exp).join('|')+')','gi'); }catch(_){ return esc(s); }
+      let out='',last=0,m; re.lastIndex=0;
+      while((m=re.exec(s))){ out+=esc(s.slice(last,m.index))+'<mark>'+esc(m[0])+'</mark>'; last=m.index+m[0].length; if(m.index===re.lastIndex) re.lastIndex++; }
+      return out+esc(s.slice(last));
+    }
+    function uciPrikaz(p, fromPop){
       document.getElementById('u-lista').style.display = p==='lista'?'':'none';
       document.getElementById('u-dok').style.display   = p==='dok'?'':'none';
       document.getElementById('u-clanak').style.display= p==='clanak'?'':'none';
       skrolVrh();
+      // ⭐ v158 — stog: svaki dublji prikaz gura JEDNU history-stavku; back ih troši jednu po jednu (članak→dokument→lista→home→van)
+      if(fromPop) return;
+      if(p==='lista'){ UCI_STACK=['lista']; return; }
+      if(UCI_STACK[UCI_STACK.length-1]===p) return; // ista dubina (npr. prev/next članak) — ne guraj novu stavku
+      UCI_STACK.push(p);
+      history.pushState({uciTrap:1}, '', location.href);
     }
-    function uciNatrag(p){ if(p==='dok' && !UCI_DOK){ ucitajUci(); return; } uciPrikaz(p); } // ⭐ v045 — natrag nakon skoka iz citata
+    function uciNatrag(p){ // ⭐ v158 — vozi kroz history (history.go) da stog i povijest ostanu usklađeni (bez "mrtvih" back-ova)
+      const idx=UCI_STACK.lastIndexOf(p);
+      if(idx<0){ ucitajUci(); return; }
+      const steps=UCI_STACK.length-1-idx;
+      if(steps>0) history.go(-steps); else uciPrikaz(p);
+    }
+    // ⭐ v152 — sistemski back: unutar Propisi/Uči vraća "manjeg reda" (članak → dokument → lista), tek onda izlazi iz taba
+    window.addEventListener('popstate', function(){
+      const home=(MOD_TABOVI[trenutniMod()][0]||['danas'])[0]; // ⭐ v157
+      const tab=(location.hash||'').replace(/^#\/?/,'');
+      // 1) Propisi/Uči pod-prikaz: stog (clanak → dok → lista); troši po jednu history-stavku
+      if(tab==='uci' && UCI_STACK.length>1){
+        UCI_STACK.pop();
+        uciPrikaz(UCI_STACK[UCI_STACK.length-1], true);
+        return;
+      }
+      // 2) ⭐ v157 — dosegnuto dno (sidro), a nismo na home → vrati na home (ostani u appu), ne izlazi
+      if(history.state && history.state.anchor && tab && tab!==home){
+        idiNaTab(home); return;
+      }
+      // 3) na home (sidro) → sljedeći back izlazi iz aplikacije
+    });
     function nastaviRender(){ // ⭐ v046/v102 — Nastavi gdje si stao (članak ILI test ILI usmeni)
       const k=document.getElementById('d-nastavi'); if(!k) return;
       try{
@@ -1637,6 +1848,22 @@
         }
       }catch(_){ /* tiho — Danas i dalje radi bez spremnosti */ }
     }
+    // ⭐ v159 — brzi pristup: Nedavno (localStorage) + Označeno ★ (server)
+    async function renderBrziPristup(){
+      const box=document.getElementById('u-brzi'); if(!box) return;
+      let ned=[]; try{ ned=JSON.parse(localStorage.getItem('oi_nedavno')||'[]'); }catch(_){ }
+      let html='';
+      if(ned.length) html+='<div class="tr-grupa-h" style="margin:4px 4px 6px">🕘 Nedavno gledano</div><div class="kartica" style="padding:6px 0">'
+        +ned.slice(0,6).map(c=>`<button class="clanak-red" onclick="otvoriClanak(${c.id})"><span class="co">${esc(c.oznaka||'')}</span><span class="cn">${esc(c.naslov||c.dok||'')}<br><small style="color:var(--ink3)">${esc(c.dok||'')}</small></span></button>`).join('')+'</div>';
+      box.innerHTML=html;
+      try{
+        const d=await apiGet('bookmarki');
+        if(d.bookmarki && d.bookmarki.length){
+          box.innerHTML=html+'<div class="tr-grupa-h" style="margin:14px 4px 6px">★ Označeno</div><div class="kartica" style="padding:6px 0">'
+            +d.bookmarki.slice(0,10).map(c=>`<button class="clanak-red" onclick="otvoriClanak(${c.clanak_id})"><span class="co">${esc(c.oznaka||'')}</span><span class="cn">${esc(c.naslov||'')}<br><small style="color:var(--ink3)">${esc(c.dokument_naziv||'')}</small></span><span class="zv aktivna">★</span></button>`).join('')+'</div>';
+        }
+      }catch(_){ }
+    }
     async function ucitajUci(){
       if(!KORISNIK) return;
       const bez=document.getElementById('u-bez-programa'), sad=document.getElementById('u-sadrzaj');
@@ -1652,11 +1879,12 @@
     }
     function vrstaTag(v){ return {zakon:'Zakon',pravilnik:'Pravilnik',uredba:'Uredba',uredba_eu:'EU uredba',tehnicki_propis:'Tehnički propis',mrezna_pravila:'Mrežna pravila',norma:'Norma',strategija:'Strategija',plan:'Plan',program:'Program',konvencija:'Konvencija'}[v]||v; }
     function renderUci(){
+      renderBrziPristup(); // ⭐ v159 — brzi pristup (Nedavno + Označeno)
       const s=UCI_CACHE; if(!s) return;
       const el=document.getElementById('u-sekcije');
       if(!s.sekcije.length){ el.innerHTML='<div class="kartica"><div class="prazno"><b>Gradivo još nije uvezeno</b><span>Šifrarnik regulative uvozi se kroz Ja → Admin.</span></div></div>'; return; }
       el.innerHTML = s.sekcije.map((sek,i)=>{
-        const naslov = esc(sek.put.split(' / ').pop());
+        const naslov = esc((sek.put||sek.uze_podrucje||'').split(' / ').pop()); // ⭐ v169 — defenziva: malformirana sekcija ne ruši tab
         const redci = sek.propisi.map(p=>{
           const ima = p.br_clanaka>0;
           return `<button class="propis" ${ima?`onclick="otvoriDok(${p.dokument_id})"`:'disabled'}>`+
@@ -1671,8 +1899,9 @@
         return `<details class="sekc" ${i===0?'open':''}><summary>${naslov}<span class="broj">${sek.propisi.length}</span></summary>${redci}</details>`;
       }).join('');
     }
-    async function otvoriDok(id){
+    async function otvoriDok(id, istakni){ // ⭐ v154 — istakni: lista id-eva članaka za bounce-highlight (iz Novosti)
       uciPrikaz('dok'); UCI_DOK=id;
+      const IST=new Set(Array.isArray(istakni)?istakni.map(Number):[]);
       document.getElementById('ud-clanci').innerHTML='<div class="prazno mala"><span>Učitavam…</span></div>';
       try{
         const d=await apiGet('dokument/'+id);
@@ -1681,11 +1910,12 @@
         document.getElementById('ud-izvor').textContent=d.dokument.izvor;
         document.getElementById('ud-obuhvat').textContent=d.dokument.obuhvat||'';
         document.getElementById('ud-clanci').innerHTML = d.clanci.length
-          ? d.clanci.map(c=>`<button class="clanak-red" onclick="otvoriClanak(${c.id})">`+
+          ? d.clanci.map(c=>`<button class="clanak-red${IST.has(Number(c.id))?' clanak-nov':''}" onclick="otvoriClanak(${c.id})">`+
               `<span class="co">${esc(c.oznaka)||('#'+c.redoslijed)}</span>`+
-              `<span class="cn">${esc(c.naslov) || (c.preview?'<span class="pv">'+esc(c.preview)+'…</span>':'—')}</span>`+  /* ⭐ v010 — preview umjesto crtice */
+              `<span class="cn">${esc(c.naslov) || (c.preview?'<span class="pv">'+esc(c.preview)+'…</span>':'—')}${IST.has(Number(c.id))?'<span class="nov-tag">osvježeno</span>':''}</span>`+  /* ⭐ v155 — oznaka osvježenog; ⭐ v010 preview */
               `<span class="zv ${c.bookmark?'aktivna':''}">★</span></button>`).join('')
           : '<div class="prazno mala"><span>Članci se uvoze uskoro.</span></div>';
+        if(IST.size){ setTimeout(()=>{ const f=document.querySelector('#ud-clanci .clanak-nov'); if(f) f.scrollIntoView({block:'center',behavior:'smooth'}); },120); } // ⭐ v154 — skrol na prvi osvježeni
       }catch(e){ document.getElementById('ud-clanci').innerHTML='<div class="prazno mala"><span>'+esc(e.message)+'</span></div>'; }
     }
     function ucProgres(id){ // ⭐ v046
@@ -1734,6 +1964,7 @@
         const d=await apiGet('clanak/'+id + (naDan?('?na_dan='+encodeURIComponent(naDan)):'')); // ⭐ v137
         UCI_CLANAK=d.clanak;
         try{ localStorage.setItem('oi_zadnji_clanak', JSON.stringify({ id:d.clanak.id, oznaka:d.clanak.oznaka, naslov:(d.clanak.naslov||'').slice(0,40), dok:d.clanak.dokument_naziv })); }catch(_){ } // ⭐ v046
+        try{ let ned=JSON.parse(localStorage.getItem('oi_nedavno')||'[]'); ned=ned.filter(x=>x.id!==d.clanak.id); ned.unshift({id:d.clanak.id,oznaka:d.clanak.oznaka,naslov:(d.clanak.naslov||'').slice(0,40),dok:d.clanak.dokument_naziv}); localStorage.setItem('oi_nedavno', JSON.stringify(ned.slice(0,8))); }catch(_){ } // ⭐ v159 — lista nedavno gledanih
         nastavakZabiljezi('clanak', { id:d.clanak.id, oznaka:d.clanak.oznaka, naslov:(d.clanak.naslov||'').slice(0,40), dok:d.clanak.dokument_naziv }); // ⭐ v102
         document.getElementById('uc-meta').textContent = d.clanak.dokument_naziv+' · '+d.clanak.dokument_izvor;
         document.getElementById('uc-naslov').textContent = (d.clanak.oznaka?d.clanak.oznaka+' ':'')+(d.clanak.naslov||'');
@@ -1761,17 +1992,18 @@
     function uciTrazi(){
       clearTimeout(UCI_TRAZI_T);
       const q=val('u-trazi'), rez=document.getElementById('u-rezultati');
-      if(q.length<2){ rez.innerHTML=''; document.getElementById('u-sekcije').style.display=''; return; }
+      if(q.length<2){ rez.innerHTML=''; document.getElementById('u-sekcije').style.display=''; const ub=document.getElementById('u-brzi'); if(ub) ub.style.display=''; return; }
       UCI_TRAZI_T=setTimeout(async ()=>{
         try{
           const d=await apiGet('uci/pretraga?q='+encodeURIComponent(q));
           document.getElementById('u-sekcije').style.display='none';
+          const _ub=document.getElementById('u-brzi'); if(_ub) _ub.style.display='none'; // ⭐ v159 — sakrij brzi pristup dok traje pretraga
           const dijelovi=[];
           // ⭐ v125 — dokumenti prvo (naziv/vrsta), zatim članci (oznaka prije teksta); ulomak teksta kad je pogodak u tekstu
-          if(d.propisi.length) dijelovi.push('<div class="tr-grupa-h">Dokumenti</div><div class="kartica" style="padding:6px 0">'+d.propisi.map(p=>`<button class="propis" onclick="otvoriDok(${p.dokument_id})"><div class="pn">${esc(p.naziv)}</div><div class="pm"><span class="tag">${vrstaTag(p.vrsta)}</span></div></button>`).join('')+'</div>');
+          if(d.propisi.length) dijelovi.push('<div class="tr-grupa-h">Dokumenti</div><div class="kartica" style="padding:6px 0">'+d.propisi.map(p=>`<button class="propis" onclick="otvoriDok(${p.dokument_id})"><div class="pn">${hl(p.naziv,q)}</div><div class="pm"><span class="tag">${vrstaTag(p.vrsta)}</span>${p.izvor?' <span style="color:var(--ink3);font-size:11px">'+hl(p.izvor,q)+'</span>':''}</div></button>`).join('')+'</div>');
           if(d.clanci.length) dijelovi.push('<div class="tr-grupa-h">Članci</div><div class="kartica" style="padding:6px 0">'+d.clanci.map(c=>{
             const uTekstu = c.rang===4; // pogodak samo u tekstu → pokaži ulomak
-            return `<button class="clanak-red" onclick="otvoriClanak(${c.id})"><span class="co">${esc(c.oznaka)}</span><span class="cn">${esc(c.naslov||'')}<br><small style="color:var(--ink3)">${esc(c.dokument_naziv)}</small>${uTekstu&&c.ulomak?'<br><small style="color:var(--ink2)">…'+esc(c.ulomak)+'…</small>':''}</span></button>`;
+            return `<button class="clanak-red" onclick="otvoriClanak(${c.id})"><span class="co">${hl(c.oznaka,q)}</span><span class="cn">${hl(c.naslov||'',q)}<br><small style="color:var(--ink3)">${hl(c.dokument_naziv,q)}${c.izvor?' · '+hl(c.izvor,q):''}</small>${uTekstu&&c.ulomak?'<br><small style="color:var(--ink2)">…'+hl(c.ulomak,q)+'…</small>':''}</span></button>`;
           }).join('')+'</div>');
           rez.innerHTML = dijelovi.join('') || '<div class="kartica"><div class="prazno mala"><span>Nema rezultata za „'+esc(q)+'".</span></div></div>';
         }catch(e){ rez.innerHTML='<div class="kartica"><div class="prazno mala"><span>'+esc(e.message)+'</span></div></div>'; }
@@ -1821,11 +2053,22 @@
         st.innerHTML='Uvozim '+(i+1)+'/'+files.length+': '+esc(f.name)+'…';
         try{
           const sadrzaj=JSON.parse(await f.text());
+          // ⭐ v149 — dry-run pregled; prompt-potvrda SAMO kad se postojeći članci prepisuju/brišu (za čisto nove nema smetnje)
+          const pv=await api('admin/uvoz/clanci', Object.assign({}, sadrzaj, {preview:true}), true);
+          if(pv && pv.preview && (((pv.izmijenjeni||[]).length) || ((pv.brisani||[]).length))){
+            const naz=sadrzaj.dokument_naziv||f.name;
+            const poruka='OVERWRITE u „'+naz+'\u201c:\n'
+              +'• Ažurirati (prepisati): '+((pv.izmijenjeni||[]).join(', ')||'—')+'\n'
+              +'• Dodati nove: '+((pv.novi||[]).join(', ')||'—')+'\n'
+              +'• Obrisati: '+((pv.brisani||[]).join(', ')||'—')+'\n'
+              +'• Nepromijenjeno: '+(pv.isti||0)+'\n\nNastaviti s uvozom?';
+            if(!confirm(poruka)){ redovi.push('⤫ preskočeno (odustao): '+esc(naz)); continue; }
+          }
           const d=await api('admin/uvoz/clanci', sadrzaj, true);
           const key = d.status==='identicno'?'identicno':(d.status==='zamijenjeno'?'zamijenjeno':'novo');
           zbroj[key]++;
           const ikona = key==='identicno'?'•':'✔';
-          var detalj = key==='identicno' ? ' (već uneseno)' : (key==='upsert' ? ' (novela: +'+(d.novi||0)+' / ±'+(d.izmijenjeni||0)+' / −'+(d.brisani||0)+')' : ''); /* ⭐ v018 */
+          var detalj = key==='identicno' ? ' (već uneseno)' : (d.status==='upsert' ? ' (overwrite: +'+(d.novi||0)+' novih / ±'+(d.izmijenjeni||0)+' izmijenjenih / −'+(d.brisani||0)+' brisanih)' : ''); /* ⭐ v018 · v149 */
           redovi.push(ikona+' '+esc((sadrzaj.dokument_naziv||f.name))+' — '+d.clanaka+' čl.'+detalj);
         }catch(e){ zbroj.greska++; redovi.push('✗ '+esc(f.name)+' — '+esc(e.message)); }
       }
@@ -1866,8 +2109,9 @@
     // ⭐ v017 — neuvezeni propisi: pregled po vrsti + kopiranje cistog popisa (za slanje AI-ju)
     /* ⭐ v112/v113 — Dashboard gradiva: popis dokumenata (po vrsti) + pregled članaka + brisanje */
     let _gradivoDocs=null; // ⭐ v116 — cache za search filter
-    async function gradivoDash(){
+    async function gradivoDash(refresh){ // ⭐ v150 — toggle: drugi klik na gumb sažima; interni refresh (nakon brisanja) forsira ponovno učitavanje
       const box=document.getElementById('adm-gradivo-dash');
+      if(!refresh && box.innerHTML.trim()){ box.innerHTML=''; return; }
       box.innerHTML='<div style="color:var(--ink2);font-size:13px">Učitavam…</div>';
       try{
         const d=await apiGet('admin/ai/ingest-lista');
@@ -1887,10 +2131,13 @@
       if(upit.length<2){ box.innerHTML=''; return; }
       _gradivoClanciT=setTimeout(async ()=>{
         try{
+          const dm=(_gradivoDocs||[]).some(x=>(x.naziv||'').toLowerCase().includes(upit.toLowerCase())); // ⭐ v150 — pogađa li naziv dokumenta?
           const d=await apiGet('admin/gradivo/trazi-clanke?q='+encodeURIComponent(upit));
-          if(!d.clanci || !d.clanci.length){ box.innerHTML=''; return; }
-          let h='<div class="gd-clanci-rez"><div class="gd-clanci-rez-h">📄 Članci koji odgovaraju „'+esc(upit)+'" ('+d.clanci.length+'):</div>';
-          d.clanci.forEach(c=>{
+          let cl=d.clanci||[];
+          if(dm) cl=cl.filter(c=>c.rang===1); // ⭐ v150 — prioritet: naziv → oznaka/naslov; kad je naziv pogođen, ne prikazuj tekst-šum članaka
+          if(!cl.length){ box.innerHTML=''; return; }
+          let h='<div class="gd-clanci-rez"><div class="gd-clanci-rez-h">📄 Članci koji odgovaraju „'+esc(upit)+'" ('+cl.length+'):</div>';
+          cl.forEach(c=>{
             h+='<div class="gd-clanci-rez-red">'
               +'<b>'+esc(c.oznaka||'—')+'</b> · <span style="color:var(--ink3)">'+esc((c.dokument_naziv||'').slice(0,45))+'</span>'
               +'<div style="font-size:12px;color:var(--ink2);margin-top:2px">'+esc((c.ulomak||'').slice(0,120))+'…</div>'
@@ -1981,7 +2228,7 @@
         box.innerHTML='<div class="gd-brisanje"><b>Brisanje grupe "'+esc(d.vrsta)+'" gotovo ✓</b><br>'+log
           +'<br><br><b>Ukupno:</b> '+d.dokumenata+' dokumenata · '+d.clanaka+' članaka · '+d.chunkova+' chunkova iz RAG-a.<br>'
           +'<span style="color:var(--ink3);font-size:12px">Osvježavam popis…</span></div>';
-        setTimeout(gradivoDash, 1400);
+        setTimeout(()=>gradivoDash(true), 1400);
       }catch(e){ box.innerHTML='<div class="gd-brisanje" style="color:#7a2018">Greška brisanja grupe: '+esc(e.message)+'</div>'; }
     }
     async function gradivoObrisi(id, naziv){
@@ -1990,7 +2237,7 @@
       try{
         const d=await api('admin/dokument-obrisi',{dokument_id:id,potvrda:naziv},true);
         alert('Obrisano: "'+d.naziv+'" ('+d.obrisano_clanaka+' članaka).');
-        gradivoDash();
+        gradivoDash(true);
       }catch(e){ alert('Greška brisanja: '+e.message); }
     }
     async function admReset(){ /* ⭐ v020 — hard reset dokumenta za demo-test novela */
@@ -2001,21 +2248,42 @@
         alert('Obrisano '+d.obrisano_clanaka+' članaka. Sada uvezi originalni JSON dokumenta.');
       }catch(e){ alert(e.message); }
     }
-    async function ucitajAiKvotu(){ /* ⭐ v021 — progress bar potrošnje */
+    function fmtTok(n){ // ⭐ v161 — marketinški format tokena
+      if(n==null) return '∞';
+      if(n>=1e6){ const m=n/1e6; return (m>=10?Math.round(m):(Math.round(m*10)/10)).toString().replace('.',',')+'M'; }
+      if(n>=1e3) return Math.round(n/1e3)+'K';
+      return String(Math.round(n));
+    }
+    async function ucitajAiKvotu(){ /* ⭐ v021 — progress bar potrošnje; ⭐ v161 — u tokenima (marketinški), svi tierovi */
       const k=document.getElementById('ja-ai-kartica'); if(!k) return;
       try{ const d=await apiGet('ai/potrosnja');
         k.style.display='';
-        var dk=document.getElementById('d-ai-kartica'); if(dk) dk.style.display=''; /* ⭐ v035 */
+        var dk=document.getElementById('d-ai-kartica'); if(dk) dk.style.display='';
         const bar=document.getElementById('ja-ai-bar');
         bar.style.width=(d.neogranicen?100:d.postotak)+'%';
         bar.style.background = d.postotak>=90?'#B3261E':(d.postotak>=70?'#b58a2e':'#4a6b57');
         document.getElementById('ja-ai-pct').textContent = d.neogranicen?'∞':(d.postotak+'%');
+        const TL={free:'Besplatni',basic:'Basic',pro:'Pro',enterprise:'Enterprise'};
         document.getElementById('ja-ai-txt').textContent = d.neogranicen
           ? 'Neograničeno (admin)'
-          : ('Iskorišteno '+d.postotak+'% mjesečne AI kvote ('+(d.tier==='pro'?'Pro':'Besplatni')+' paket)');
-        var hr2=function(x){ return (Math.round(x*100)/100).toFixed(2).replace('.',','); }; // ⭐ v042
-        document.getElementById('ja-ai-usd').textContent = hr2(d.potroseno_usd)+' $'+(d.budzet_usd?(' / '+hr2(d.budzet_usd)+' $'):'');
+          : ('Iskorišteno '+d.postotak+'% · '+(TL[d.tier]||'Besplatni')+' paket');
+        document.getElementById('ja-ai-usd').textContent = d.neogranicen
+          ? '∞ tokena'
+          : (fmtTok(d.tokeni_iskoristeno)+' / '+fmtTok(d.tokeni_total)+' tokena');
+        if(!d.neogranicen && d.postotak>=100) pretplataNadogradiPrompt(d.tier); // ⭐ v161 — pri kraju ponudi nadogradnju
       }catch(e){ k.style.display='none'; } /* AI isključen ili greška — kartica se ne prikazuje */
+    }
+    // ⭐ v162 — korisnik vidi ŠTO radi/pretražuje (isti donut kao superadmin)
+    async function ucitajMojuAktivnost(){
+      const k=document.getElementById('ja-akt-kartica'); if(!k) return;
+      try{ const d=await apiGet('moja-aktivnost');
+        if(!d.tipovi||!d.tipovi.length){ k.style.display='none'; return; }
+        k.style.display='';
+        document.getElementById('ja-akt-donut').innerHTML = svgDonut(d.tipovi.map((x,i)=>({label:TIP_HR[x.tip]||x.tip,v:x.n,boja:DASH_BOJE[i%DASH_BOJE.length]})));
+        document.getElementById('ja-akt-pretrage').innerHTML = (d.pretrage&&d.pretrage.length)
+          ? '<div class="mlab" style="margin:4px 0 6px">Zadnje pretrage</div><div class="kartica" style="padding:5px 0">'+d.pretrage.map(p=>'<div class="red"><span>„'+esc(p.q)+'"</span><b style="color:var(--ink3);font-weight:400">'+(p.n!=null?p.n+' rez.':'')+'</b></div>').join('')+'</div>'
+          : '';
+      }catch(e){ k.style.display='none'; }
     }
     // ⭐ v080 — F19: naplatni podaci (fizička/pravna + OIB + adresa) za račune i Stripe
     let NP_TIP='fizicka';
@@ -2527,7 +2795,8 @@
         box.innerHTML='<div class="kartica" style="border-left:3px solid var(--accent);font-size:13.5px;line-height:1.6">'+mdRender(d.tekst||'')+'</div>';
         btn.style.display='none';
       }catch(e){
-        box.innerHTML='<div style="color:var(--err);font-size:13px">⚠ '+esc(e.message==='limit'?'AI kvota je iskorištena — nadogradnja na Pro donosi puni pristup.':e.message)+'</div>';
+        box.innerHTML='<div style="color:var(--err);font-size:13px">⚠ '+esc(e.message==='limit'?'Potrošeni su tokeni ovaj mjesec — nadogradnjom dobivate više.':e.message)+'</div>';
+        if(e.message==='limit'){ try{ pretplataNadogradiPrompt((KORISNIK&&KORISNIK.tier)||'free'); }catch(_){ } } // ⭐ v161
         btn.disabled=false; btn.textContent=prije;
       }
     }
@@ -2539,7 +2808,7 @@
       }catch(e){ document.getElementById('ts-feedback').innerHTML='<div class="kartica"><div style="color:var(--err)">⚠ '+esc(e.message)+'</div></div>'; }
       TS_BUSY=false;
     }
-    function tsRezultat(r){
+    function tsRezultat(r){ r=r||{}; // ⭐ v159 — defenziva: gotovo bez rezultata ne ruši ekran
       document.getElementById('ts-pit-k').style.display='none';
       if(SIM && SIM.faza==='pismeni'){ SIM.test_sesija_id=TS_SESIJA; SIM.ocjena_pismeni=r.ocjena; SIM.prolaz_pismeni=r.prolaz; } // ⭐ v139 — simulacija: zapamti pismeni
       document.getElementById('ts-st').textContent='TEST ZAVRŠEN';
@@ -2872,7 +3141,10 @@
         umTajmerStart();                                     // ⭐ v069 — tempo (ako uključen)
         document.getElementById('um-input').focus();
       }catch(e){
-        if(e.message==='pro') { // ⭐ v082 — pokaži uvod s Pro porukom umjesto alert
+        const tokenLimit = e.message==='limit' && e.data && e.data.razlog==='tokeni'; // ⭐ v161 — potrošeni tokeni
+        const proStari = e.message==='pro'; // legacy
+        if(tokenLimit || proStari){
+          try{ pretplataNadogradiPrompt((KORISNIK&&KORISNIK.tier)||'free'); }catch(_){ }
           const uv=document.getElementById('um-uvod'); if(uv) uv.style.display='';
           const pb=document.getElementById('um-uvod-btn'); if(pb) pb.style.display='none';
           const pp=document.getElementById('um-uvod-pro'); if(pp) pp.style.display='';
@@ -2919,7 +3191,7 @@
       document.getElementById('um-poruke').appendChild(d);
       skrolDno();
     }
-    function umRubrika(r){ // ⭐ v053 — završna ocjena /100, prag prolaza, razrez po pitanjima
+    function umRubrika(r){ r=r||{}; // ⭐ v159 — defenziva; ⭐ v053 — završna ocjena /100, prag prolaza, razrez po pitanjima
       umTajmerStop(); document.getElementById('um-tajmer').style.display='none'; // ⭐ v069
       try{ const n=JSON.parse(localStorage.getItem('oi_nastavak')||'null'); if(n&&n.tip==='usmeni') localStorage.removeItem('oi_nastavak'); }catch(_){ } // ⭐ v102 — usmeni gotov
       ttsStop(); // ⭐ v093 — utišaj glas (Google audio + browser)
@@ -2963,7 +3235,7 @@
     let SIM=null;
     function simStart(){
       const k=KORISNIK||{};
-      if(!k.je_superadmin && k.tier!=='pro'){ alert('Simulacija roka uključuje usmeni ispit pred komisijom, koji je dio Pro plana. Nadogradi na Pro za punu simulaciju roka.'); return; }
+      if(!k.je_superadmin && (!k.tier || k.tier==='free')){ alert('Simulacija roka uključuje usmeni ispit pred komisijom — dostupno u plaćenim paketima. Nadogradi paket za punu simulaciju roka.'); return; } // ⭐ v167 — svi plaćeni tierovi, ne samo pro
       SIM={ faza:'pismeni', test_sesija_id:null, usmeni_sesija_id:null }; // ⭐ v143 — uvijek ispočetka (napuštena simulacija više ne blokira novu)
       tsStart('test');
     }
@@ -3093,7 +3365,8 @@
       document.getElementById('tour-d').textContent = TOUR_I===TOUR.length-1?'Kreni':'Dalje';
     }
     function tourDalje(){ if(TOUR_I<TOUR.length-1){ TOUR_I++; tourCrtaj(); } else tourKraj(); }
-    function tourKraj(){ localStorage.setItem('oi_tour_done','1'); document.getElementById('tour').classList.remove('on'); }
+    function tourKraj(){ try{ localStorage.setItem('oi_tour_done','1'); }catch(_){ } document.getElementById('tour').classList.remove('on'); } // ⭐ v167 — try/catch da flag uvijek zapamti (PWA storage kvirk)
+    function tourNeprikazuj(){ try{ localStorage.setItem('oi_tour_done','1'); }catch(_){ } tourKraj(); } // ⭐ v167 — eksplicitno "ne prikazuj više"
     /* ⭐ v045 — avatar izbornik */
     function avToggle(e){ e.stopPropagation(); document.getElementById('av-menu').classList.toggle('on'); }
     function avZatvori(){ document.getElementById('av-menu').classList.remove('on'); }
@@ -3279,6 +3552,7 @@
       // pošalji odmah (forma je već prikupila sve) — ne čekaj da korisnik klikne
       setTimeout(()=>{ if(typeof aiPosalji==='function'){ const inp=document.getElementById('ai-input'); if(inp&&inp.value.trim()) aiPosalji(); } }, 260);
     }
+    function novOtvori(id, istakni){ window._skokDok={id:id, istakni:Array.isArray(istakni)?istakni:[]}; UCI_DOK=null; idiNaTab('uci'); } // ⭐ v155 — Novosti → otvori propis + highlight, bez race-a
     async function novUcitaj(){ // ⭐ v043 — Novosti feed
       const el=document.getElementById('nov-lista'); if(!el) return;
       el.innerHTML='<div class="prazno mala">Učitavam…</div>';
@@ -3286,13 +3560,19 @@
         if((d.novosti||[])[0]) localStorage.setItem('oi_nov_vidjeno', String(d.novosti[0].vrijedi_od).slice(0,10)); // ⭐ v046
         const dt=document.querySelector('#nav button[data-tab="novosti"] .dot'); if(dt) dt.remove(); // ⭐ v046
         if(!(d.novosti||[]).length){ el.innerHTML='<div class="prazno">📰 <b>Zasad nema izmjena</b><span>Kad zakon ili pravilnik dobije izmjenu, ovdje ćeš vidjeti što se i kada promijenilo.</span></div>'; return; }
-        el.innerHTML=d.novosti.map(n=>'<button class="kartica dop-k" onclick="idiNaTab(\'uci\');otvoriDok('+n.dokument_id+')">'
-          +'<div class="nov-dat">'+esc(formatDatum(String(n.vrijedi_od).slice(0,10)))+(n.nn_izvor?' · '+esc(n.nn_izvor):'')+'</div>'
-          +'<h4 style="margin-top:3px">'+esc(n.dokument)+'</h4>'
-          +(n.sazetak
-             ? '<p>'+esc(n.sazetak).replace(/\n/g,'<br>')+'</p>'   /* ⭐ v073 — čitljivi sažetak izmjena */
-             : '<p>Izmijenjen'+(n.clanaka===1?'':'o')+' '+n.clanaka+(n.clanaka===1?' članak':' članaka')+' — otvori propis i pogledaj 🕘 povijest članka.</p>')
-          +'</button>').join('');
+        let novHtml='', zadnjiDat=''; // ⭐ v159 — grupiranje Novosti po datumu
+        d.novosti.forEach(n=>{
+          const dat=String(n.vrijedi_od).slice(0,10);
+          if(dat!==zadnjiDat){ novHtml+='<div class="tr-grupa-h" style="margin:16px 4px 6px">'+esc(formatDatum(dat))+'</div>'; zadnjiDat=dat; }
+          novHtml+='<button class="kartica dop-k" onclick="novOtvori('+n.dokument_id+',['+(n.clanci_izmijenjeni||[]).join(',')+'])">'
+            +(n.nn_izvor?'<div class="nov-dat">'+esc(n.nn_izvor)+'</div>':'')
+            +'<h4 style="margin-top:3px">'+esc(n.dokument)+'</h4>'
+            +(n.sazetak
+               ? '<p>'+esc(n.sazetak).replace(/\n/g,'<br>')+'</p>'
+               : '<p>Izmijenjen'+(n.clanaka===1?'':'o')+' '+n.clanaka+(n.clanaka===1?' članak':' članaka')+' — otvori propis i pogledaj 🕘 povijest članka.</p>')
+            +'</button>';
+        });
+        el.innerHTML=novHtml;
       }catch(e){ el.innerHTML='<div class="prazno mala">'+esc(e.message)+'</div>'; }
     }
     function aiDodajUser(t){
@@ -3429,7 +3709,7 @@
       if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(ok).catch(()=>{ admKopFallback(txt); ok(); }); }
       else { admKopFallback(txt); ok(); }
     }
-    function aiOtvoriCitat(id){ window._skokClanak=id; idiNaTab('uci'); } // ⭐ v045 — renderTab otvara članak (prije: ucitajUci async gazio prikaz)
+    function aiOtvoriCitat(id){ window._skokClanak=id; UCI_DOK=null; idiNaTab('uci'); } // ⭐ v045 — renderTab otvara članak; ⭐ v153 — očisti dok-kontekst da sistemski back iz citata vrati na listu (ne stari dokument)
     async function aiOcijeni(pid, o, el){
       try{ await api('ai/ocjena',{poruka_id:pid,ocjena:o},true);
         el.parentElement.querySelectorAll('button').forEach(x=>x.classList.remove('on')); el.classList.add('on'); // ⭐ v141
@@ -3448,7 +3728,10 @@
         const h={'Content-Type':'application/json'}; if(getToken()) h['Authorization']='Bearer '+getToken();
         const r=await fetch('/api/ai/pitaj?stream=1',{method:'POST',headers:h,body:JSON.stringify({tekst:tekst,razgovor_id:AI_RAZG,nacin:window._aiNacin||undefined})}); // ⭐ v074 — nacin: eksplicitni registar
         if(!r.ok){ const d=await r.json().catch(()=>({}));
-          n.txt.textContent = r.status===402 ? 'Iskoristio si mjesečnu AI kvotu. Nadogradnja na Pro donosi puni pristup Vještaku.' : (d.error||'Greška.');
+          n.txt.textContent = r.status===402
+            ? 'Potrošili ste sve tokene ovaj mjesec — nadogradnjom dobivate više za Vještaka, usmeni i sve značajke.'
+            : (d.error||'Greška.'); // ⭐ v161 — token-budžet
+          if(r.status===402){ try{ const kt=(KORISNIK&&KORISNIK.tier)||'free'; pretplataNadogradiPrompt(kt); }catch(_){ } }
           AI_BUSY=false; document.getElementById('ai-send').disabled=false; return; }
         const rd=r.body.getReader(); const dec=new TextDecoder(); let buf=''; let prvi=true;
         for(;;){
@@ -3535,7 +3818,7 @@
       const area=d+` L ${pts[pts.length-1][0].toFixed(1)} ${h-p} L ${pts[0][0].toFixed(1)} ${h-p} Z`;
       return `<svg viewBox="0 0 ${w} ${h}" width="100%" style="display:block"><path d="${area}" fill="var(--accent)" opacity="0.10"/><path d="${d}" fill="none" stroke="var(--accent)" stroke-width="2"/></svg>`;
     }
-    function svgDonut(segmenti){ // [{label,v,boja}]
+    function svgDonut(segmenti){ // [{label,v,boja}] — ⭐ v162 horizontalna legenda (čipovi, wrap); mobilni + desktop
       const uk=Math.max(1,segmenti.reduce((s,x)=>s+x.v,0)); let a=-90; const R=32,C=40,sw=14;
       const arcs=segmenti.map(s=>{
         const frac=s.v/uk, a2=a+frac*360;
@@ -3544,9 +3827,12 @@
         const big=frac>0.5?1:0; a=a2;
         return `<path d="M ${p1[0].toFixed(1)} ${p1[1].toFixed(1)} A ${R} ${R} 0 ${big} 1 ${p2[0].toFixed(1)} ${p2[1].toFixed(1)}" fill="none" stroke="${s.boja}" stroke-width="${sw}"><title>${esc(s.label)}: ${s.v}</title></path>`;
       }).join('');
-      const leg=segmenti.map(s=>`<div style="display:flex;align-items:center;gap:6px;font-size:12px"><span style="width:10px;height:10px;border-radius:2px;background:${s.boja};flex:none"></span>${esc(s.label)} <b style="font-family:var(--mono);color:var(--ink2)">${s.v}</b></div>`).join('');
-      return `<div style="display:flex;align-items:center;gap:16px"><svg viewBox="0 0 80 80" width="80" height="80" style="flex:none">${arcs}</svg><div style="display:flex;flex-direction:column;gap:5px">${leg}</div></div>`;
+      const leg=segmenti.map(s=>`<div style="display:inline-flex;align-items:center;gap:6px;font-size:12px;background:var(--paper2,#f4f2ec);border:1px solid var(--line,#e5e2da);border-radius:20px;padding:4px 10px;white-space:nowrap"><span style="width:9px;height:9px;border-radius:2px;background:${s.boja};flex:none"></span>${esc(s.label)} <b style="font-family:var(--mono);color:var(--ink2)">${s.v}</b></div>`).join('');
+      return `<div style="display:flex;flex-direction:column;align-items:center;gap:14px"><svg viewBox="0 0 80 80" width="92" height="92" style="flex:none">${arcs}</svg><div style="display:flex;flex-wrap:wrap;gap:7px;justify-content:center">${leg}</div></div>`;
     }
+    const TIP_HR={login:'Prijave',registracija:'Registracije',clanak_otvoren:'Čitanje članaka',bookmark_on:'Bookmark +',bookmark_off:'Bookmark −',pretraga:'Pretrage',
+      tts:'Slušanje (TTS)',ai_pitanje:'Pitanja Vještaku',usmeni_start:'Usmeni — start',usmeni_kraj:'Usmeni — kraj',test_start:'Pismeni — start',test_kraj:'Pismeni — kraj',
+      clanak_pomoc:'Pomoć uz članak',glas_ocisti:'Čišćenje glasa',ai_citat_fail:'Citat — promašaj',mentor_objasni:'Mentor objasni',srs_start:'Ponavljanje (SRS)',tier_promjena:'Promjena paketa'}; // ⭐ v162
     const DASH_BOJE=['#2B4A75','#6E8CB5','#A9BDD6','#C7A15A','#8FA97E','#B57E7E','#7E8FA9'];
     // ⭐ v094 — TTS potrošnja (Google Cloud glas): ukupno + po korisniku
     async function ucitajTtsPotrosnju(){
@@ -3572,6 +3858,38 @@
       }
     }
     // ⭐ v095 — uređivač pretplate (tier) po korisniku u dashboardu
+    // ⭐ v162/v163 — klik na korisnika: detalji PUNE širine (izvan skrol-liste) — trošak + aktivnosti + pretrage + uređivač
+    let _korOtvoren=null;
+    async function korisnikDetalj(kid){
+      const box=document.getElementById('kor-detalj-panel'); if(!box) return;
+      document.querySelectorAll('#dash-korisnici .kor-red.aktivni').forEach(x=>x.classList.remove('aktivni'));
+      if(_korOtvoren===kid){ box.innerHTML=''; _korOtvoren=null; _tierOtvoren=null; return; } // toggle zatvori
+      _korOtvoren=kid; _tierOtvoren=null;
+      box.innerHTML='<div class="kor-detalj"><div class="prazno mala"><span>Učitavam…</span></div></div>';
+      try{
+        const d=await apiGet('admin/korisnik/'+kid+'/aktivnost');
+        const t=d.trosak, fUsd=(x)=>(Math.round((x||0)*100)/100).toFixed(2).replace('.',',')+' $';
+        const pct=t.postotak, boja=pct>=90?'#B3261E':(pct>=70?'#b58a2e':'#4a6b57');
+        const progress = t.budzet_usd==null
+          ? '<div style="font-size:12.5px;color:var(--ink3)">Neograničeno (admin)</div>'
+          : ('<div style="background:var(--line);border-radius:6px;height:9px;overflow:hidden"><div style="height:100%;width:'+pct+'%;background:'+boja+';border-radius:6px;transition:width .4s"></div></div>'
+            +'<div class="red" style="margin-top:5px"><span>'+fmtTok(t.tokeni_mjesec)+' / '+fmtTok(t.tokeni_budzet)+' tokena · ovaj mjesec</span><b>'+pct+'%</b></div>');
+        const donut = d.tipovi.length ? svgDonut(d.tipovi.map((x,i)=>({label:TIP_HR[x.tip]||x.tip,v:x.n,boja:DASH_BOJE[i%DASH_BOJE.length]}))) : '<div class="prazno mala"><span>Nema zabilježene aktivnosti.</span></div>';
+        const pretrage = d.pretrage.length ? d.pretrage.map(p=>'<div class="red"><span>„'+esc(p.q)+'"</span><b style="color:var(--ink3);font-weight:400">'+(p.n!=null?p.n+' rez.':'')+'</b></div>').join('') : '<div class="prazno mala"><span>Nema pretraga.</span></div>';
+        box.innerHTML='<div class="kor-detalj">'
+          +'<div class="kd-head"><b>'+esc(d.ime||'—')+'</b> <span style="color:var(--ink3);font-size:12.5px">'+esc(d.email||'')+'</span><button class="kd-x" onclick="korisnikDetalj('+kid+')" title="Zatvori">✕</button></div>'
+          +'<div class="kd-mreza">'
+          +'<div class="kd-blok"><div class="mlab">💰 Trošak tokena</div>'+progress
+          +'<div class="red" style="margin-top:8px"><span>Ukupno (od početka)</span><b style="color:var(--err)">'+fUsd(t.ukupno_usd)+' · '+fmtTok(t.tokeni_ukupno)+' tok</b></div></div>'
+          +'<div class="kd-blok"><div class="mlab">Što korisnik radi (30 dana)</div>'+donut+'</div>'
+          +'<div class="kd-blok"><div class="mlab">Zadnje pretrage</div><div class="kartica" style="padding:5px 0">'+pretrage+'</div></div>'
+          +'<div class="kd-blok kd-full"><div class="mlab">Pretplata</div><div id="tier-uredi-'+kid+'"></div></div>'
+          +'</div></div>';
+        tierUredi(kid);
+        const red=document.querySelector('#dash-korisnici .kor-red[onclick*="korisnikDetalj('+kid+')"]'); if(red) red.classList.add('aktivni');
+        box.scrollIntoView({behavior:'smooth',block:'nearest'});
+      }catch(e){ box.innerHTML='<div class="kor-detalj"><span style="color:var(--err)">'+esc(e.message)+'</span></div>'; }
+    }
     let _tierOtvoren=null;
     function tierUredi(kid){
       const box=document.getElementById('tier-uredi-'+kid); if(!box) return;
@@ -3585,7 +3903,7 @@
       const tg=(t,lab)=>'<button class="tg'+(t===trenutni?' sel':'')+'" data-t="'+t+'" onclick="tierPick(this,'+kid+')">'+lab+'</button>';
       box.innerHTML='<div class="tier-uredi">'
         +'<div class="tu-naslov">Pretplata za <b>'+esc(u.ime||u.korisnicko_ime)+'</b></div>'
-        +'<div class="tgumbi">'+tg('free','FREE')+tg('basic','BASIC')+tg('pro','PRO')+'</div>'
+        +'<div class="tgumbi">'+tg('free','FREE')+tg('basic','BASIC')+tg('pro','PRO')+tg('enterprise','ENTERPRISE')+'</div>'
         +'<div class="tu-polja">'
         +'<div id="tier-istek-w-'+kid+'"'+(trenutni==='free'?' style="display:none"':'')+'>'
         +'<label>Vrijedi do (prazno = trajno)</label>'
@@ -3617,16 +3935,58 @@
         if(msg) msg.innerHTML='<span style="color:var(--pass)">✓ Spremljeno</span>';
         // osvježi lokalno + zatvori nakon kratke pauze
         const u=(window._dashKorisnici||[]).find(x=>x.id===kid); if(u){ u.tier=tier; u.tier_istek=(tier==='free'?null:istek); }
-        setTimeout(()=>{ _tierOtvoren=null; otvoriDash(); }, 700); // reload dashboard za svjež prikaz
+        setTimeout(()=>{ _tierOtvoren=null; _korOtvoren=null; otvoriDash(); }, 700); // reload dashboard za svjež prikaz
       }catch(e){ if(msg) msg.innerHTML='<span style="color:var(--err)">⚠ '+esc(e.message)+'</span>'; }
     }
     // ⭐ v013 — superadmin dashboard
+    // ⭐ v148 — popis svih aktivnih propisa (kopirljivo za web/pregled)
+    async function dashPopis(){
+      const box=document.getElementById('dash-popis'); if(!box) return;
+      box.innerHTML='<div style="color:var(--ink3);font-size:13px">Učitavam…</div>';
+      try{
+        const d=await apiGet('admin/popis');
+        const grupe={}; (d.dokumenti||[]).forEach(x=>{ (grupe[x.vrsta]=grupe[x.vrsta]||[]).push(x); });
+        const naslovi={zakon:'Zakoni', pravilnik:'Pravilnici', norma:'Normativi / obračuni'};
+        let html='', txt=''; let uk=0;
+        Object.keys(grupe).sort().forEach(v=>{
+          const gn=naslovi[v]||v, arr=grupe[v]; uk+=arr.length;
+          html+='<div class="mlab" style="margin:12px 0 4px">'+esc(gn)+' ('+arr.length+')</div>';
+          txt+='== '+gn+' =='+String.fromCharCode(10);
+          arr.forEach(x=>{ const iz=x.izvor?' · '+esc(x.izvor):'';
+            html+='<div style="font-size:13px;padding:4px 0;border-bottom:1px solid var(--line)">'+esc(x.naziv)+'<span style="color:var(--ink3)">'+iz+' ('+x.clanaka+' čl.)</span></div>';
+            txt+='- '+x.naziv+(x.izvor?' ('+x.izvor+')':'')+String.fromCharCode(10); });
+          txt+=String.fromCharCode(10);
+        });
+        window._popisTxt=txt;
+        box.innerHTML='<div style="margin-bottom:4px"><b>'+uk+'</b> aktivnih dokumenata</div>'+html
+          +'<button class="btn-sek" style="width:100%;margin-top:12px" onclick="dashPopisKopiraj(this)">📋 Kopiraj sve</button>';
+      }catch(e){ box.innerHTML='<div style="color:var(--err);font-size:13px">⚠ '+esc(e.message)+'</div>'; }
+    }
+    function dashPopisKopiraj(btn){
+      const t=window._popisTxt||''; if(!t) return;
+      const ok=()=>{ const p=btn.textContent; btn.textContent='✓ Kopirano'; setTimeout(()=>{ btn.textContent=p; },1600); };
+      if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(t).then(ok).catch(()=>{}); }
+      else { const ta=document.createElement('textarea'); ta.value=t; ta.style.position='fixed'; ta.style.opacity='0'; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); ok(); }catch(_){ } ta.remove(); }
+    }
+    async function dashOcistiNovosti(btn){ // ⭐ v154 — sakrij dosadašnje novosti (marker procisceno_od = danas)
+      if(!confirm('Sakriti sve dosadašnje novosti? Nove izmjene nakon danas opet će se prikazivati. (Ne briše podatke.)')) return;
+      const p=btn.textContent; btn.disabled=true; btn.textContent='Čistim…';
+      try{ await api('admin/novosti/procisti',{},true); btn.textContent='✓ Očišćeno';
+        const dt=document.querySelector('#nav button[data-tab="novosti"] .dot'); if(dt) dt.remove();
+        if(typeof novUcitaj==='function' && document.getElementById('t-novosti') && document.getElementById('t-novosti').classList.contains('active')) novUcitaj();
+      }
+      catch(e){ btn.textContent='⚠ '+(e.message||'greška'); }
+      finally{ setTimeout(()=>{ btn.disabled=false; btn.textContent=p; },1800); }
+    }
     function zatvoriDash(){ // ⭐ v014 — toggle pokriva SVU djecu (i Odjavu)
       document.querySelectorAll('#t-ja > *').forEach(x=>x.style.display = x.id==='ja-dash' ? 'none' : '');
+      document.body.classList.remove('dash-otvoren'); // ⭐ v163
       skrolVrh();
     }
     async function otvoriDash(){
+      if(!KORISNIK || !KORISNIK.je_superadmin){ resetAdminUI(); return; } // ⭐ v164 — SIGURNOST: ne-superadmin ne može otvoriti dashboard
       document.querySelectorAll('#t-ja > *').forEach(x=>x.style.display = x.id==='ja-dash' ? '' : 'none');
+      document.body.classList.add('dash-otvoren'); // ⭐ v163 — širi raspored na desktopu
       const dsh=document.getElementById('ja-dash'); dsh.style.display=''; /* ⭐ v049 skrol u sadrzaj */ skrolVrh();
       document.getElementById('dash-kpi').innerHTML='<div class="kartica"><div class="prazno mala"><span>Učitavam…</span></div></div>';
       try{
@@ -3642,7 +4002,6 @@
         const g=d.grafovi||{aktivnost:[],tipovi:[],registracije:[]};
         document.getElementById('dash-g-akt').innerHTML = svgBar(g.aktivnost.map(a=>({label:a.dan,v:a.dogadjaja})));
         document.getElementById('dash-g-akt2').innerHTML = svgLine(g.aktivnost.map(a=>a.korisnika));
-        const TIP_HR={login:'Prijave',registracija:'Registracije',clanak_otvoren:'Čitanje članaka',bookmark_on:'Bookmark +',bookmark_off:'Bookmark −',pretraga:'Pretrage'};
         document.getElementById('dash-g-tip').innerHTML = g.tipovi.length
           ? svgDonut(g.tipovi.map((t,i)=>({label:TIP_HR[t.tip]||t.tip, v:t.n, boja:DASH_BOJE[i%DASH_BOJE.length]})))
           : '<div class="prazno mala"><span>Još nema zabilježene aktivnosti.</span></div>';
@@ -3652,11 +4011,10 @@
         const istekTxt=(u)=>{ if(!u.tier_istek||u.tier==='free') return ''; const d=new Date(u.tier_istek); const danas=new Date(); danas.setHours(0,0,0,0);
           const proslo=d<danas; return ' <small style="color:'+(proslo?'var(--err)':'var(--ink3)')+'">'+(proslo?'istekло ':'do ')+fd(u.tier_istek)+'</small>'; };
         window._dashKorisnici = d.korisnici; // ⭐ v095 — za uređivač
+        const trosakBadge=(u)=>{ const tok=u.tokeni||0, usd=u.trosak_usd||0; if(!tok) return ''; return '<span class="kor-trosak" title="ukupno tokena · trošak API-ja">⚡'+fmtTok(tok)+' · '+(Math.round(usd*100)/100).toFixed(2).replace('.',',')+'$</span>'; }; // ⭐ v162
         document.getElementById('dash-korisnici').innerHTML = d.korisnici.map(u=>
-          '<div class="kor-red" onclick="tierUredi('+u.id+')"><span>'+esc(u.ime||u.korisnicko_ime)+' · '+esc(u.email)+'<br><small style="color:var(--ink3)">'+
-          esc(u.program_kod||'—')+(u.uze_podrucje?(' / '+esc(u.uze_podrucje)):'')+' · ispit '+fd(u.cilj_datum)+
-          ' · aktivnost '+fd(u.zadnja_aktivnost)+'</small></span><b>'+u.dogadjaja+'✦ '+u.bookmarka+'★ '+tierBadge(u.tier)+istekTxt(u)+'</b></div>'
-          +'<div id="tier-uredi-'+u.id+'"></div>'
+          '<div class="kor-red" onclick="korisnikDetalj('+u.id+')"><span>'+esc(u.ime||u.korisnicko_ime)+' · '+esc(u.email)+'<br><small style="color:var(--ink3)">'+
+          esc(u.program_kod||'—')+(u.uze_podrucje?(' / '+esc(u.uze_podrucje)):'')+' · '+u.dogadjaja+' aktivnosti · '+fd(u.zadnja_aktivnost)+'</small></span><b>'+trosakBadge(u)+' '+tierBadge(u.tier)+istekTxt(u)+'</b></div>'
         ).join('') || '<div><span>Još nema korisnika.</span></div>';
         document.getElementById('dash-clanci').innerHTML = d.top_clanci.map(c=>
           '<div><span>'+esc(c.oznaka)+' — '+esc(c.naziv)+'</span><b>'+c.otvaranja+'</b></div>').join('')

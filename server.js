@@ -32,14 +32,14 @@ const { generirajDopisDocx } = require('./dopis-docx.js'); // ⭐ v089 — DOCX 
 const { generirajDopisPdf } = require('./dopis-pdf.js'); // ⭐ v137 — PDF izvoz dopisa (lazy pdfkit unutar funkcije)
 
 // ⭐ v016 — verzija (drzi sinkrono sa sw.js CACHE_VERSION i footerom u index.html)
-const VERZIJA = 'v147'; // ⭐ v147 — VJEŠTAK "Vidi tablicu": ako citirani članak sadrži sliku tablice (TABLICA_SLIKA), odgovor dobije istaknut chip "📊 Vidi tablicu uživo — Članak N" koji otvori članak sa slikom izvornika (potvrda odgovora jednim tapom). // ⭐ v146 — TABLICE (pilot): proxy /api/tablica služi slike tablica iz oi-gradivo repoa (sigurno, kao 'self'); čitač renderira pipe-tablice kao <table> i TABLICA_SLIKA liniju kao sliku izvornika iz propisa (klik za povećanje). Vještak odgovara iz strukturiranog teksta, korisnik vidi originalnu tablicu. // ⭐ v145 — MENTOR "Objasni primjerom": uz "Zašto?" na pismenom novi gumb koji oživi članak kroz konkretnu situaciju s gradilišta (Sonnet 5, P_PRIMJER, isti grounding, on-demand + budžet). // ⭐ v144 — GLAS PRAVOPIS: kontekstualni AI-cleanup izdiktiranog teksta (Haiku, /api/glas/ocisti) na kraju diktata u usmenom i Vještaku — ispravlja fonetske promašaje STT-a po smislu rečenice (pravomošnost→pravomoćnost). Platformski trošak (~$0.0016/poziv), fail-safe (na grešku vraća original). Statični normalizator ostaje kao instant prvi prolaz. // ⭐ v143 — AUDIT FIX: napuštena Simulacija roka više ne blokira pokretanje nove (simStart uvijek kreće ispočetka). // ⭐ v142 — VJEŠTAK UX v2: (1) akcijski gumbi kompaktniji u JEDNOM redu (scroll ako ne stanu) + kraći natpisi (Dopis/Predmet), "Je li odgovor pomogao?" u zasebnom redu ispod; (2) STT hrvatski normalizator — izdiktirani srpski/ekavski oblici (obaveštava→obavještava, uslov→uvjet, tačno→točno…) prevode se whole-word na hrvatski u usmenom i Vještaku (lang='hr-HR' + kurirana lista). // ⭐ v141 — VJEŠTAK UX + DOKUMENTI: (1) akcijski gumbi ispod odgovora sada veliki, tappable, s natpisom (Kopiraj / Pretvori u dopis / Word / PDF / Spremi u predmet) + jasna "Je li odgovor pomogao?" povratna informacija; (2) PDF izvoz FIX — nema više praznih stranica (footer se crta uz margins.bottom=0); (3) vizualna dorada PDF i DOCX dopisa (hairline pod zaglavljem, tracked labele, izražajniji PREDMET, potpisni blok); (4) prekid streama pri izlasku iz app-a više ne briše u "Greška veze" nego zadrži što je stiglo uz mekšu poruku. // ⭐ v140 — STT POPRAVAK: mikrofon (usmeni umMic + Vještak aiMic) prešao na continuous=false + gradnju iz SVIH rezultata jedne sesije, bez auto-restarta i bez akumulacije — uklanja ponavljanje riječi/fraza ("hrvatski hrvatski… zavod je zavod je") koje je Android Chrome radio u continuous+restart načinu (v106 zakrpa nije bila dovoljna). Kompromis: mikrofon stane nakon pauze, za nastavak se tapne opet (tekst se čuva). // ⭐ v139 — BATCH 5 (SHEMA! uključuje v136–v138): SIMULACIJA ROKA — pismeni→usmeni→zajednički ishod; /api/simulacija/zavrsi VERIFICIRA obje sesije i čita ocjene iz baze (bez varanja), prolaz traži oba dijela; Pro (usmeni je Pro). PREDMETI (case-file) — nove tablice predmeti+predmet_stavke, CRUD rute, samostalni overlay (bez diranja navigacije), 📁 na Vještak odgovoru sprema u predmet. NOVE TABLICE: simulacije, predmeti, predmet_stavke → POKRENI init-db + BACKUP prije. // ⭐ v138 — BATCH 4 (uključuje v136/v137): MENTOR dijagnostika — /api/mentor/slabe-teme (točnost po užem području iz gotovih testova) + "Vježbaj baš ovo" (test/start prima `tema` filter, bez AI-iznenađenja izvan teme); RUBRIKA PO KRITERIJIMA na usmenom — P7A vraća kriterije (potpunost/tocnost_citata/prakticnost/komunikacija), finale ih deterministički prosječi (ne mijenja ocjenu/prolaz), klijent prikazuje trake. // ⭐ v137 — BATCH 2+3 (uključuje v136): VJEŠTAK IZVOZ — PDF izvoz dopisa (pdfkit + font, uz DOCX), "Pretvori odgovor u dopis", glasovni unos (STT) u Vještaku; VREMEPLOV — čitač pokazuje verziju članka "na dan" (postojeći ?na_dan); MENTOR mikro-tutor — /api/mentor/objasni "Zašto?" nakon pismenog odgovora (grounding: obrazloženje + članci, budžet kao Vještak). // ⭐ v136 — BUGFIX BATCH 1: (1) SRS ponavljanja ne troše mjesečnu kvotu testova (brojač uzima samo vrsta='test'); (2) tocno_netocno ocjenjivanje robusno — s opcijama ide indeks-po-tekstu kao abc, bez opcija kanonski T/N (radi za slovo/riječ/'A) ...'/vlastite tekstove, kraj "točan=netočno" za dio banke); (3) usmeni finale gramatika (pitanje/pitanja). // ⭐ v110 — ČISTI RESTART: ruta /api/admin/pitanja/obrisi-rok (potvrda OBRISI-ROK) briše sva rok-pitanja za ponovni uvoz očišćenog mastera + gumb s dvostrukom potvrdom. // ⭐ v109 — PRAVI UZROK NAĐEN: Provjeri banku gumb je slao POST na GET-rutu (api() umjesto apiGet()) → 404 HTML → generička "Greška.". Bug od v099 — zato nikad nije radila. Sad apiGet(). v107/v108 (bulletproof SQL + timeout + fallback) ostaju kao dodatna otpornost. // ⭐ v108 — Provjeri banku: statement_timeout 15s + LAKI COUNT fallback ako pun pregled istekne pod opterećenjem (Provjeri točnost); dijagnostički gumb pokazuje HTTP status. Uzrok generičke Greške = gateway timeout jer točnost drži konekcije. // ⭐ v107 — HOTFIX: Provjeri banku više ne puca (v105 je uveo jsonb_array_length(opcije) koji puca na usmenim pitanjima gdje je opcije=NULL — PostgreSQL ne štiti OR-kratki-spoj). Sad ABC validacija u JS-u (Array.isArray hvata null), bez rizičnih jsonb SQL funkcija. // ⭐ v106 — STT BUGFIX: mikrofon kod usmenog više ne ponavlja riječi ("hrvatskihrvatskihrvatski"). Uzrok bio loop od 0 koji je re-lijepio sve rezultate uključivo međurezultate; sad obrađuje samo nove (od e.resultIndex) i razdvaja konačne (isFinal) od međurezultata. // ⭐ v105 — BUGFIX: Provjeri banku optimiziran (lagan SQL SELECT umjesto povlačenja punog teksta 2000+ pitanja — više ne pada pod konkurencijom s Provjeri točnost); Provjeri točnost sad VRAĆA U NACRT ovjerena pitanja koja proturječe propisu (ne ostaju kao točna); klijentsko upozorenje da ne pokreneš oboje istovremeno. // ⭐ v104 — uvoz/clanci auto-kreira dokument ako ne postoji (vrsta/priznato iz JSON-a) → tehnički uvjeti i normativi idu izravno pod "Članci", bez zasebnog šifrarnik-koraka. // ⭐ v103 — WAKE LOCK: zaslon ostaje upaljen tijekom dugih uvoza/provjera (Wake Lock API + re-akvizicija na visibilitychange + indikator 🔆); wireiran u admPitUvoz i admPitTocnost. // ⭐ v102 — BUGFIX+UX: dopis izrezan (samo dopis u Word, vidljiv gumb); admin pretplata UI (desktop grid+mobilni); Nastavi gdje si stao (test/članak/usmeni); pismeni promo na Danas; SIGURNOST: CSP+HSTS+Permissions-Policy, throttle register/reset, startup upozorenje za default tajne. // ⭐ v101 — AI PROVJERA TOČNOSTI: POST /api/admin/pitanja/provjeri-tocnost → RAG-izvori (propisi iz gradiva) + AI-recenzent usporedi golden odgovor s propisom; verdikt (da/djelomicno/ne/nema_izvora) u pitanja.provjera; sporna dobiju [⚠ pa ih Ovjeri sve preskoči. // ⭐ v100 — KOMISIJA S KARAKTERIMA: svaki član ima temperament + strogost 1-5 (Perić/ZOP strog 5, Novak/opće blag 2); persona ide u P5+P6+P7A (dosljedan ton i prag tolerancije, ali ocjena OSTAJE poštena 🔒). Napredak dobiva TREND (spremnost po danu + smjer raste/pada). // ⭐ v099 — PROVJERA BANKE (temelj Master moda): GET /api/admin/pitanja/provjera → zdravstveni pregled uvezene banke (brojke po tipu/statusu/izvoru/uzem/težini, zastavice: abc bez opcija, abc tocno izvan opcija, prazan zlatni, duplikat teksta, [⚠ flag), uzorak pitanja BEZ zlatnog 🔒. Agregacija u JS (pg-mem bez HAVING/jsonb_array_length). // v098 rok-pitanja Faza A: uvoz-rokovi tezina + usmeni težinsko biranje // v097 audit p1p2 // v096 usmeni banka
+const VERZIJA = 'v169'; // ⭐ v169 — REVIZIJA: GDPR izvoz popravljen (naplatni podaci s korisnici, usmeni rezultati), renderUci defenziva (malformirana sekcija ne ruši tab).
 const FAZA = 17; // ⭐ v081 — F19 pravnik/GDPR // ⭐ v047 — F16 Mentor // ⭐ v041 // ⭐ v035 // ⭐ v025 — F4+F5 kod isporučen, F6 banka pitanja
 const PORT = process.env.PORT || 3000;
 const INIT_KEY = process.env.INIT_KEY || 'oi-init-2026';
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-tajna-promijeni-me';
 const PWD_PEPPER = process.env.PWD_PEPPER || 'dev-pepper';
 const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
-const RESEND_FROM = process.env.RESEND_FROM || 'OI Ispit <noreply@zbuka.hr>';
+const RESEND_FROM = process.env.RESEND_FROM || 'OI — ovlašteni inženjer · Žbuka AI <noreply@zbuka.hr>';
 const RESEND_REPLY_TO = process.env.RESEND_REPLY_TO || 'info@zbuka.hr'; // ⭐ v003
 const SUPERADMIN_EMAIL = (process.env.SUPERADMIN_EMAIL || '').trim().toLowerCase(); // ⭐ v007
 const APP_URL = process.env.APP_URL || ''; // npr. https://oi.zbuka.hr (za reset link)
@@ -265,6 +265,13 @@ async function initDb() {
     global.__CHUNKOVI_GRESKA = e.message.slice(0, 200); // ⭐ v023 — dijagnoza u init-db odgovoru
   }
   if (!global.__CHUNKOVI_GRESKA) { try { await p.query('SELECT 1 FROM chunkovi LIMIT 1'); global.__CHUNKOVI_GRESKA = null; } catch (_) {} }
+  // ⭐ v156 — pametna tražilica: IMMUTABLE unaccent wrapper + trigram indeksi (naziv/oznaka/tekst bez dijakritike)
+  try {
+    await p.query(`CREATE OR REPLACE FUNCTION f_unaccent(text) RETURNS text AS $$ SELECT unaccent('unaccent', $1) $$ LANGUAGE sql IMMUTABLE;`);
+    await p.query(`CREATE INDEX IF NOT EXISTS ix_dok_naziv_ua ON dokumenti USING gin (f_unaccent(naziv) gin_trgm_ops);`);
+    await p.query(`CREATE INDEX IF NOT EXISTS ix_cl_oznaka_ua ON clanci USING gin (f_unaccent(oznaka) gin_trgm_ops);`);
+    await p.query(`CREATE INDEX IF NOT EXISTS ix_cl_tekst_ua ON clanci USING gin (f_unaccent(tekst) gin_trgm_ops);`);
+  } catch (e) { console.log('[init-db] unaccent-indeksi preskočeni:', e.message.slice(0, 120)); }
   await p.query(`CREATE TABLE IF NOT EXISTS ai_razgovori (
     id SERIAL PRIMARY KEY,
     korisnik_id INTEGER NOT NULL REFERENCES korisnici(id) ON DELETE CASCADE,
@@ -441,6 +448,10 @@ async function initDb() {
   await p.query(`ALTER TABLE korisnici ADD COLUMN IF NOT EXISTS uvjeti_prihvaceni_at TIMESTAMPTZ;`); // GDPR/uvjeti trag
   // ⭐ v095 — tier istek (kad istekne, korisnik pada na FREE) + povijest promjena tiera
   await p.query(`ALTER TABLE korisnici ADD COLUMN IF NOT EXISTS tier_istek DATE;`); // NULL = bez isteka (trajno dok se ručno ne promijeni)
+  // ⭐ v162 — čestitka nadogradnje: nosi napomenu superadmina + "pročitano" da se ne prikazuje svaki put
+  await p.query(`ALTER TABLE korisnici ADD COLUMN IF NOT EXISTS cestitka_tier TEXT;`);
+  await p.query(`ALTER TABLE korisnici ADD COLUMN IF NOT EXISTS cestitka_napomena TEXT;`);
+  await p.query(`ALTER TABLE korisnici ADD COLUMN IF NOT EXISTS cestitka_procitana BOOLEAN NOT NULL DEFAULT true;`);
   await p.query(`CREATE TABLE IF NOT EXISTS tier_promjene (
     id BIGSERIAL PRIMARY KEY,
     korisnik_id INTEGER REFERENCES korisnici(id) ON DELETE CASCADE,
@@ -471,6 +482,16 @@ async function initDb() {
   await p.query(`CREATE INDEX IF NOT EXISTS ix_ev_tip ON events(tip, ts);`);
   await p.query(`CREATE INDEX IF NOT EXISTS ix_ev_kor ON events(korisnik_id, ts);`);
 
+  // ⭐ v168 — aktivne sesije (multi-uređaj limit + revokacija). jti iz JWT-a; sesija se briše na odjavu ili "odjavi druge".
+  await p.query(`CREATE TABLE IF NOT EXISTS aktivne_sesije (
+    jti TEXT PRIMARY KEY,
+    korisnik_id INTEGER NOT NULL REFERENCES korisnici(id) ON DELETE CASCADE,
+    ip TEXT,
+    ua TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    zadnja_aktivnost TIMESTAMPTZ NOT NULL DEFAULT now());`);
+  await p.query(`CREATE INDEX IF NOT EXISTS ix_ses_kor ON aktivne_sesije(korisnik_id, zadnja_aktivnost);`);
+
   await p.query(`INSERT INTO sustav_meta (kljuc, vrijednost) VALUES ('shema_verzija', $1)
     ON CONFLICT (kljuc) DO UPDATE SET vrijednost = $1, azurirano = now()`, [VERZIJA]);
 
@@ -487,7 +508,12 @@ async function hashLozinke(plain) { return bcrypt.hash(plain + PWD_PEPPER, 10); 
 async function provjeriLozinku(plain, hash) { return bcrypt.compare(plain + PWD_PEPPER, hash); }
 function sha256(s) { return crypto.createHash('sha256').update(s).digest('hex'); }
 function noviToken() { return crypto.randomBytes(32).toString('hex'); }
-function jwtPotpis(k) { return jwt.sign({ uid: k.id, ime: k.korisnicko_ime }, JWT_SECRET, { expiresIn: '7d' }); }
+function jwtPotpis(k, jti) { return jwt.sign({ uid: k.id, ime: k.korisnicko_ime, jti }, JWT_SECRET, { expiresIn: '7d' }); } // ⭐ v168 — jti = ID sesije (revokabilno)
+const klijentIP = (req) => (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.ip || 'x'; // ⭐ v168
+// ⭐ v168 — koliko istovremenih IP-adresa (uređaja) po tieru: svi 2, enterprise 10, superadmin bez limita
+const TIER_IP = { free: 2, basic: 2, pro: 2, enterprise: 10 };
+const ipLimit = (k) => k.je_superadmin ? 999 : (TIER_IP[k.tier] || 2);
+const SESIJA_AKTIVNA_MS = 30 * 60 * 1000; // sesija se broji "aktivnom" 30 min od zadnje aktivnosti
 
 function valEmail(e) { return typeof e === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
 // ⭐ v006 — koercija na string + granica duljine (nikad .trim() na ne-stringu)
@@ -560,69 +586,99 @@ async function posaljiMail({ to, subject, html, text, korisnik_id, tip }) {
 // ⭐ v003 — mailOkvir: zaglavlje (OI badge), bijela kartica, gumb, sastavnica
 function mailOkvir({ naslov, uvod, sadrzaj, gumbTekst, gumbLink, napomena }) {
   return `<!DOCTYPE html>
-<html lang="hr"><body style="margin:0;padding:0;background:#F5F5F1;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F5F5F1;"><tr><td align="center" style="padding:34px 16px;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;">
-  <tr><td align="center" style="padding:0 0 20px;">
+<html lang="hr" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office"><body style="margin:0;padding:0;background:#EEEFEA;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#EEEFEA;"><tr><td align="center" style="padding:34px 16px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:540px;">
+  <tr><td align="center" style="padding:0 0 22px;">
     <table role="presentation" cellpadding="0" cellspacing="0"><tr>
-      <td width="44" height="44" align="center" valign="middle" style="background:#2B4A75;border-radius:12px;font-family:Georgia,'Times New Roman',serif;font-size:19px;font-weight:bold;color:#FFFFFF;">OI</td>
-      <td style="padding-left:11px;font-family:Georgia,'Times New Roman',serif;font-size:20px;color:#16181B;">OI&nbsp;Ispit</td>
+      <td width="46" height="46" align="center" valign="middle" style="background:#2B5FA0;border-radius:13px;font-family:Georgia,'Times New Roman',serif;font-size:20px;font-weight:bold;color:#FFFFFF;">OI</td>
+      <td style="padding-left:12px;font-family:Georgia,'Times New Roman',serif;font-size:20px;color:#16181B;line-height:1.2;">OI<br><span style="font-family:Arial,Helvetica,sans-serif;font-size:11px;letter-spacing:.5px;color:#8C9096;text-transform:uppercase;">ovlašteni inženjer &middot; Žbuka AI</span></td>
     </tr></table>
   </td></tr>
-  <tr><td style="background:#FFFFFF;border:1px solid #E3E4DE;border-radius:16px;padding:30px 28px;">
-    <h1 style="margin:0 0 8px;font-family:Georgia,'Times New Roman',serif;font-weight:normal;font-size:24px;line-height:1.25;color:#16181B;">${naslov}</h1>
-    <p style="margin:0 0 18px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.55;color:#5A5E63;">${uvod}</p>
+  <tr><td style="background:#FFFFFF;border:1px solid #E3E4DE;border-radius:18px;padding:32px 30px;box-shadow:0 1px 3px rgba(0,0,0,.04);">
+    <h1 style="margin:0 0 10px;font-family:Georgia,'Times New Roman',serif;font-weight:normal;font-size:25px;line-height:1.25;color:#16181B;">${naslov}</h1>
+    <p style="margin:0 0 20px;font-family:Arial,Helvetica,sans-serif;font-size:14.5px;line-height:1.6;color:#5A5E63;">${uvod}</p>
     ${sadrzaj || ''}
-    ${gumbTekst && gumbLink ? `<table role="presentation" cellpadding="0" cellspacing="0" style="margin:22px 0 2px;"><tr><td style="background:#2B4A75;border-radius:10px;"><a href="${gumbLink}" style="display:inline-block;padding:12px 22px;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:bold;color:#FFFFFF;text-decoration:none;">${gumbTekst}</a></td></tr></table>` : ''}
-    ${napomena ? `<p style="margin:16px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.5;color:#8C9096;">${napomena}</p>` : ''}
+    ${gumbTekst && gumbLink ? `<table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:24px auto 4px;"><tr><td align="center">
+      <!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="${gumbLink}" style="height:48px;v-text-anchor:middle;width:${Math.max(190, gumbTekst.length * 10 + 70)}px;" arcsize="26%" strokecolor="#2B5FA0" fillcolor="#2B5FA0"><w:anchorlock/><center style="color:#FFFFFF;font-family:Arial,sans-serif;font-size:15px;font-weight:bold;letter-spacing:.3px;">${gumbTekst}</center></v:roundrect><![endif]-->
+      <!--[if !mso]><!--><a href="${gumbLink}" style="display:inline-block;background:#2B5FA0;border-radius:24px;padding:14px 36px;font-family:Arial,Helvetica,sans-serif;font-size:15px;font-weight:bold;color:#FFFFFF;text-decoration:none;letter-spacing:.3px;">${gumbTekst}</a><!--<![endif]-->
+    </td></tr></table>` : ''}
+    ${napomena ? `<p style="margin:18px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.5;color:#9AA0A6;text-align:center;">${napomena}</p>` : ''}
   </td></tr>
-  <tr><td align="center" style="padding:18px 8px 0;font-family:Arial,Helvetica,sans-serif;font-size:9.5px;letter-spacing:1.5px;color:#8C9096;text-transform:uppercase;">OI Ispit &middot; priprema za stručni ispit &middot; donira&nbsp;<span style="color:#5A5E63;font-weight:bold;">Žbuka Čakarić d.o.o.</span></td></tr>
+  <tr><td align="center" style="padding:20px 8px 0;font-family:Arial,Helvetica,sans-serif;font-size:9.5px;letter-spacing:1.5px;color:#9AA0A6;text-transform:uppercase;">OI &middot; ovlašteni inženjer &middot; donira&nbsp;<span style="color:#5A5E63;font-weight:bold;">Žbuka Čakarić d.o.o.</span></td></tr>
 </table>
 </td></tr></table>
 </body></html>`;
 }
 function mailKredencijali({ ime, kime, lozinka }) {
-  const sadrzaj = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F5F5F1;border:1px solid #E3E4DE;border-radius:10px;">
-      <tr><td style="padding:13px 16px 3px;font-family:Arial,Helvetica,sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#8C9096;">Korisničko ime</td></tr>
+  const mod = (boja, bg, naslov, opis) => `<tr><td style="padding:0 0 9px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${bg};border-left:4px solid ${boja};border-radius:0 9px 9px 0;">
+      <tr><td style="padding:11px 15px;font-family:Arial,Helvetica,sans-serif;">
+        <div style="font-size:14px;font-weight:bold;color:${boja};">${naslov}</div>
+        <div style="font-size:12.5px;color:#5A5E63;line-height:1.5;margin-top:3px;">${opis}</div>
+      </td></tr>
+    </table>
+  </td></tr>`;
+  const modovi = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:2px 0 22px;">
+    ${mod('#2B5FA0', '#F1F5FB', 'Mentor — OI ispit', 'Priprema za stručni ispit: pismeni, usmeni i cijelo gradivo uz AI-mentora.')}
+    ${mod('#C2410C', '#FBF2EC', 'Vještak', 'Odgovori na pravna pitanja graditeljstva — preko 15.000 ažuriranih članaka propisa.')}
+    ${mod('#1E7A50', '#EDF6F0', 'Investitor', 'Analiza parcela i isplativosti investicije — brzo i na jednom mjestu.')}
+  </table>`;
+  const kredBox = `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#F5F6F2;border:1px solid #E3E4DE;border-radius:11px;">
+      <tr><td style="padding:14px 16px 3px;font-family:Arial,Helvetica,sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#8C9096;">Korisničko ime</td></tr>
       <tr><td style="padding:0 16px 12px;font-family:'Courier New',Courier,monospace;font-size:16px;font-weight:bold;color:#16181B;">${kime}</td></tr>
       <tr><td style="border-top:1px solid #E3E4DE;padding:12px 16px 3px;font-family:Arial,Helvetica,sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#8C9096;">Privremena lozinka</td></tr>
-      <tr><td style="padding:0 16px 13px;font-family:'Courier New',Courier,monospace;font-size:16px;font-weight:bold;color:#16181B;">${lozinka}</td></tr>
+      <tr><td style="padding:0 16px 14px;font-family:'Courier New',Courier,monospace;font-size:16px;font-weight:bold;color:#16181B;">${lozinka}</td></tr>
     </table>`;
+  const sadrzaj = modovi + kredBox
+    + `<p style="margin:14px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:12.5px;line-height:1.55;color:#8C9096;">Prijavi se s podacima iznad — pri prvoj prijavi postavljaš svoju lozinku.</p>`;
   const html = mailOkvir({
-    naslov: `Dobrodošli u OI Ispit${ime ? ', ' + ime : ''}`,
-    uvod: 'Račun je spreman. Prijavi se s podacima ispod — pri prvoj prijavi postavljaš svoju lozinku.',
+    naslov: `Dobrodošli${ime ? ', ' + ime : ''}`,
+    uvod: 'OI je tvoj digitalni suradnik na putu do ovlaštenog inženjera — i u svakodnevnom radu. Tri alata na jednom mjestu:',
     sadrzaj,
-    gumbTekst: 'Otvori OI Ispit',
+    gumbTekst: 'Otvori OI',
     gumbLink: APP_URL || '',
     napomena: 'Ako nisi ti otvorio račun, slobodno ignoriraj ovaj mail.'
   });
-  const text = `Dobrodošli u OI Ispit${ime ? ', ' + ime : ''}\n\nKorisničko ime: ${kime}\nPrivremena lozinka: ${lozinka}\n\nPri prvoj prijavi postavljaš svoju lozinku.${APP_URL ? `\nPrijava: ${APP_URL}` : ''}\n\nOI Ispit · priprema za stručni ispit · donira Žbuka Čakarić d.o.o.`;
+  const text = `Dobrodošli${ime ? ', ' + ime : ''}\n\nOI — ovlašteni inženjer. Tri alata na jednom mjestu:\n• Mentor (OI ispit) — priprema za stručni ispit\n• Vještak — pravna pitanja graditeljstva (15.000+ članaka propisa)\n• Investitor — analiza parcela i isplativosti investicije\n\nKorisničko ime: ${kime}\nPrivremena lozinka: ${lozinka}\n\nPri prvoj prijavi postavljaš svoju lozinku.${APP_URL ? `\nPrijava: ${APP_URL}` : ''}\n\nOI — ovlašteni inženjer · donira Žbuka Čakarić d.o.o.`;
   return { html, text };
 }
 function mailReset({ link }) {
   const html = mailOkvir({
     naslov: 'Promjena lozinke',
-    uvod: 'Zatražena je promjena lozinke za tvoj OI Ispit račun. Klikni gumb i postavi novu — link vrijedi 1 sat.',
+    uvod: 'Zatražena je promjena lozinke za tvoj OI račun. Klikni gumb i postavi novu — link vrijedi 1 sat.',
     sadrzaj: '',
     gumbTekst: 'Postavi novu lozinku',
     gumbLink: link,
     napomena: 'Ako nisi ti zatražio promjenu, ignoriraj ovaj mail — lozinka ostaje ista.'
   });
-  const text = `Promjena lozinke — OI Ispit\n\nOtvori link i postavi novu lozinku (vrijedi 1 sat):\n${link}\n\nAko nisi ti zatražio promjenu, ignoriraj ovaj mail.`;
+  const text = `Promjena lozinke — OI\n\nOtvori link i postavi novu lozinku (vrijedi 1 sat):\n${link}\n\nAko nisi ti zatražio promjenu, ignoriraj ovaj mail.`;
   return { html, text };
 }
 
 // ── JWT middleware ───────────────────────────────────────────────────
-function auth(req, res, next) {
+async function auth(req, res, next) {
   const h = req.headers.authorization || '';
   const t = h.startsWith('Bearer ') ? h.slice(7) : null;
   if (!t) return res.status(401).json({ error: 'Nije prijavljen.' });
-  try { req.uid = jwt.verify(t, JWT_SECRET).uid; next(); }
+  let payload;
+  try { payload = jwt.verify(t, JWT_SECRET); }
   catch { return res.status(401).json({ error: 'Sesija istekla, prijavi se ponovno.' }); }
+  req.uid = payload.uid;
+  // ⭐ v168 — sesija mora biti aktivna (revokabilno "odjavi druge"). Stari tokeni bez jti se propuštaju (isteknu za 7d).
+  if (payload.jti) {
+    try {
+      const rs = await q(`SELECT 1 FROM aktivne_sesije WHERE jti=$1`, [payload.jti]);
+      if (!rs.rowCount) return res.status(401).json({ error: 'Sesija je odjavljena na drugom uređaju. Prijavi se ponovno.', razlog: 'sesija' });
+      req.jti = payload.jti;
+      q(`UPDATE aktivne_sesije SET zadnja_aktivnost=now(), ip=$2 WHERE jti=$1`, [payload.jti, klijentIP(req)]).catch(() => {}); // fire-and-forget
+    } catch (_) { /* DB hiccup — ne obaraj zahtjev */ }
+  }
+  next();
 }
 async function ucitajKorisnika(id) {
   const r = await q(`SELECT k.id,k.email,k.korisnicko_ime,k.ime,k.tier,k.tier_istek,k.je_admin,k.mora_promijeniti_lozinku,k.cilj_datum,
-      k.program_id, k.uze_podrucje, p.kod AS program_kod, p.naziv AS program_naziv
+      k.program_id, k.uze_podrucje, k.cestitka_tier, k.cestitka_napomena, k.cestitka_procitana, p.kod AS program_kod, p.naziv AS program_naziv
     FROM korisnici k LEFT JOIN ispitni_programi p ON p.id = k.program_id WHERE k.id=$1`, [id]);
   const k = r.rows[0] || null;
   if (k) {
@@ -634,6 +690,11 @@ async function ucitajKorisnika(id) {
       const istek = new Date(k.tier_istek); istek.setHours(0, 0, 0, 0);
       if (istek < danas) k.tier = 'free';
     }
+    // ⭐ v162 — nepročitana čestitka (nosi napomenu superadmina)
+    if (k.cestitka_procitana === false && k.cestitka_tier) {
+      k.cestitka = { tier: k.cestitka_tier, napomena: k.cestitka_napomena || null, istek: k.tier_istek };
+    }
+    delete k.cestitka_tier; delete k.cestitka_napomena; delete k.cestitka_procitana;
   }
   return k;
 }
@@ -709,7 +770,7 @@ app.post('/api/register', async (req, res) => {
     }
 
     const m = mailKredencijali({ ime, kime, lozinka }); // ⭐ v003
-    const mail = await posaljiMail({ to: email, subject: 'OI Ispit — pristupni podaci', html: m.html, text: m.text, korisnik_id: uid, tip: 'kredencijali' });
+    const mail = await posaljiMail({ to: email, subject: 'OI — pristupni podaci', html: m.html, text: m.text, korisnik_id: uid, tip: 'kredencijali' });
     zabiljezi(uid, 'registracija', {}); // ⭐ v013
 
     const odg = { ok: true, poruka: DEV_MODE ? 'Račun kreiran (DEV: kredencijali u odgovoru).' : 'Račun kreiran. Provjeri e-mail za pristupne podatke.' };
@@ -735,21 +796,100 @@ app.post('/api/login', async (req, res) => {
     if (!ok) { th.zabiljezi(); return res.status(401).json({ error: 'Pogrešno korisničko ime ili lozinka.' }); }
 
     th.reset();
+    const kpun = await ucitajKorisnika(k.id);
+    q(`DELETE FROM aktivne_sesije WHERE korisnik_id=$1 AND zadnja_aktivnost < $2`, [k.id, new Date(Date.now() - 8 * 864e5).toISOString()]).catch(() => {}); // ⭐ v168 — očisti zastarjele (>8d, JWT već istekao)
+    // ⭐ v168 — multi-uređaj limit: broj IP-adresa aktivnih u zadnjih 30 min (2 za sve, 10 za enterprise)
+    const cutoff = new Date(Date.now() - SESIJA_AKTIVNA_MS).toISOString();
+    const rIps = await q(`SELECT DISTINCT ip FROM aktivne_sesije WHERE korisnik_id=$1 AND zadnja_aktivnost > $2`, [k.id, cutoff]);
+    const aktivniIps = rIps.rows.map(x => x.ip).filter(Boolean);
+    const limit = ipLimit(kpun || k);
+    if (!aktivniIps.includes(ip) && aktivniIps.length >= limit) {
+      if (req.body.odjaviDruge) {
+        await q(`DELETE FROM aktivne_sesije WHERE korisnik_id=$1`, [k.id]); // korisnik odabrao: odjavi sve druge uređaje
+      } else {
+        return res.status(409).json({ error: 'previse_uredjaja', limit, aktivnih: aktivniIps.length });
+      }
+    }
     await q('UPDATE korisnici SET zadnja_prijava=now() WHERE id=$1', [k.id]);
-    const token = jwtPotpis(k);
+    const jti = crypto.randomUUID();
+    await q(`INSERT INTO aktivne_sesije (jti, korisnik_id, ip, ua) VALUES ($1,$2,$3,$4)`, [jti, k.id, ip, s(req.headers['user-agent'] || '', 200)]);
+    const token = jwtPotpis(k, jti);
     zabiljezi(k.id, 'login', {}); // ⭐ v013
     // ⭐ v128 — BUGFIX: login je vraćao krnji korisnik objekt (bez je_superadmin/program/cilj) → nakon SVJEŽE prijave
     // admin sučelje se nije prikazivalo (reload bi ga popravio jer /api/me vraća pun objekt). Sad login vraća PUN objekt.
-    const kpun = await ucitajKorisnika(k.id);
     res.json({ ok: true, token, mora_promijeniti_lozinku: k.mora_promijeniti_lozinku, korisnik: kpun || {
       id: k.id, korisnicko_ime: k.korisnicko_ime, ime: k.ime, email: k.email, tier: k.tier, je_admin: k.je_admin } });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
 // Tko sam
+// ⭐ v168 — odjava: obriši trenutnu sesiju (revokacija tokena na serveru)
+app.post('/api/odjava', auth, async (req, res) => {
+  try { if (req.jti) await q(`DELETE FROM aktivne_sesije WHERE jti=$1`, [req.jti]); res.json({ ok: true }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+// ⭐ v168 — popis aktivnih uređaja korisnika
+app.get('/api/sesije', auth, async (req, res) => {
+  try {
+    const cutoff = new Date(Date.now() - SESIJA_AKTIVNA_MS).toISOString();
+    const r = await q(`SELECT jti, ip, ua, created_at, zadnja_aktivnost FROM aktivne_sesije
+      WHERE korisnik_id=$1 AND zadnja_aktivnost > $2 ORDER BY zadnja_aktivnost DESC`, [req.uid, cutoff]);
+    const sesije = r.rows.map(x => ({ ip: x.ip, ua: x.ua, zadnja: x.zadnja_aktivnost, ova: x.jti === req.jti }));
+    res.json({ ok: true, sesije, aktivnih_ip: new Set(r.rows.map(x => x.ip)).size });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+// ⭐ v168 — odjavi sve OSTALE uređaje (zadrži trenutni)
+app.post('/api/sesije/odjavi-druge', auth, async (req, res) => {
+  try {
+    if (req.jti) await q(`DELETE FROM aktivne_sesije WHERE korisnik_id=$1 AND jti<>$2`, [req.uid, req.jti]);
+    else await q(`DELETE FROM aktivne_sesije WHERE korisnik_id=$1`, [req.uid]);
+    res.json({ ok: true });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
 app.get('/api/me', auth, async (req, res) => {
   try { const k = await ucitajKorisnika(req.uid); if (!k) return res.status(404).json({ error: 'Korisnik ne postoji.' }); res.json({ ok: true, korisnik: k }); }
   catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// ⭐ v162 — korisnik označi čestitku pročitanom (ne prikazuj više)
+app.post('/api/cestitka/procitano', auth, async (req, res) => {
+  try { await q(`UPDATE korisnici SET cestitka_procitana=true WHERE id=$1`, [req.uid]); res.json({ ok: true }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// ⭐ v162 — moja aktivnost (korisnik vidi ŠTO sam radi/pretražuje) + moj trošak tokena
+app.get('/api/moja-aktivnost', auth, async (req, res) => {
+  try {
+    const g30 = new Date(Date.now() - 30 * 864e5).toISOString();
+    const rTip = await q(`SELECT tip, COUNT(*)::int AS n FROM events WHERE korisnik_id=$1 AND ts > $2 GROUP BY tip ORDER BY n DESC`, [req.uid, g30]);
+    const rPret = await q(`SELECT meta, ts FROM events WHERE korisnik_id=$1 AND tip='pretraga' ORDER BY id DESC LIMIT 12`, [req.uid]);
+    const pretrage = rPret.rows.map(x => { try { const m = typeof x.meta === 'string' ? JSON.parse(x.meta) : x.meta; return { q: m.q, n: m.n, ts: x.ts }; } catch (_) { return { q: '', ts: x.ts }; } }).filter(p => p.q);
+    res.json({ ok: true, tipovi: rTip.rows, pretrage });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// ⭐ v162 — superadmin: detaljna aktivnost + trošak tokena JEDNOG korisnika (klik u dashboardu)
+app.get('/api/admin/korisnik/:id/aktivnost', auth, zahtijevajSuperadmin, async (req, res) => {
+  try {
+    const kid = parseInt(req.params.id, 10); if (!kid) return res.status(400).json({ error: 'Neispravan id.' });
+    const kr = await ucitajKorisnika(kid); if (!kr) return res.status(404).json({ error: 'Korisnik ne postoji.' });
+    const g30 = new Date(Date.now() - 30 * 864e5).toISOString();
+    const rTip = await q(`SELECT tip, COUNT(*)::int AS n FROM events WHERE korisnik_id=$1 AND ts > $2 GROUP BY tip ORDER BY n DESC`, [kid, g30]);
+    const rPret = await q(`SELECT meta, ts FROM events WHERE korisnik_id=$1 AND tip='pretraga' ORDER BY id DESC LIMIT 20`, [kid]);
+    const pretrage = rPret.rows.map(x => { try { const m = typeof x.meta === 'string' ? JSON.parse(x.meta) : x.meta; return { q: m.q, n: m.n, ts: x.ts }; } catch (_) { return { q: '', ts: x.ts }; } }).filter(p => p.q);
+    const rZad = await q(`SELECT tip, meta, ts FROM events WHERE korisnik_id=$1 ORDER BY id DESC LIMIT 25`, [kid]);
+    const zadnje = rZad.rows.map(x => ({ tip: x.tip, ts: x.ts }));
+    // trošak: mjesečni (vs budžet) + ukupni (od početka)
+    const budzet = aiBudzet(kr);
+    const mjesec = await aiPotrosnjaUsd(kid); // tekući mjesec
+    const uk = await korisnikUkupniTrosak(kid); // od početka
+    const pct = budzet === Infinity ? 0 : Math.min(100, Math.round(mjesec / budzet * 100));
+    res.json({ ok: true, ime: kr.ime, email: kr.email, tier: kr.tier, tipovi: rTip.rows, pretrage, zadnje,
+      trosak: { mjesec_usd: Math.round(mjesec * 10000) / 10000, ukupno_usd: Math.round(uk.usd * 10000) / 10000,
+        tokeni_ukupno: uk.tokeni, budzet_usd: budzet === Infinity ? null : budzet, postotak: pct,
+        tokeni_mjesec: Math.round(mjesec * TOKENI_PO_USD), tokeni_budzet: budzet === Infinity ? null : Math.round(budzet * TOKENI_PO_USD) } });
+  } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
 // Promjena lozinke (prisilna pri prvoj prijavi: bez stare; inace: stara obavezna)
@@ -787,7 +927,7 @@ app.post('/api/lozinka/zaboravljena', async (req, res) => {
       const base = APP_URL || (req.headers.origin || '');
       const link = `${base}/reset?token=${token}`;
       const m = mailReset({ link }); // ⭐ v003
-      const mail = await posaljiMail({ to: email, subject: 'OI Ispit — promjena lozinke', html: m.html, text: m.text, korisnik_id: k.id, tip: 'reset' });
+      const mail = await posaljiMail({ to: email, subject: 'OI — promjena lozinke', html: m.html, text: m.text, korisnik_id: k.id, tip: 'reset' });
       if (DEV_MODE) odg.dev = { reset_link: link, token, mail };
     }
     res.json(odg);
@@ -930,6 +1070,39 @@ app.post('/api/dopis/pdf', auth, async (req, res) => {
 });
 
 // ⭐ v083 — TRAJNO brisanje računa (GDPR pravo na zaborav). Potvrda: točan upis imena/emaila.
+// ⭐ v168 — GDPR izvoz: sav osobni sadržaj korisnika u jednom JSON-u (pravo na prijenos podataka)
+app.get('/api/moji-podaci', auth, async (req, res) => {
+  try {
+    const uid = req.uid;
+    const prof = await q(`SELECT id, email, korisnicko_ime, ime, tier, tier_istek, cilj_datum, uze_podrucje, created_at, zadnja_prijava FROM korisnici WHERE id=$1`, [uid]);
+    const napl = await q(`SELECT tip_osobe, naplatni_naziv, oib, adresa, grad, posta, drzava FROM korisnici WHERE id=$1`, [uid]).catch(() => ({ rows: [] })); // ⭐ v169 — naplatni podaci su na korisnici (nema zasebne tablice)
+    const book = await q(`SELECT c.oznaka, d.naziv AS dokument, b.created_at FROM bookmarki b JOIN clanci c ON c.id=b.clanak_id JOIN dokumenti d ON d.id=c.dokument_id WHERE b.korisnik_id=$1 ORDER BY b.created_at DESC`, [uid]).catch(() => ({ rows: [] }));
+    const tierP = await q(`SELECT stari_tier, novi_tier, istek, napomena, ts FROM tier_promjene WHERE korisnik_id=$1 ORDER BY ts`, [uid]).catch(() => ({ rows: [] }));
+    const razg = await q(`SELECT r.id, r.created_at, p.uloga, p.tekst, p.created_at AS poruka_ts
+      FROM ai_razgovori r JOIN ai_poruke p ON p.razgovor_id=r.id WHERE r.korisnik_id=$1 ORDER BY r.id, p.id`, [uid]).catch(() => ({ rows: [] }));
+    const testovi = await q(`SELECT vrsta, ocjena, prolaz, created_at FROM test_sesije WHERE korisnik_id=$1 ORDER BY created_at`, [uid]).catch(() => ({ rows: [] }));
+    const usmeni = await q(`SELECT created_at, rezultati FROM usmeni_sesije WHERE korisnik_id=$1 ORDER BY created_at`, [uid]).catch(() => ({ rows: [] })); // ⭐ v169 — rezultati (JSONB), nema ocjena/prolaz stupaca
+    const akt = await q(`SELECT tip, ts FROM events WHERE korisnik_id=$1 ORDER BY ts DESC LIMIT 1000`, [uid]).catch(() => ({ rows: [] }));
+    // grupiraj razgovore
+    const razgMap = {};
+    for (const p of razg.rows) { (razgMap[p.id] = razgMap[p.id] || { id: p.id, created_at: p.created_at, poruke: [] }).poruke.push({ uloga: p.uloga, tekst: p.tekst, vrijeme: p.poruka_ts }); }
+    const izvoz = {
+      _o: 'Izvoz osobnih podataka — OI (ovlašteni inženjer / Žbuka AI). Sadrži sve podatke koje čuvamo o vama.',
+      _datum: new Date().toISOString(),
+      profil: prof.rows[0] || null,
+      naplatni_podaci: napl.rows[0] || null,
+      pretplata_povijest: tierP.rows,
+      oznaceni_clanci: book.rows,
+      vjestak_razgovori: Object.values(razgMap),
+      pismeni_ispiti: testovi.rows,
+      usmeni_ispiti: usmeni.rows,
+      aktivnost: akt.rows
+    };
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
+    res.setHeader('Content-Disposition', 'attachment; filename="oi-moji-podaci.json"');
+    res.send(JSON.stringify(izvoz, null, 2));
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
 // CASCADE briše ai_razgovori(+poruke), usmeni_sesije(+poruke), test_sesije, srs_stavke, bookmarki, email_tokeni.
 // email_log (bez FK) i clanak_pomoc/events (SET NULL) čistimo/odspajamo eksplicitno. Nepovratno.
 app.delete('/api/racun', auth, async (req, res) => {
@@ -1028,6 +1201,8 @@ app.post('/api/admin/uvoz/sifrarnik', auth, zahtijevajSuperadmin, async (req, re
 app.post('/api/admin/uvoz/clanci', auth, zahtijevajSuperadmin, async (req, res) => {
   try {
     const { dokument_id, dokument_naziv, clanci, nn_izvor, vrsta, priznato_pravilo } = req.body || {};
+    const preview = !!(req.body && req.body.preview); // ⭐ v149 — dry-run: izračunaj diff, ne persistiraj
+    const spajanje = !!(req.body && req.body.spajanje); // ⭐ v150 — merge: parcijalni uvoz NE briše članke izvan uvoza
     if (!Array.isArray(clanci) || clanci.length === 0) return res.status(400).json({ error: 'Očekujem polje clanci.' });
     if (clanci.length > 3000) return res.status(400).json({ error: 'Previše članaka u jednom uvozu.' });
     const rez = await withTx(async (c) => {
@@ -1072,9 +1247,12 @@ app.post('/api/admin/uvoz/clanci', auth, zahtijevajSuperadmin, async (req, res) 
 
       // ⭐ v018 — F4 UPSERT-PO-OZNACI (03 §2): identitet = oznaka unutar dokumenta;
       // duplikatne oznake (novele-prijelazni "Članak 3." ×2) → ključ oznaka#rbrPojave.
+      // ⭐ v149 — normaliziraj oznaku za MATCHING/identitet: "Članak 3." i "Članak 3" = ISTI članak (upsert, ne duplikat).
+      // Prikazana oznaka ostaje originalna; normaliziramo samo ključ usporedbe (trim, razmaci, bez završne točke, mala slova).
+      const normOzn = (o) => String(o || '').trim().replace(/\s+/g, ' ').replace(/[.\u00A0]+$/, '').toLowerCase();
       const kljucevi = (arr) => {
-        const br = {}; return arr.map(x => { br[x.oznaka] = (br[x.oznaka] || 0) + 1;
-          return br[x.oznaka] > 1 ? `${x.oznaka}#${br[x.oznaka]}` : x.oznaka; });
+        const br = {}; return arr.map(x => { const key = normOzn(x.oznaka); br[key] = (br[key] || 0) + 1;
+          return br[key] > 1 ? `${key}#${br[key]}` : key; });
       };
       const stariK = kljucevi(rPost.rows), noviK = kljucevi(ulaz);
       const stariPo = new Map(rPost.rows.map((r, i) => [stariK[i], r]));
@@ -1116,8 +1294,11 @@ app.post('/api/admin/uvoz/clanci', auth, zahtijevajSuperadmin, async (req, res) 
         diff.izmijenjeni.push(u.oznaka);
       }
       // NESTALI: status='brisan', tekst OSTAJE (traka u čitaču), verzija se zatvara; bookmarki/citati žive 🔒
+      // ⭐ v150 — SPAJANJE (merge): kod parcijalnog uvoza (npr. samo 1 članak / delta) NE brišemo članke kojih nema
+      // u uvozu — ostaju netaknuti. Bez spajanja (puni dokument) zadržavamo staro ponašanje (nestali = brisani).
       let rep = ulaz.length;
       for (const [, s] of stariPo) {
+        if (spajanje) continue; // merge: ostavi netaknuto (ni status ni redoslijed ne diramo)
         if (s.status !== 'brisan') {
           await c.query(`UPDATE clanci SET status='brisan', dirty=true, redoslijed=$1 WHERE id=$2`, [++rep, s.id]);
           await c.query(`UPDATE clanci_verzije SET vrijedi_do=$1 WHERE clanak_id=$2 AND vrijedi_do IS NULL`, [danas, s.id]);
@@ -1129,6 +1310,10 @@ app.post('/api/admin/uvoz/clanci', auth, zahtijevajSuperadmin, async (req, res) 
       const meta = JSON.stringify({ datum: danas, nn_izvor: izvor, novi: diff.novi.slice(0, 200),
         izmijenjeni: diff.izmijenjeni.slice(0, 200), brisani: diff.brisani.slice(0, 200),
         isti: diff.isti, reaktivirani: diff.reaktivirani.slice(0, 50) });
+      // ⭐ v149 — PREVIEW (dry-run): sve izračunano; baci marker → withTx ROLLBACK (ništa ne persistira), diff nosimo van za potvrdu.
+      if (preview) { const e = new Error('__PREVIEW__'); e.__diff = {
+        dokument_id: dokId, dokument_naziv: dokument_naziv || null, novo_dokument: prije === 0,
+        novi: diff.novi, izmijenjeni: diff.izmijenjeni, brisani: diff.brisani, isti: diff.isti, reaktivirani: diff.reaktivirani }; throw e; }
       await c.query(`INSERT INTO sustav_meta (kljuc, vrijednost) VALUES ($1,$2)
                      ON CONFLICT (kljuc) DO UPDATE SET vrijednost=$2, azurirano=now()`,
         [`novela_diff_${dokId}`, meta]);
@@ -1137,7 +1322,12 @@ app.post('/api/admin/uvoz/clanci', auth, zahtijevajSuperadmin, async (req, res) 
                brisani: diff.brisani.length, isti: diff.isti, reaktivirani: diff.reaktivirani.length };
     });
     res.json({ ok: true, ...rez });
-  } catch (e) { res.status(500).json({ error: e.message }); }
+  } catch (e) {
+    if (e && e.message === '__PREVIEW__') { const dd = e.__diff || {}; // ⭐ v149 — vrati diff za potvrdu (ništa nije persistirano)
+      return res.json({ ok: true, preview: true, novo_dokument: dd.novo_dokument, dokument_naziv: dd.dokument_naziv,
+        izmijenjeni: dd.izmijenjeni || [], novi: dd.novi || [], brisani: dd.brisani || [], isti: dd.isti || 0, reaktivirani: dd.reaktivirani || [] }); }
+    res.status(500).json({ error: e.message });
+  }
 });
 
 // ⭐ v018 — F4: diff zadnjeg uvoza (hrani "što donosi novela")
@@ -1180,6 +1370,21 @@ app.get('/api/admin/uvoz/status', auth, zahtijevajSuperadmin, async (req, res) =
     const ukupnoClanaka = rd.rows.reduce((s, x) => s + x.clanaka, 0);
     res.json({ ok: true, dokumenata_ukupno: ru.rows[0].n,
                uvezeno: rd.rows.length, clanaka: ukupnoClanaka, popis: rd.rows });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// ⭐ v148 — POPIS svih aktivnih propisa (zakoni/pravilnici/normativi) za kopiranje (web, pregled). Superadmin.
+// ⭐ v151 — samo UVEZENI (imaju ≥1 aktivan članak); šifrarnik-stubovi bez članaka se izostavljaju.
+app.get('/api/admin/popis', auth, zahtijevajSuperadmin, async (req, res) => {
+  try {
+    const r = await q(`SELECT d.naziv, d.vrsta, d.izvor,
+        COUNT(c.id) FILTER (WHERE c.status='aktivan')::int AS clanaka
+      FROM dokumenti d LEFT JOIN clanci c ON c.dokument_id = d.id
+      WHERE d.status='aktivno'
+      GROUP BY d.id, d.naziv, d.vrsta, d.izvor
+      HAVING COUNT(c.id) FILTER (WHERE c.status='aktivan') > 0
+      ORDER BY d.vrsta, d.naziv`);
+    res.json({ ok: true, dokumenti: r.rows });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
@@ -1248,13 +1453,13 @@ app.get('/api/admin/tts-potrosnja', auth, zahtijevajSuperadmin, async (req, res)
 });
 
 // ⭐ v095 — superadmin: dodijeli tier korisniku (FREE/BASIC/PRO) s opcijskim istekom + zapisom u povijest
-const TIEROVI = ['free', 'basic', 'pro'];
+const TIEROVI = ['free', 'basic', 'pro', 'enterprise']; // ⭐ v160
 app.patch('/api/admin/korisnik/:id/tier', auth, zahtijevajSuperadmin, async (req, res) => {
   try {
     const kid = parseInt(req.params.id, 10);
     if (!kid) return res.status(400).json({ error: 'Neispravan korisnik.' });
     const noviTier = String((req.body || {}).tier || '').toLowerCase();
-    if (!TIEROVI.includes(noviTier)) return res.status(400).json({ error: 'Tier mora biti free, basic ili pro.' });
+    if (!TIEROVI.includes(noviTier)) return res.status(400).json({ error: 'Tier mora biti free, basic, pro ili enterprise.' });
     let istek = (req.body || {}).istek ? String((req.body || {}).istek).slice(0, 10) : null; // YYYY-MM-DD ili null
     if (istek && !/^\d{4}-\d{2}-\d{2}$/.test(istek)) return res.status(400).json({ error: 'Datum isteka mora biti YYYY-MM-DD.' });
     if (noviTier === 'free') istek = null; // free nema istek
@@ -1263,6 +1468,12 @@ app.patch('/api/admin/korisnik/:id/tier', auth, zahtijevajSuperadmin, async (req
     if (!rc.rowCount) return res.status(404).json({ error: 'Korisnik ne postoji.' });
     const stari = rc.rows[0].tier;
     await q(`UPDATE korisnici SET tier=$1, tier_istek=$2 WHERE id=$3`, [noviTier, istek, kid]);
+    // ⭐ v162 — čestitka: pri dodjeli plaćenog paketa spremi napomenu + označi nepročitano (prikaže se pri idućem ulasku, jednom)
+    if (noviTier !== 'free' && noviTier !== stari) {
+      await q(`UPDATE korisnici SET cestitka_tier=$1, cestitka_napomena=$2, cestitka_procitana=false WHERE id=$3`, [noviTier, napomena || null, kid]);
+    } else if (noviTier === 'free') {
+      await q(`UPDATE korisnici SET cestitka_procitana=true WHERE id=$1`, [kid]);
+    }
     const admin = await ucitajKorisnika(req.uid);
     await q(`INSERT INTO tier_promjene (korisnik_id, stari_tier, novi_tier, istek, promijenio_id, promijenio_ime, napomena)
       VALUES ($1,$2,$3,$4,$5,$6,$7)`,
@@ -1301,10 +1512,12 @@ app.get('/api/admin/dashboard', auth, zahtijevajSuperadmin, async (req, res) => 
     const rbk = await q(`SELECT korisnik_id, COUNT(*)::int AS n FROM bookmarki GROUP BY korisnik_id`);
     const mEv = new Map(rev.rows.map(x => [x.korisnik_id, x]));
     const mBk = new Map(rbk.rows.map(x => [x.korisnik_id, x.n]));
+    const mTr = await svibUkupniTrosak(); // ⭐ v162 — ukupni trošak po korisniku
     for (const u of ru.rows) {
       const e = mEv.get(u.id);
       u.dogadjaja = e ? e.n : 0; u.zadnja_aktivnost = e ? e.zadnje : null;
       u.bookmarka = mBk.get(u.id) || 0;
+      const t = mTr.get(u.id); u.tokeni = t ? t.tokeni : 0; u.trosak_usd = t ? Math.round(t.usd * 10000) / 10000 : 0; // ⭐ v162
     }
     // top otvarani clanci + zadnje pretrage (sadrzajni uvid)
     const rtc = await q(`SELECT e.meta, COUNT(*)::int AS n FROM events e
@@ -1469,23 +1682,24 @@ app.get('/api/uci/pretraga', auth, async (req, res) => {
     const k = await ucitajKorisnika(req.uid);
     if (!k) return res.json({ ok: true, propisi: [], clanci: [] });
     const like = '%' + qs.replace(/[%_]/g, '') + '%';
-    // ⭐ v125 — jedinstvena pretraga po 4 polja s PRIORITETOM: dokument_naziv > vrsta > oznaka članka > tekst članka.
-    // Superadmin pretražuje SVE gradivo; običan korisnik samo svoj program. Rang određuje redoslijed prikaza.
+    const qraw = qs.replace(/[%_]/g, ''); // ⭐ v159 — čisti upit za word_similarity (tolerancija na tipfelere)
+    // ⭐ v159 — PAMETNA pretraga: bez dijakritike (f_unaccent) + NN izvor + tolerancija na tipfelere (<% word_similarity). Prioritet: naziv(1) > NN izvor(2) > oznaka/naslov(3) > tekst(4).
     const sviDok = !!k.je_superadmin;
-    const progFilter = sviDok ? '' : ' AND EXISTS (SELECT 1 FROM program_dokumenti pd WHERE pd.dokument_id=d.id AND pd.program_id=$2)';
-    const params = sviDok ? [like] : [like, k.program_id];
-    // Dokumenti: match po nazivu (rang 1) ili vrsti (rang 2)
-    const rd = await q(`SELECT d.id AS dokument_id, d.naziv, d.vrsta,
-        CASE WHEN d.naziv ILIKE $1 THEN 1 ELSE 2 END AS rang
+    const progFilter = sviDok ? '' : ' AND EXISTS (SELECT 1 FROM program_dokumenti pd WHERE pd.dokument_id=d.id AND pd.program_id=$3)';
+    const params = sviDok ? [like, qraw] : [like, qraw, k.program_id];
+    // Dokumenti: naziv (rang 1), NN izvor (rang 2), vrsta (rang 3)
+    const rd = await q(`SELECT d.id AS dokument_id, d.naziv, d.vrsta, d.izvor,
+        CASE WHEN f_unaccent(d.naziv) ILIKE f_unaccent($1) THEN 1
+             WHEN d.izvor ILIKE $1 THEN 2 ELSE 3 END AS rang
       FROM dokumenti d
-      WHERE d.status='aktivno' AND (d.naziv ILIKE $1 OR d.vrsta ILIKE $1)${progFilter}
+      WHERE d.status='aktivno' AND (f_unaccent(d.naziv) ILIKE f_unaccent($1) OR d.izvor ILIKE $1 OR f_unaccent(d.vrsta) ILIKE f_unaccent($1) OR f_unaccent($2) <% f_unaccent(d.naziv))${progFilter}
       ORDER BY rang, d.naziv LIMIT 25`, params);
-    // Članci: match po oznaci (rang 3) ili tekstu (rang 4). Oznaka prije teksta.
-    const rc = await q(`SELECT c.id, c.oznaka, c.naslov, d.naziv AS dokument_naziv, d.vrsta,
+    // Članci: oznaka/naslov (rang 3), tekst (rang 4). Oznaka/naslov prije teksta.
+    const rc = await q(`SELECT c.id, c.oznaka, c.naslov, d.naziv AS dokument_naziv, d.vrsta, d.izvor,
         LEFT(c.tekst, 180) AS ulomak,
-        CASE WHEN c.oznaka ILIKE $1 OR c.naslov ILIKE $1 THEN 3 ELSE 4 END AS rang
+        CASE WHEN f_unaccent(c.oznaka) ILIKE f_unaccent($1) OR f_unaccent(COALESCE(c.naslov,'')) ILIKE f_unaccent($1) THEN 3 ELSE 4 END AS rang
       FROM clanci c JOIN dokumenti d ON d.id=c.dokument_id
-      WHERE d.status='aktivno' AND (c.oznaka ILIKE $1 OR c.naslov ILIKE $1 OR c.tekst ILIKE $1)${progFilter}
+      WHERE d.status='aktivno' AND (f_unaccent(c.oznaka) ILIKE f_unaccent($1) OR f_unaccent(COALESCE(c.naslov,'')) ILIKE f_unaccent($1) OR f_unaccent(c.tekst) ILIKE f_unaccent($1) OR f_unaccent($2) <% f_unaccent(COALESCE(c.naslov,'')))${progFilter}
       ORDER BY rang, c.oznaka LIMIT 40`, params);
     zabiljezi(req.uid, 'pretraga', { q: qs.slice(0, 80), n: rd.rowCount + rc.rowCount }); // ⭐ v013
     res.json({ ok: true, propisi: rd.rows, clanci: rc.rows });
@@ -2176,8 +2390,11 @@ async function vjestakPetlja(opts) {
 // ⭐ v021 — potrošnja korisnika u USD za tekući mjesec (iz ai_poruke tokena).
 // Cijene i budžeti iz ENV-a (USD/1M tokena; Sonnet-klasa defaulti) — lako mijenjaš bez koda.
 const aiCijene = () => ({ cin: parseFloat(process.env.AI_CIJENA_IN || '3'), cout: parseFloat(process.env.AI_CIJENA_OUT || '15') });
+// ⭐ v161 — budžet po tieru (USD/mjesec) + marketinški prikaz u tokenima (1$ = 1M tokena). ENV override AI_BUDZET_FREE/BASIC/PRO/ENTERPRISE.
+const TIER_BUDZET = { free: 1, basic: 5, pro: 10, enterprise: 40 };
+const TOKENI_PO_USD = parseInt(process.env.TOKENI_PO_USD || '1000000', 10) || 1000000; // marketinški: 1$ ≈ 1 000 000 tokena
 const aiBudzet = (k) => k.je_superadmin ? Infinity
-  : parseFloat(k.tier === 'pro' ? (process.env.AI_BUDZET_PRO || '10') : (process.env.AI_BUDZET_FREE || '1'));
+  : (parseFloat(process.env['AI_BUDZET_' + String(k.tier || 'free').toUpperCase()] || '') || TIER_BUDZET[k.tier] || TIER_BUDZET.free);
 async function aiPotrosnjaUsd(korisnikId) {
   const odMjeseca = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString(); // pg-mem: bez date_trunc
   const r = await q(`SELECT COALESCE(SUM(p.tokeni_in),0)::bigint AS tin, COALESCE(SUM(p.tokeni_out),0)::bigint AS tout
@@ -2190,6 +2407,30 @@ async function aiPotrosnjaUsd(korisnikId) {
   const { cin, cout } = aiCijene();
   return ((Number(r.rows[0].tin) + Number(r2.rows[0].tin) + Number(r3.rows[0].tin)) * cin
         + (Number(r.rows[0].tout) + Number(r2.rows[0].tout) + Number(r3.rows[0].tout)) * cout) / 1e6;
+}
+// ⭐ v162 — UKUPNI trošak korisnika (od početka): tokeni (in+out) + $ preko sva 3 izvora
+async function korisnikUkupniTrosak(korisnikId) {
+  const r = await q(`SELECT COALESCE(SUM(p.tokeni_in),0)::bigint AS tin, COALESCE(SUM(p.tokeni_out),0)::bigint AS tout
+    FROM ai_poruke p JOIN ai_razgovori r ON r.id=p.razgovor_id WHERE r.korisnik_id=$1 AND p.uloga='assistant'`, [korisnikId]);
+  const r2 = await q(`SELECT COALESCE(SUM(tokeni_in),0)::bigint AS tin, COALESCE(SUM(tokeni_out),0)::bigint AS tout FROM clanak_pomoc WHERE korisnik_id=$1`, [korisnikId]);
+  const r3 = await q(`SELECT COALESCE(SUM(tokeni_in),0)::bigint AS tin, COALESCE(SUM(tokeni_out),0)::bigint AS tout FROM usmeni_sesije WHERE korisnik_id=$1`, [korisnikId]);
+  const { cin, cout } = aiCijene();
+  const tin = Number(r.rows[0].tin) + Number(r2.rows[0].tin) + Number(r3.rows[0].tin);
+  const tout = Number(r.rows[0].tout) + Number(r2.rows[0].tout) + Number(r3.rows[0].tout);
+  return { tokeni: tin + tout, usd: (tin * cin + tout * cout) / 1e6 };
+}
+// ⭐ v162 — BULK trošak SVIH korisnika (za dashboard listu): jedan prolaz po svakom izvoru → Map(korisnik_id → {tin,tout})
+async function svibUkupniTrosak() {
+  const spoji = (mapa, rows, kol) => { for (const x of rows) { const id = x[kol]; if (id == null) continue; const cur = mapa.get(id) || { tin: 0, tout: 0 }; cur.tin += Number(x.tin || 0); cur.tout += Number(x.tout || 0); mapa.set(id, cur); } };
+  const m = new Map();
+  spoji(m, (await q(`SELECT r.korisnik_id, COALESCE(SUM(p.tokeni_in),0)::bigint AS tin, COALESCE(SUM(p.tokeni_out),0)::bigint AS tout
+    FROM ai_poruke p JOIN ai_razgovori r ON r.id=p.razgovor_id WHERE p.uloga='assistant' GROUP BY r.korisnik_id`)).rows, 'korisnik_id');
+  spoji(m, (await q(`SELECT korisnik_id, COALESCE(SUM(tokeni_in),0)::bigint AS tin, COALESCE(SUM(tokeni_out),0)::bigint AS tout FROM clanak_pomoc GROUP BY korisnik_id`)).rows, 'korisnik_id');
+  spoji(m, (await q(`SELECT korisnik_id, COALESCE(SUM(tokeni_in),0)::bigint AS tin, COALESCE(SUM(tokeni_out),0)::bigint AS tout FROM usmeni_sesije GROUP BY korisnik_id`)).rows, 'korisnik_id');
+  const { cin, cout } = aiCijene();
+  const out = new Map();
+  for (const [id, v] of m) out.set(id, { tokeni: v.tin + v.tout, usd: (v.tin * cin + v.tout * cout) / 1e6 });
+  return out;
 }
 
 // ── rute ──
@@ -2306,10 +2547,10 @@ app.post('/api/ai/pitaj', auth, async (req, res) => {
     if (!AI_ON()) return res.status(503).json({ error: 'AI privremeno nedostupan' });
     const k = await ucitajKorisnika(req.uid);
     if (!k) return res.status(404).json({ error: 'Korisnik ne postoji.' });
-    const budzet = aiBudzet(k);                              // ⭐ v021 — $ budžet po tieru (ENV)
+    const budzet = aiBudzet(k);                              // ⭐ v021 — $ budžet po tieru (ENV); ⭐ v161 — jedinstveni token-budžet gata sve
     if (budzet !== Infinity) {
       const potroseno = await aiPotrosnjaUsd(req.uid);
-      if (potroseno >= budzet) return res.status(402).json({ error: 'limit', nadogradnja: k.tier !== 'pro' });
+      if (potroseno >= budzet) return res.status(402).json({ error: 'limit', razlog: 'tokeni', nadogradnja: k.tier !== 'enterprise' });
     }
     const tekst = String((req.body || {}).tekst || '').trim().slice(0, 2000);
     if (!tekst) return res.status(400).json({ error: 'Nedostaje tekst pitanja.' });
@@ -2437,8 +2678,12 @@ app.get('/api/ai/potrosnja', auth, async (req, res) => { // ⭐ v021 — za prog
     const budzet = aiBudzet(k);
     const potroseno = await aiPotrosnjaUsd(req.uid);
     const pct = budzet === Infinity ? 0 : Math.min(100, Math.round(potroseno / budzet * 100));
+    // ⭐ v161 — marketinški prikaz u tokenima (1$ ≈ 1M tokena); klijent ne vidi $ nego tokene
+    const tokeniTotal = budzet === Infinity ? null : Math.round(budzet * TOKENI_PO_USD);
+    const tokeniIskor = Math.round(potroseno * TOKENI_PO_USD);
     res.json({ ok: true, potroseno_usd: Math.round(potroseno * 10000) / 10000,
       budzet_usd: budzet === Infinity ? null : budzet, postotak: pct, tier: k.tier,
+      tokeni_total: tokeniTotal, tokeni_iskoristeno: tokeniIskor, // marketinški
       neogranicen: budzet === Infinity });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
@@ -2538,14 +2783,18 @@ app.get('/api/spremnost', auth, async (req, res) => {
 
 app.get('/api/novosti', auth, async (req, res) => {
   try {
-    const r = await q(`SELECT d.naziv AS dokument, d.id AS dokument_id, v.vrijedi_od, v.nn_izvor, COUNT(*)::int AS clanaka
+    // ⭐ v154 — marker čišćenja: skrij novosti do datuma koji je superadmin "očistio"
+    const pr = await q(`SELECT vrijednost FROM sustav_meta WHERE kljuc='novosti_procisceno_od'`);
+    const procisceno = pr.rows[0] ? pr.rows[0].vrijednost : '1900-01-01';
+    const r = await q(`SELECT d.naziv AS dokument, d.id AS dokument_id, v.vrijedi_od, v.nn_izvor, COUNT(*)::int AS clanaka,
+        array_agg(DISTINCT v.clanak_id) AS clanci_izmijenjeni
       FROM clanci_verzije v
       JOIN (SELECT clanak_id, COUNT(*) AS n FROM clanci_verzije GROUP BY clanak_id) m ON m.clanak_id = v.clanak_id
       JOIN clanci c ON c.id = v.clanak_id
       JOIN dokumenti d ON d.id = c.dokument_id
-      WHERE v.vrijedi_do IS NULL AND m.n > 1
+      WHERE v.vrijedi_do IS NULL AND m.n > 1 AND v.vrijedi_od::date > $1::date
       GROUP BY d.naziv, d.id, v.vrijedi_od, v.nn_izvor
-      ORDER BY v.vrijedi_od DESC LIMIT 40`);
+      ORDER BY v.vrijedi_od DESC LIMIT 40`, [procisceno]);
     // ⭐ v073 — pridruži čitljivi sažetak izmjena (ako ga je superadmin upisao)
     const ids = r.rows.map(x => x.dokument_id);
     let sazetci = {};
@@ -2556,6 +2805,16 @@ app.get('/api/novosti', auth, async (req, res) => {
     }
     const novosti = r.rows.map(x => ({ ...x, sazetak: sazetci[x.dokument_id] || null }));
     res.json({ ok: true, novosti });
+  } catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// ⭐ v154 — čišćenje Novosti (superadmin): postavi marker "procisceno_od" na danas → sve dosadašnje novosti se skriju, nove (kasnije izmjene) se opet prikazuju. Ne dira podatke/verzije.
+app.post('/api/admin/novosti/procisti', auth, zahtijevajSuperadmin, async (req, res) => {
+  try {
+    const danas = new Date().toISOString().slice(0, 10);
+    await q(`INSERT INTO sustav_meta (kljuc, vrijednost) VALUES ('novosti_procisceno_od', $1)
+      ON CONFLICT (kljuc) DO UPDATE SET vrijednost = $1, azurirano = now()`, [danas]);
+    res.json({ ok: true, procisceno_od: danas });
   } catch (e) { res.status(500).json({ error: e.message }); }
 });
 
@@ -2579,7 +2838,7 @@ app.post('/api/ai/clanak-pomoc', auth, async (req, res) => {
     if (!k) return res.status(404).json({ error: 'Korisnik ne postoji.' });
     const budzet = aiBudzet(k);                              // isti $ budžet kao Vještak (v021)
     if (budzet !== Infinity && (await aiPotrosnjaUsd(req.uid)) >= budzet)
-      return res.status(402).json({ error: 'limit', nadogradnja: k.tier !== 'pro' });
+      return res.status(402).json({ error: 'limit', razlog: 'tokeni', nadogradnja: k.tier !== 'enterprise' }); // ⭐ v167 — ujednačeno s ostalim gateovima
     const fnA = req.app.get('aiOdgovor') ||
       ((sys, msgs) => anthropicPoziv(process.env.MODEL_POMOC || process.env.MODEL_ODGOVOR, sys, msgs, 700));
     const odg = await fnA(tip === 'skraceno' ? P9_SKRACENO : P9_PRIMJER,
@@ -2629,7 +2888,7 @@ app.post('/api/mentor/objasni', auth, async (req, res) => {
     if (!k) return res.status(404).json({ error: 'Korisnik ne postoji.' });
     const budzet = aiBudzet(k);
     if (budzet !== Infinity && (await aiPotrosnjaUsd(req.uid)) >= budzet)
-      return res.status(402).json({ error: 'limit', nadogradnja: k.tier !== 'pro' });
+      return res.status(402).json({ error: 'limit', razlog: 'tokeni', nadogradnja: k.tier !== 'enterprise' });
     const pid = parseInt((req.body || {}).pitanje_id, 10);
     const odgovor = String((req.body || {}).odgovor || '').slice(0, 300);
     if (!pid) return res.status(400).json({ error: 'Nedostaje pitanje_id.' });
@@ -2830,7 +3089,7 @@ app.post('/api/tts', auth, async (req, res) => {
     if (!kljuc) return res.status(503).json({ error: 'tts-off' }); // nije konfiguriran -> klijent fallback na browser
     const k = await ucitajKorisnika(req.uid);
     if (!k) return res.status(404).json({ error: 'Korisnik ne postoji.' });
-    if (!k.je_superadmin && k.tier !== 'pro') return res.status(402).json({ error: 'pro' }); // prirodan glas = Pro pogodnost
+    if (!k.je_superadmin && k.tier === 'free') return res.status(402).json({ error: 'pro' }); // ⭐ v167 — prirodan glas = pogodnost plaćenih (basic/pro/enterprise); samo free blokiran
     const tekst = String((req.body || {}).tekst || '').trim().slice(0, 1200); // limit po pozivu (trošak)
     if (!tekst) return res.status(400).json({ error: 'Nema teksta.' });
     const glas = String((req.body || {}).glas || TTS_GLAS());
@@ -2859,14 +3118,11 @@ app.post('/api/usmeni/start', auth, async (req, res) => {
     if (!AI_ON()) return res.status(503).json({ error: 'AI privremeno nedostupan' });
     const k = await ucitajKorisnika(req.uid);
     if (!k) return res.status(404).json({ error: 'Korisnik ne postoji.' });
-    if (!k.je_superadmin && k.tier !== 'pro') return res.status(402).json({ error: 'pro' }); // usmeni = Pro (12 §3)
+    // ⭐ v161 — usmeni troši iz jedinstvenog token-budžeta (kao Vještak); superadmin neograničeno
     if (!k.program_id) return res.status(400).json({ error: 'Prvo odaberi strukovno područje u kartici Ja.' });
-    if (!k.je_superadmin) {
-      const d0 = new Date(); d0.setHours(0, 0, 0, 0);
-      const rc = await q(`SELECT COUNT(*)::int AS n FROM usmeni_sesije WHERE korisnik_id=$1 AND created_at >= $2`,
-        [req.uid, d0.toISOString()]);
-      if (rc.rows[0].n >= USMENI_DNEVNO()) return res.status(429).json({ error: 'Dnevna kvota usmenih vježbi je iskorištena — nova stiže sutra.' });
-    }
+    { const budzet = aiBudzet(k);
+      if (budzet !== Infinity) { const potroseno = await aiPotrosnjaUsd(req.uid);
+        if (potroseno >= budzet) return res.status(402).json({ error: 'limit', razlog: 'tokeni', nadogradnja: k.tier !== 'enterprise' }); } }
     const uze = String((req.body || {}).uze || k.uze_podrucje || '');
     // ⭐ v096 — usmeni koristi CIJELU banku: abc pitanja (tekst bez opcija — odgovara se govorom) + usmeno/otvoreno.
     // Prije: samo 'usmeno'/'otvoreno' (kojih je banka imala ~0) pa se vrtio uzak skup. LIMIT 800 (bila 50).
@@ -3149,7 +3405,7 @@ app.post('/api/test/start', auth, async (req, res) => {
     const k = await ucitajKorisnika(req.uid);
     if (!k) return res.status(404).json({ error: 'Korisnik ne postoji.' });
     if (!k.program_id) return res.status(400).json({ error: 'Prvo odaberi strukovno područje u kartici Ja.' });
-    if (!k.je_superadmin && k.tier !== 'pro') { // free: mjesecna kvota
+    if (!k.je_superadmin && k.tier === 'free') { // ⭐ v167 — mjesečna kvota testova SAMO za free; basic/pro/enterprise neograničeno
       const odMj = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString();
       // ⭐ v136 — SRS ponavljanja (vrsta='srs') NE troše mjesečnu kvotu pravih testova; broji samo vrsta='test'.
       const rc = await q(`SELECT COUNT(*)::int AS n FROM test_sesije WHERE korisnik_id=$1 AND created_at >= $2 AND vrsta='test'`, [req.uid, odMj]);

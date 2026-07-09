@@ -73,7 +73,7 @@
  */
 
 // ⭐ v016 — CACHE_VERSION (drzi sinkrono sa server.js VERZIJA i footerom u index.html)
-const CACHE_VERSION = 'oi-v147';
+const CACHE_VERSION = 'oi-v169';
 
 // ⭐ v012 — klijent moze gurnuti SW koji ceka (safety uz skipWaiting u installu)
 self.addEventListener('message', (e) => {
