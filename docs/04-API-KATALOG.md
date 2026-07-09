@@ -61,3 +61,15 @@ Kvar-ugovori: AI_ENABLED=false → 503 `{error:'AI privremeno nedostupan'}`; kvo
 ## CHANGELOG
 - 2.1 (2026-07-04): +admin/dashboard (v013).
 - 2.0 (2026-07-04): inicijalno.
+
+> ✅ **Provjereno 2026-07-09 (stanje koda v183).**
+## DOPUNA 2026-07-09 (v183) — nove rute
+### Investitor (auth; kvota znacajke 'investitor', 402 s porukom + `nadogradnja` flag)
+- **GET `/api/investitor/parcela-tocka?lat&lng`** — točka (WGS84) → server transformira u HTRS96/TM → WFS GetFeature `cp:CadastralParcel` bbox upit → `{cestice:[{kcbr,ko,povrsina,geojson}]}`. Više čestica pod točkom (granica) vraća listu za klijentski izbor. Događaj `inv_parcela` u events (kvota).
+- **GET `/api/investitor/parcela?kcbr&ko`** — atributni filter po broju čestice. Greške državnog servisa mapirane u ljudsku poruku: 'Državni servis nije prihvatio upit (HTTP n) — dijagnostika: /api/investitor/probe.'
+- **GET `/api/investitor/probe`** — superadmin dijagnostika: ispali 5+1 varijanti WFS poziva (verzije/typeNames/srs/token oblici) i vrati statuse+isječke. Briše se nakon verifikacije u F2.
+- ⚠ **F1.5 mijenja izvor:** obje parcela-rute prelaze na lokalnu tablicu `cestice` (ATOM), WFS ostaje fallback.
+### Superadmin
+- **`/api/admin/promo`** CRUD promo_akcije + ručna dodjela (v176) · **`/api/admin/tier-postavke`** GET/PUT (v177; UPDATE budzet_usd, pismeni_mj, usmeni_mj, vjestak_mj, investitor_mj).
+### AI tok (v178/v182 — ponašanje, ne nove rute)
+SSE `done` event sada nosi `{tokeni_in, tokeni_out, trosak_usd}`; server retry (2×, backoff 2–5 s) na overloaded/529/429/abort; `stop==='max_tokens'` bez alata → auto-nastavak do 3× (prefill šav bez thinkinga; [SUSTAV] uputa s thinkingom); propali pokušaj NE tereti budžet.

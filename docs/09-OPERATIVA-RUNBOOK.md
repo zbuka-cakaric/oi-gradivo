@@ -45,3 +45,9 @@ Tjedno: backup + pogled na admin progress/analitiku + Railway metrics. Mjesečno
 ## CHANGELOG
 - 2.1 (2026-07-04): +simptom "relation does not exist" (stvarni incident v013 deploya — init-db preskočen).
 - 2.0 (2026-07-04): inicijalno.
+
+> ✅ **Provjereno 2026-07-09 (stanje koda v183).**
+## DOPUNA 2026-07-09
+- **Dijagnostika Investitora:** superadmin otvori `/api/investitor/probe` — testira 5+1 oblika WFS poziva s Railwaya i vraća statuse. Ako aplikacija javi 'Državni servis nije prihvatio upit (HTTP 500)' → njihova strana; probe ispis ide Claudeu.
+- **DGU_TOKEN** u Railway ENV = pričuva (ne dijeliti javno). `DGU_WFS_URL` ne postavljati bez razloga.
+- Isporuke sada uključuju 6 datoteka: server.js, index.html, sw.js, test-ui-v043.js, dopis-docx.js, dopis-pdf.js.

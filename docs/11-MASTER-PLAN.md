@@ -57,3 +57,7 @@ Halucinacija citata → post-check + eval + kill-switch · pravna odgovornost �
 ## CHANGELOG
 - +2026-07-05: status E1 + rebrand prekretnica.
 - 1.0 (2026-07-05): inicijalni master plan — teza, tri stupa, moat, GRA-first etape E1–E6 s "gotovo kad", monetizacija, GTM (rokovi=sezonalnost), metrike, principi, rizici.
+
+> ✅ **Provjereno 2026-07-09 (stanje koda v183).**
+## DOPUNA 2026-07-09
+Strategija nepromijenjena. Napomena: Investitor (treći stup diferencijacije) ušao u aktivnu gradnju paralelno s GRA-first etapama — F1 isporučen, F1.5 ATOM sljedeći. Monetizacijski alati (tierovi, tier_postavke, promo) spremni u kodu.

@@ -1,6 +1,6 @@
 # 10 — INVESTITOR (mod: od kčbr do investicijske studije)
 
-> **Verzija:** 2.0 · **Datum:** 2026-07-07 · **Status:** konceptualni razvoj u tijeku (nije još kod).
+> **Verzija:** 3.0 · **Datum:** 2026-07-09 · **Status:** F1 U PRODUKCIJI (v183) · F1.5 ATOM = sljedeća sesija. §V3 dolje je operativna istina; stariji tekst je povijest koncepta.
 > Ovaj dokument je puna istina za Investitor mod. Verzija 1.0 (2026-07-05) postavila je temeljnu arhitekturu; verzija 2.0 unosi **Ivanove odluke iz sesije 2026-07-07** (razbijanje koncepta) i mijenja pristup s "zadnja faza poslije launcha" na **aktivan konceptualni razvoj sada**. Prije pisanja koda pročitati: 00, 01, 02, 03, 04, 07 + ovaj dokument.
 >
 > **VAŽNO — što se promijenilo od v1.0:** Ivan je odlučio da Investitor NIJE nužno zadnja faza poslije launcha — počinjemo **konceptualni razvoj odmah**, a prvi kodni korak je **prikaz čestice preko WFS-a**. Ovaj dokument je proširen njegovim konkretnim odlukama (dolje §0).
@@ -143,3 +143,42 @@ Tri proizvoda, jedan temelj. Kandidati (provjeriti domenu+žig): NORMA, TEMELJ, 
 ## CHANGELOG
 - **2.0 (2026-07-07):** unesene Ivanove odluke iz sesije razbijanja koncepta (§0): korisnik=profesionalci, sve troje u jednom PDF-u, multi-grad od dana 1, WFS+fallback slika, financije djelomično u MVP, **app predlaže masu + prst-korekcija zeleno/crveno** (ključna promjena engine-a §3.4), prvi kodni korak = WFS prikaz čestice. Potvrđen javni DGU WFS endpoint (web search). GBP pravni temelj (Pravilnik čl. 3/4). Status promijenjen s "zadnja faza poslije launcha" na "aktivan konceptualni razvoj sada". Pending: referentne čestice za širi test.
 - 1.0 (2026-07-05): inicijalni dokument — WFS umjesto slike 🔒, kurirane tablice 🔒, faze F21–F27, sheme, rizici, brand.
+
+---
+# §V3 — STANJE 2026-07-09 (v183): ŠTO JE IZGRAĐENO, DO ZADNJEG DETALJA
+
+## V3.1 Klijent (index.html, ekran `s-inv`, zeleni #1E5741)
+**Karta.** `invKartaInit(retry)` lazy-loada Leaflet 1.9.4 tek pri ulasku u tab (unpkg → jsdelivr fallback kroz `ucitajSa`); `invKartaKreiraj()` gradi kartu: OSM tiles + **DGU WMS overlay granica**: `INV_WMS_KATASTAR='https://api.uredjenazemlja.hr/services/inspire/cp_wms/wms'` (⭐v183 ANONIMNI — potvrdio DGU; stari OSS `inspireService/wms` traži token i NE koristi se), `L.tileLayer.wms(..., {layers:'cp:CadastralParcel', version:'1.3.0', format:'image/png', transparent:true, opacity:0.65, maxZoom:20})`. Ako Leaflet padne → skriva se #inv-karta, prikazuje fallback kartica.
+**Klik na kartu** → `invDohvatiTocku(lat,lng)` → GET `/api/investitor/parcela-tocka`. Više čestica pod točkom (klik na među) → `invIzbor(cestice)` brzi izbor → `invIzaberi(i)`.
+**Obuhvat** (više čestica = jedno gradilište): `INV_OBUHVAT[]`; `invObuhvatToggle(c)` dodaje/miče (drugi klik na istu = makni); `invBboxDodir(geo)` upozorava ako nova čestica bbox-om ne dodiruje postojeće (~1e-5 ≈ 1 m tolerancije); `invObuhvatCrtaj()` crta poligone i zbraja m²; `invObuhvatMakni(i)` s karte i liste.
+**Ručni unos m²** `invRucnoPostavi()` — kad geometrije nema, korisnik upiše površinu i ide dalje (izvor se pamti).
+**GPS** `invGdjeStojim()` (⭐v179): Permissions API `navigator.permissions.query({name:'geolocation'})`; `denied` → `invGpsUpute()` kartica (najkraći put do postavki po platformi: Android/ iOS/ desktop Chrome/Firefox — preglednik NE DA stranici da sama otvori postavke) + gumb Pokušaj ponovno; `prompt`/`granted` → `getCurrentPosition` pa isto kao klik.
+**kčbr pretraga** `invTraziToggle()` + `invTraziKcbr()`: kčbr + naziv k.o. → GET `/api/investitor/parcela`.
+**Poruke** `invPoruka(tekst, ''|'err')` u #inv-msg.
+
+## V3.2 Server (server.js)
+**Konverter** (linije ~4050+): HTRS96/TM (EPSG:3765) ↔ WGS84 — Krügerove serije, bez vanjskih paketa, round-trip < 1 mm (testirano u gateu).
+**Konstante:** `INV_WFS = env.DGU_WFS_URL || 'https://api.uredjenazemlja.hr/services/inspire/cp/wfs'` · `INV_AUTH = env.DGU_TOKEN||env.DGU_AUTH_KEY||''` (pričuva; CP je anoniman) · `INV_AUTH_PARAM = env.DGU_TOKEN_PARAM||'token'` · `INV_TIMEOUT=8000`.
+**Rute:**
+- `GET /api/investitor/parcela-tocka?lat&lng` (auth) — kvota znacajke 'investitor' (`tier_postavke.investitor_mj`; brojanje events tip='inv_parcela'; 402 + poruka + `nadogradnja` ako tier≠enterprise); WGS→TM; WFS GetFeature `cp:CadastralParcel` bbox (bez srs sufiksa, mala slova typeNames); parse GML → `{cestice:[{kcbr,ko,povrsina,geojson}]}` (geometrija natrag u WGS84).
+- `GET /api/investitor/parcela?kcbr&ko` — atributni filter po broju; iste kvote; greška servisa → ljudska poruka s uputom na probe.
+- `GET /api/investitor/probe` — superadmin: 5+1 varijanti poziva (verzije 1.0/2.0, typeNames velika/mala, srsName da/ne, token da/ne, D_katalog putanja), vraća statuse + isječke odgovora. Privremena (briše se nakon F2 verifikacije).
+
+## V3.3 Izvori podataka — KONAČNA SLIKA (detalji: OI-DGU-IZVORI-PODATAKA.md)
+- **DGU potvrdio mailom (2026-07-09): CP WMS (`cp_wms/wms`), CP WFS (`cp/wfs`) i BU WFS (`bu/wfs` — zgrade iz DKP-a!) su ZA ANONIMNE KORISNIKE.**
+- ⚠ `api.uredjenazemlja.hr` gateway **odbija ne-browser klijente** (400 na sve; povremeno 500) → strojno NEPOUZDAN. Mjerodavan test: browser ili Railway probe.
+- **ODLUKA: primarni izvor geometrije = ATOM** (`oss.uredjenazemlja.hr/oss/public/atom/` — statika, NE filtrira klijente, dokazano 2026-07-09): feed svih k.o. + per-k.o. ZIP s `katastarske_cestice.gml` (BROJ_CESTICE, POVRSINA_GRAFICKA, CESTICA_ID, MATICNI_BROJ_KO; EPSG:3765) i `nacini_uporabe_zgrada.gml`. WFS = fallback.
+- **Namjena/urbana pravila NISU kod DGU**: ZG Geoportal WMS `GUPZagreb_Public` **GetFeatureInfo** (točka→atributi) = primarno za F3; dservices8 `WFS_Geoportal_planirana_namjena` (2023) = alternativa; ISPU (ispu.mgipu.hr) = nacionalno širenje. GeoHub Zagreb NEMA GUP slojeve (provjereno). Bonus: ZG `Ortofoto2022_Public` WMS = besplatna avionska podloga za Zagreb.
+
+## V3.4 — F1.5 ATOM INGESTION (SLJEDEĆA SESIJA — recept)
+1. **SHEMA** (`ko_opcine`, `cestice` — vidi 03-BAZA dopunu) + init-db.
+2. **Feed loader**: GET atom_feed.xml → parsiraj entries (naziv k.o., MBR, ZIP URL) → upsert `ko_opcine` (cijela HR, ~3.3k redaka).
+3. **Per-k.o. ingest (on-demand + tjedni refresh korištenih)**: download `ko-{mbr}.zip` → unzip (`adm-zip` npm ili child unzip) → `zisapp/atom/katastarske_cestice.gml` → stream-parse (regex/sax po `<gml:featureMember>`; NE učitavati cijeli GML u memoriju — zna biti >100 MB za velike k.o.) → TM→WGS84 → upsert `cestice`.
+4. **Rute preusmjeriti na lokalno**: parcela-tocka = bbox SQL + point-in-polygon (ray-casting u JS); parcela = SELECT po (ko_mbr,kcbr); k.o. bez ingesta → pokreni ingest s porukom 'Preuzimam katastarsku općinu — prvi upit traje ~min'. WFS ostaje fallback grana.
+5. **Karta**: GeoJSON sloj granica iz vlastite baze (viewport bbox upit) — neovisnost i o cp_wms.
+6. **Zlatni test 🔒**: k.o. Črnomerec → kčbr **2362** → Hercegovačka 56, poligon + POVRSINA_GRAFICKA.
+7. Čuvaj: kvote/eventi ostaju; probe ostaje do F2.
+**Rizici:** veličina GML-a (stream!), Railway disk (ZIP brisati nakon parse), memorija (batch upsert po 500), rezervirani prostor DB (~1–2 GB za veće pokriće — pratiti).
+
+## V3.5 Što čeka Ivana (F2 kalkulator — NE počinje bez ovoga)
+Excel Hercegovačke 56 (zlatne brojke) · defaulti: gradnja €/m² nad/pod zemljom, projektiranje %, kamata %, trajanje mj., np %, posr %, prosječan stan m², neto/bruto faktor, ciljana marža · GUP Zagreb odredbe (PDF) za parametrizaciju.

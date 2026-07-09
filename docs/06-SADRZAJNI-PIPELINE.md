@@ -95,3 +95,7 @@ Uvezeno (2026-07-04): ZoG 162 · Prostorno 250 · ZNR 113 · Požar 73 · Drž. 
 - 2.2 (2026-07-05): dodan Profil F (konsolidirani PDF s označenim izmjenama — strikethrough rect-detekcija, Thorium TP RUETZZ 82 čl.).
 - 2.1 (2026-07-05): dodani profili D (zakon.hr HTML — dokumentiran naknadno), predobrada pre_br_split, D2 (NN web sl-content), D-t (točkasti propisi), E (službeni NN dvostupčani PDF — pdfplumber, kurziv-naslovi, globalna kalibracija rubova, whitelist crtica, filtar grafika). §4 referenca na E. §8: isporučen batch 9–10 (21 propis, 929 jedinica).
 - 2.0 (2026-07-04): inicijalno — kompletno znanje parsera iz sesije v009–v012.
+
+> ✅ **Provjereno 2026-07-09 (stanje koda v183).**
+## DOPUNA 2026-07-09
+Veliki batchevi uvezeni kroz v15x sesije: POS pravilnik, vatrogasni aparati, hidrantska mreža, zaštita od buke, RUE komplet (75 čl.), otpornost na požar (46 čl. + 17 tablica), akustika, vatropristup, ceste + konceptualni pregledi stranih standarda (NFPA/ÖIB/SZPV/VOB — **samo originalni hrvatski pregledi, bez reprodukcije** 🔒). Riješen slomljeni ToUnicode PDF font (ć→d) CID remapiranjem u predobradi.

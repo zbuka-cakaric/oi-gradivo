@@ -45,3 +45,7 @@
 - 1.2 (2026-07-05): finalne boje modova (plava/narančasta/tamnozelena) + login gradient prelijevanje.
 - 1.1 (2026-07-05): **ODOBRENO** — odluke upisane (svjetloplava iz originala; oi.zbuka.hr/ai.zbuka.hr split; selling point). v037 = prvi brend dodir u headeru.
 - 1.0 (2026-07-05): inicijalni koncept (mockup: zbuka-ai-mockup.html).
+
+> ✅ **Provjereno 2026-07-09 (stanje koda v183).**
+## DOPUNA 2026-07-09
+Investitor zeleni (#1E5741) je živ u produkciji (tab + ekran s-inv). Tri moda vidljiva u tab routeru.

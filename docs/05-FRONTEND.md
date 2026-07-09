@@ -83,3 +83,13 @@ Header: ŽBUKA AI logotip (kvačica-krović **svjetloplava**, "AI" svjetloplav; 
 - 2.2 (2026-07-05): +§8 brend i tri-mod nav; F15 isporučen (v035-v038; lekcija: globalni .btn je width:100% — inline gumbi MORAJU width:auto).
 - 2.1 (2026-07-04): +update-traka (v014).
 - 2.0 (2026-07-04): inicijalno.
+
+> ✅ **Provjereno 2026-07-09 (stanje koda v183).**
+## DOPUNA 2026-07-09 (v183)
+### Ekran `s-inv` — Investitor (zeleni mod)
+- **Karta:** Leaflet lazy-load pri ulasku u tab (`invKartaInit` — štedi boot); OSM tiles podloga + **DGU WMS overlay granica čestica**: `https://api.uredjenazemlja.hr/services/inspire/cp_wms/wms` (⭐ v183 anonimni; layers `cp:CadastralParcel`, WMS 1.3.0, png transparent, opacity 0.65). Fallback kartica ako se Leaflet ne učita.
+- **Interakcije:** klik na kartu → `invDohvatiTocku(lat,lng)` → server; više čestica pod točkom → brzi izbor (`invIzbor`); **obuhvat više čestica** (`INV_OBUHVAT[]`, toggle dodaj/makni, crtanje poligona na karti, bbox-dodir provjera susjednosti ~1 m tolerancije); **ručni unos m²** (`invRucnoPostavi`) kad geometrija nije dostupna; **📍 Gdje stojim** GPS (`invGdjeStojim`: Permissions API — denied→`invGpsUpute` kartica s uputama po platformi i gumbom Pokušaj ponovno; prompt→nativni upit); **🔎 kčbr pretraga** (`invTraziKcbr`: kčbr + naziv k.o.). Poruke kroz `invPoruka(t,klasa)`.
+### Vještak UX (v178–v182)
+`#ai-dnd` drag&drop overlay ('📎 Ispusti dokument ovdje', dragenter/leave brojač, tier gate) · Ctrl+V paste slika/datoteka · progress bar uploada · procjena troška prije slanja · '⚡ Ovaj odgovor: N tokena' ispod odgovora ($ superadminu) · greška NE briše djelomični odgovor + 🔄 Pokušaj ponovno (`window._aiZadnje` čuva i privitke) · dokument-okidači prošireni (sastavi|složi|sroči|nastavno na|obrana|odgovor na dopis) · privitak → `maxOdg` min 4000.
+### Profil
+Klik na mjerač tokena → **raščlamba potrošnje po značajkama** (`#ja-ai-stavke`, v176).

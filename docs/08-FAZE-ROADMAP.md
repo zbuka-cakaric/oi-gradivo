@@ -45,3 +45,7 @@ Nastavljamo OI Ispit — faza {F#}. ISTINA: biblija u repou zbuka-cakaric/oi-gra
 ## CHANGELOG
 - 2.1 (2026-07-05): dodan pokazivač F21–F27 INVESTITOR (→10-INVESTITOR.md).
 - 2.0 (2026-07-04): inicijalno (apsorbira spec §DIO 4+8, dodane Gotovo-definicije i prilozi po fazi).
+
+> ✅ **Provjereno 2026-07-09 (stanje koda v183).**
+## DOPUNA 2026-07-09 — stanje faza
+Isporučeno kroz v129–v183: audit+batch popravci, tablice-ingestion, smart search, pretplatnički tierovi + tier_postavke + promo, token meter + raščlamba, dashboard troškovna analitika, email redesign, multi-device sesije + GDPR export, sidebar badges, Vještak privici/retry/auto-nastavak/dragdrop, **Investitor F1** (karta+čestica+GPS+kčbr+obuhvat). **SLJEDEĆE: F1.5 ATOM ingestion** (vidi 10-INVESTITOR §F1.5 i PRVI-PROMPT-F15-ATOM.md), zatim F2 kalkulator (čeka Ivanov Excel Hercegovačke + defaulte), F3 namjena (ZG GUP GetFeatureInfo).

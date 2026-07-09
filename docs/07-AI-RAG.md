@@ -150,3 +150,11 @@ AI nikad ne dobiva cijeli korpus, samo retrieval izvore · PII korisnika ne ide 
 - 2.2 (2026-07-05): **P1 v2 doslovno** (F15.5: agentska petlja §alati, IRAC struktura, pravna hijerarhija, formatiranje bez ##) + **P9a/P9b Skraćeno/Primjer** (v042, ruta /api/ai/clanak-pomoc, keš clanak_pomoc, budžet samo na generaciji). Agentska petlja živi u SSE grani /api/ai/pitaj (JSON grana jednoprolazna — mock/eval kompatibilnost).
 - 2.1 (2026-07-05): **Retrieval v2** — pg_trgm kanal (mjereno 7%→83% vs FTS), Voyage rerank sloj (ENV `VOYAGE_RERANK_MODEL`), orig. pitanje kao prvi upit, post-rerank dok-cap 6/fallback 4, P2 primjer 2 + sinonimi; **GATE 93% upisan** (§8).
 - 2.0 (2026-07-04): inicijalno (apsorbira OI-AI-Spec v1.1 §DIO 3+5, sekvencijske prolaze i failure-modes).
+
+> ✅ **Provjereno 2026-07-09 (stanje koda v183).**
+## DOPUNA 2026-07-09 (v176–v183)
+- **`fnSRetry`** (v178, v180 hotfix `spavaj` globalan): omotač streaming poziva — do 2 ponovna pokušaja s backoffom 2–5 s na overloaded/529/429/abort; **propali pokušaj ne tereti budžet**; klijent na grešku zadržava djelomični tekst + nudi 🔄.
+- **Auto-nastavak** (v182): `stop_reason==='max_tokens'` bez tool_use → nastavi do 3× (bez thinkinga: prefill = dosadašnji tekst → savršen šav; s thinkingom: [SUSTAV] uputa 'nastavi točno gdje si stao'); spajanje suzbija dupli \n\n. Runtime dokaz: 'Tekst do re'+'za i dalje.' = spojeno.
+- **Trošak vidljiv:** `done` SSE event nosi tokene+trošak; UI prikaz; superadmin $ iznos.
+- **Privici:** do 50 MB (base64 u messages), procjena troška prije slanja, kompresija slika klijentski.
+- **Naučena lekcija (test 197) 🔒:** ekstrakcijski testovi NE SMIJU injektirati ovisnosti koje stvarni scope daje — mock je maskirao 'spavaj is not defined'.

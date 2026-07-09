@@ -100,3 +100,10 @@ Platforma **ŽBUKA AI** (krovni brend; plavi logo → oi.zbuka.hr, crveni → ai
 - +2026-07-05: tri moda + ŽBUKA AI rebrand (vidi 12-BRAND-MODOVI).
 - 2.1 (2026-07-05): §2 treći stup INVESTITOR (→10) + strategija GRA-first.
 - 2.0 (2026-07-04): inicijalno.
+
+> ✅ **Provjereno 2026-07-09 (stanje koda v183).**
+## DOPUNA 2026-07-09 (v183)
+- **Tri moda su stvarnost u produkciji:** Mentor (plava), Vještak (narančasta), **Investitor (zelena — karta katastra, GPS, kčbr pretraga, obuhvat više čestica).**
+- **Monetizacija — novi mehanizmi u kodu:** 🎁 **Promo akcije** (tablica `promo_akcije`, rang-logika dodjele, hook na registraciju, superadmin panel) · ⚙️ **Ovlasti pretplata** (`tier_postavke`: DB override budžeta USD i mjesečnih kvota po tieru za pismeni/usmeni/vjestak/investitor; NULL=∞; provedba u sva 4 toka).
+- **Vještak je narastao u punopravni radni alat:** privici do 50 MB (📎 gumb + drag&drop overlay + Ctrl+V paste), progresna traka, procjena troška prije slanja, prikaz stvarnog troška ispod odgovora ("⚡ Ovaj odgovor: N tokena", superadmin vidi i $), retry na zagušenje (529/429), auto-nastavak odrezanih dugih odgovora.
+- **Raščlamba potrošnje po značajkama** u profilu (klik na mjerač tokena) — transparentnost prema korisniku.

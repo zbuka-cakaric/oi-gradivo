@@ -202,3 +202,12 @@ CREATE INDEX IF NOT EXISTS ix_ev ON events(tip, ts);
 ## CHANGELOG
 - 2.1 (2026-07-04): events tablica premjestena iz F18 u produkciju (v013)
 - 2.0 (2026-07-04): inicijalno (apsorbira spec §DIO 2 + dopune: usmenih kvota, uloga stupac, kaskadna mapa, checklist).
+
+> ✅ **Provjereno 2026-07-09 (stanje koda v183).**
+## DOPUNA 2026-07-09 (v183)
+### Nove tablice (u produkciji; init-db key=io-ispit-2026)
+**`promo_akcije`** (v176): id, naziv, opis, tip ('dani_pro'|'bonus_budzet'|...), vrijednost, vrijedi_od/do, aktivna BOOL, uvjet (rang-logika: prva aktivna čiji uvjet prolazi), created_at. Hook `promoPrimijeniNaNovog` pri registraciji; dodjela `promoDodijeli`.
+**`tier_postavke`** (v177): tier PK ('free'|'pro'|'enterprise'), budzet_usd NUMERIC NULL, pismeni_mj/usmeni_mj/vjestak_mj/**investitor_mj** INTEGER NULL (NULL=∞), updated_at. Keš 60 s u memoriji. Kvota 'investitor' broji `events` tip='inv_parcela' u tekućem mjesecu.
+### Planirane tablice — F1.5 ATOM (sljedeća sesija, SHEMA)
+**`ko_opcine`**: mbr INTEGER PK, naziv TEXT (+unaccent index), url TEXT, dohvaceno TIMESTAMPTZ NULL, br_cestica INT — puni se parsiranjem `atom_feed.xml` (cijela HR).
+**`cestice`**: id BIGSERIAL, ko_mbr INT REFERENCES ko_opcine, kcbr TEXT (BROJ_CESTICE, npr. '2362' ili '2362/1'), povrsina NUMERIC (POVRSINA_GRAFICKA m²), cestica_id TEXT (CESTICA_ID), geom_wgs JSONB (GeoJSON poligon WGS84), bbox NUMERIC[4], azurirano TIMESTAMPTZ. Indeksi: (ko_mbr,kcbr) UNIQUE; bbox pretraga po točki pa točni point-in-polygon u kodu. Izvor: `ko-{mbr}.zip → zisapp/atom/katastarske_cestice.gml` (EPSG:3765 → WGS84 postojećim konverterom).

@@ -1,5 +1,5 @@
 # OI ISPIT — BIBLIJA PROJEKTA (docs/ index)
-**Verzija dokumentacije:** 3.0 · **Datum:** 2026-07-07 · **Stanje koda:** v135 · Faza 17
+**Verzija dokumentacije:** 3.1 · **Datum:** 2026-07-09 · **Stanje koda:** v183 · Faza 18
 **Vlasnik:** Ivan Čakarić (ŽBUKA Čakarić d.o.o.) · **Sastavio:** Claude (Fable 5) u suradnji s Ivanom
 
 > **Što je ovo:** jedina istina o aplikaciji OI Ispit (oi-ispit.zbuka.hr) — vizija, arhitektura, svaka tablica, svaka ruta, svaki algoritam, svaka faza do v1.0 i dalje. Piše se za DVA čitatelja: (1) Ivana, koji nije programer ali donosi sve odluke, i (2) AI asistenta (Opus/Sonnet/budući) koji izvodi faze. Ako kod i biblija proturječe — **kod pobjeđuje**, ali se proturječje odmah upisuje u §CHANGELOG dotičnog dokumenta.
@@ -57,3 +57,10 @@ E1 KOMPLETNA: F4 ✓ (verzioniranje+novele) · F5 ✓ (**RAG GATE 93 %** — ret
 - 2.2 (2026-07-05): 06 → v2.2 (Profil F: konsolidirani PDF s izmjenama; TP RUETZZ isporučen — 82 čl.).
 - 2.1 (2026-07-05): 06 → v2.1 (novi parser-profili D/D2/D-t/E, isporučen batch 9–10: 21 propis / 929 jedinica); stanje koda v016.
 - 2.0 (2026-07-04): biblija uspostavljena (10 dokumenata), apsorbira OI-AI-Spec v1.1.
+
+---
+## DOPUNA 2026-07-09 · doc v3.1 · stanje koda **v183** · Faza 18
+- **Novi dokumenti u mapi:** `OI-DGU-IZVORI-PODATAKA.md` (svi državni/gradski izvori prostornih podataka — ATOM/WFS/WMS, obavezan za Investitor sesije) · `OI-Investitor-MASTER-strategija.md` (F1–F5 strategija) · `HANDOFF-2026-07-09.md` (v129→v183) · `PRVI-PROMPT-F15-ATOM.md`
+- **Investitor NIJE više "poslije F20"** — aktivan je treći mod (zeleni), F1 (karta+čestica) isporučen, F1.5 (ATOM ingestion) je SLJEDEĆA sesija. Za Investitor sesije prilažu se: 00 + 10 + OI-DGU-IZVORI-PODATAKA + OI-Investitor-MASTER-strategija + HANDOFF.
+- **Testovi:** `test-ui-v043.js` sada 200/200; dodani moduli `dopis-docx.js` i `dopis-pdf.js` idu u svaku isporuku.
+- Ovaj indeks vrijedi i dalje; HANDOFF-2026-07-09 je aktualan most.

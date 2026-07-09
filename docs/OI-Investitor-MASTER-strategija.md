@@ -285,3 +285,11 @@ Mikro-koraci:
 1. Povuci ovaj dokument + Ivanove materijale (§V) → 2. Faza 1 mikro-koraci 1.1–1.15 → 3. ZIP + init-db + upute → 4. Ivan push + test na H56 → 5. biblija 11-INVESTITOR.md commit.
 
 *Kraj master strategije. Nakon Ivanovog čitanja: dopune → zaključavanje → novi razgovor.*
+
+---
+## STATUS 2026-07-09 (v183) — dopuna strategije
+- **F1 ISPORUČEN** (v161–v183): karta, klik→čestica, GPS s uputama, kčbr pretraga, obuhvat više čestica, ručni m², WMS granice (v183 anonimni cp_wms). Čeka samo Ivanovu produkcijsku potvrdu čestice 2362.
+- **ODLUKA: F1.5 ATOM postaje primarni izvor geometrije** (WFS api.* nepouzdan za strojni pristup: 400 na ne-browser klijente + 500 epizode). ATOM = lokalna PG baza čestica → ms odgovori, bez ovisnosti, kčbr za SVE čestice (BROJ_CESTICE). WFS pada na fallback.
+- **DGU potvrda (mail 2026-07-09):** CP WMS/WFS + BU WFS (zgrade DKP!) su ZA ANONIMNE korisnike. Ivanov token = pričuva u Railway ENV.
+- **Namjena/urbana pravila:** NISU kod DGU → ZG Geoportal WMS `GUPZagreb_Public` GetFeatureInfo (primarno) / dservices8 WFS Planirana namjena 2023 / ISPU nacionalno. GeoHub NEMA GUP slojeve (provjereno).
+- Detalji izvora: **OI-DGU-IZVORI-PODATAKA.md** (jedina istina o izvorima).

@@ -77,3 +77,17 @@ Kirurški `str_replace` (nikad prepisivanje cijelog fajla; programski: assert co
 
 ## CHANGELOG
 - 2.0 (2026-07-04): inicijalno.
+
+> ✅ **Provjereno 2026-07-09 (stanje koda v183).**
+## DOPUNA 2026-07-09 (v183)
+### ENV — nove varijable (Investitor / DGU)
+| Var | Default | Svrha |
+|---|---|---|
+| `DGU_WFS_URL` | `https://api.uredjenazemlja.hr/services/inspire/cp/wfs` | WFS endpoint čestica — **NE postavljati** (default je službeni anonimni; mijenja se samo za OSS varijantu) |
+| `DGU_TOKEN` (alias `DGU_AUTH_KEY`) | prazno | token iz OSS registracije — **pričuva** (CP servisi su anonimni po potvrdi DGU 2026-07-09); Ivanov ključ čuvati SAMO u Railway ENV |
+| `DGU_TOKEN_PARAM` | `token` | naziv query parametra za token |
+- WFS timeout: 8000 ms (konstanta `INV_TIMEOUT` u server.js).
+### CSP (v179) — dopuštene domene za kartu
+`script-src`: + unpkg.com, cdn.jsdelivr.net · `img-src`: + tile.openstreetmap.org (a/b/c), api.uredjenazemlja.hr, oss.uredjenazemlja.hr, geoportal.dgu.hr · `connect-src`: + api/oss.uredjenazemlja.hr. Leaflet 1.9.4: unpkg primarno, jsdelivr fallback (`ucitajSa` helper).
+### ⚠ Naučeno o državnim serverima
+`api.uredjenazemlja.hr` **gateway filtrira ne-browser klijente** (na sve pozive vraća 400, i na dokumentirane primjere) — jedini mjerodavni testovi su browser i Railway (`/api/investitor/probe`). `oss.uredjenazemlja.hr/oss/public/atom/*` (statični ATOM) NE filtrira i radi strojno. WFS zna vratiti i 500 (njihova strana).

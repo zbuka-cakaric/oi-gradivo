@@ -45,6 +45,30 @@ Geometrija odlična; najbolji skupovi: **katastar, upravne jedinice, adrese, DMR
 - ⚠ api.* gateway BLOKIRA ne-browser klijente (Claude fetcher dobiva 400 na sve, i valjane pozive) — testirati isključivo iz browsera ili s Railwaya (probe ruta)
 - Ivanov token 8ea1…dd05: čuvati u Railway ENV (DGU_TOKEN) kao pričuvu — za OSS varijante i buduće registrirane usluge (DOF ortofoto?)
 
+## 🏙️ NAMJENA & URBANA PRAVILA (GUP) — NISU kod DGU! (za F3 analizu)
+Prostorni planovi žive kod MPGI (ISPU) i gradova. Za ZAGREB — sve otvoreno:
+
+### GeoHub Zagreb (geohub-zagreb.hub.arcgis.com) — otvoreni portal Grada, GeoJSON/SHP/WFS bez prijave
+- **WFS Planirana namjena 2023**: https://dservices8.arcgis.com/Usi0jGQwMmBUpFjr/arcgis/services/WFS_Geoportal_planirana_namjena/WFSServer?service=wfs&request=getcapabilities
+- Slojevi **'Namjena' i 'Urbana pravila' iz GUP-a 2016** objavljeni na ZG Geoportalu (novost 13.1., id=114) — tražiti na GeoHubu iste nazive
+- ArcGIS org **Usi0jGQwMmBUpFjr** → FeatureServer REST point-query (namjena za točku jednim pozivom!):
+  `https://services8.arcgis.com/Usi0jGQwMmBUpFjr/arcgis/rest/services/{SLOJ}/FeatureServer/0/query?geometry={lng},{lat}&geometryType=esriGeometryPoint&inSR=4326&spatialRel=esriSpatialRelIntersects&outFields=*&returnGeometry=false&f=json`
+- ⚠ hub.arcgis.com blokira crawlere (robots) — Ivan u browseru otvori GeoHub → sloj → "API links" → kopira FeatureServer/WFS URL
+
+### ZG Geoportal WMS (geoportal.zagreb.hr, javno, HTRS96/TM) — GetFeatureInfo = atribut na kliknutoj točki
+- **GUP Zagreb i Sesvete**: https://geoportal.zagreb.hr/Public/GUPZagreb_Public/MapServer/WMSServer
+- Planirana namjena 2020: .../Public/StratPlan_PlanNamj2020_Public/MapServer/WMSServer
+- **Ortofoto Zagreb 2022** (podloga karte za ZG, besplatno!): .../Public/Ortofoto2022_Public/MapServer/WMSServer
+- DMR: .../Public/TopoDMR_Public/MapServer/WMSServer · Stvarno korištenje 2020, buka, topo 2018…
+- Kontakt tehnika: helpdesk@apis-it.hr, geos@zagreb.hr
+
+### ISPU (ispu.mgipu.hr, MPGI) — nacionalno pokriće za širenje van Zagreba
+- Geoportal ISPU ima WMS/WFS mrežne usluge (planovi svih JLS, eKatalog, eDozvola arhiva georeferencirana od 1968.)
+- Županijski zavodi imaju vlastite WMS-ove (npr. BPŽ: wms.bpzzpu.hr) — po potrebi za druge lokacije
+
+### Bonus DGU anonimni (isti mail-izvor)
+- TK25/100/200 WMS: https://geoportal.dgu.hr/services/tk/wms · Registar geografskih imena WFS: http://rgi.dgu.hr/geoserver/gn/wfs
+
 ## PLAN B — WFS s tokenom (real-time; paralelno čekamo)
 - Endpoint: https://api.uredjenazemlja.hr/services/inspire/cp/wfs (typeNames **cp:CadastralParcel**, bbox bez srs sufiksa, EPSG:3765)
 - OSS alternativa: https://oss.uredjenazemlja.hr/OssWebServices/inspireService/wfs
